@@ -77,14 +77,23 @@ websocket 정리
 1) dependecny 추가
 
 dependencies{
+
 	compile('org.projectlombok:lombok') // lombok
+	
 	compile("org.springframework.boot:spring-boot-starter-websocket")
+	
 	compile("org.webjars:webjars-locator")
+	
 	compile("org.webjars:sockjs-client:1.0.2") // scokjs
+	
 	compile("org.webjars:stomp-websocket:2.3.3") // stomp
+	
 	compile("org.webjars:bootstrap:3.3.7")
+	
 	compile("org.webjars:jquery:3.1.0") // jquery
+	
 	testCompile("org.springframework.boot:spring-boot-starter-test")
+	
 }
 
 
