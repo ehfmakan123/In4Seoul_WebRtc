@@ -9,8 +9,7 @@ websocket 정리
 1. websocket 이란?
 
 
- - TCP 통신 방식으로 서버와 클라이언트 사이에 데이터를 주고 받을 수 있는 기술
-(클라이언트간 양방향 통신 기술)
+ - TCP 통신 방식으로 서버와 클라이언트 사이에 데이터를 주고 받을 수 있는 기술  (클라이언트간 양방향 통신 기술)
  
 - 내가 원하는 정보에 대해 구독을 신청하고, 토픽에 대한 메시지를 발행하면 해당 토픽을 구독하고 있는 모든 사용자들에게 보내는 방식.
 
@@ -20,8 +19,9 @@ websocket 정리
 
 2. why use?
 
- - 기존의 양방향 통신(url을 통한 요청{새로운 페이지 갱신} -> ajax통신{부분 갱신 가능})은 HTTP를 이용하기 때문에 변경된 데이터를 가져오기 위해 call ,request 가 필요함
-(ajax는 요청이 없는 경우 갱신 x -> http )
+- 기존의 양방향 통신(url을 통한 요청{새로운 페이지 갱신} 
+-> ajax통신{부분 갱신 가능})은 HTTP를 이용하기 때문에 변경된 데이터를 가져오기 위해 call ,request 가 필요함(ajax는 요청이 없는 경우 갱신 x -> http )
+-> WebSocket
 
 - 서버가 각각의 클라이언트에 다른 TCP 연결 사용(정보 , 메시지 수신)
 
@@ -41,7 +41,9 @@ websocket 정리
 - 정상적으로 연결이 이루어진다면 서버와 클라이언트간 연결 , 이후 일정 시간이 지나면 HTTP 연결이 끊어짐
 
 
-- HTTP를 이용해 HANDSHAKE(websocket 사용 가능 여부) -> HTTP protocol을 websocket protocol 으로 바꾸는 protocol switching -> 웹 소켓을 위한 새로운 소켓이 만들어 지고 이 소켓을 이용하여 통신 (ws / wss protocol)
+* HTTP를 이용해 HANDSHAKE(websocket 사용 가능 여부) 
+-> HTTP protocol을 websocket protocol 으로 바꾸는 protocol switching 
+-> 웹 소켓을 위한 새로운 소켓이 만들어 지고 이 소켓을 이용하여 통신 (ws / wss protocol)
 
 
 
@@ -85,9 +87,13 @@ dependencies{
 	testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
+
 2)model 설정
+
 username(유저 아이디) , contents ( 내용) , sendDate (메세지 시간..?) 
+
 3) Contorller 
+
 @MessageMapping 
 @SendTo : 메소드 반환 객체를 모든 유저에게 전송 
 @SendToUser : 1:1 채팅용
