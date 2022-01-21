@@ -54,3 +54,20 @@ JWT는 일반적으로 클라이언트와 서버, 서비스와 서비스 사이 
 	"Authorization" : "Bearer jwt"
 }
 ```
+
+
+# 참고자료
+
+1.JWT & 토큰 기반 인증 시스템
+[https://velog.io/@yh20studio/토큰-기반-인증-시스템-JWT](https://velog.io/@yh20studio/%ED%86%A0%ED%81%B0-%EA%B8%B0%EB%B0%98-%EC%9D%B8%EC%A6%9D-%EC%8B%9C%EC%8A%A4%ED%85%9C-JWT)
+
+2.Vue - Login 세션 유지하기
+[https://kdinner.tistory.com/60](https://kdinner.tistory.com/60)
+
+3.[Vue] .txt 파일 저장하기 및 .txt 불러와 data에 바인딩하기
+[https://dreamcoding.tistory.com/48](https://dreamcoding.tistory.com/48)
+
+JavaScript에서 클라이언트 IP 주소 가져 오기 -보안 약할것 같다.
+[https://www.delftstack.com/ko/howto/javascript/get-ip-address-javascript/](https://www.delftstack.com/ko/howto/javascript/get-ip-address-javascript/)
+
+반영구적 로그인 관련 JWT, 세션 쿠키 조사
