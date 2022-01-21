@@ -69,7 +69,7 @@ NAT 트래버셜(NAT traversal)
 
 ### STUN, TURN
 
-![Untitled](/uploads/195b1b243c23517536615d2aee98f453/Untitled.png)
+![image](/uploads/214b5ea9c508c0374ff18dd04308b95d/image.png)
 
 NAT 트래버셜 작업은 STUN(Session Traversal Utilities for NAT)서버에 의해 이루어진다 
 
@@ -138,7 +138,7 @@ ICE 프레임워크가 STUN 또는 TURN  서버를 이용해 상대방과 연결
 
 ### 시그널링
 
-![Untitled_1](/uploads/0129ae4545e7d76eb642e4004021592a/Untitled_1.png)
+![image](/uploads/91fefac1c76d15e7c77253957fa04b1f/image.png)
 
 시그널링(Signaling)
 
@@ -173,7 +173,7 @@ ICE 프레임워크가 STUN 또는 TURN  서버를 이용해 상대방과 연결
 
 ### 쿠렌토를 사용할 수 있는 3가지 방법
 
-![Untitled_2](/uploads/63bfe51de2e7cd10386fc821b896b361/Untitled_2.png)
+![image](/uploads/f1fb3f44ac127e5bb9d4734f684fd890/image.png)
 
 1번째 방법
 
@@ -204,7 +204,7 @@ ICE 프레임워크가 STUN 또는 TURN  서버를 이용해 상대방과 연결
 3. Transcoding : 호환되지 않는 클라이언트 간에 코덱 및 형식을 즉석에서 조정한다
 4. Recording : 미디어에 들어오는 스트림을 영구적인 방식으로 저장한다
 
-![Untitled_3](/uploads/f44536c6a08fef03087b65d5992b42b8/Untitled_3.png)
+![image](/uploads/6c3aa07b8ca8b69da6993492fc89b068/image.png)
 
 [[WebRTC] 쿠렌토(Kurento)는 무엇인가?](https://gh402.tistory.com/43?category=935378)
 
@@ -230,7 +230,7 @@ ICE 프레임워크가 STUN 또는 TURN  서버를 이용해 상대방과 연결
 
 이 파이프라인은 양방향 미디어 흐름을 교환할 수 있는 기능을 가져야한다
 
-![Untitled_4](/uploads/86716ab8d342bab2912e0d9cfcd80295/Untitled_4.png)
+![image](/uploads/f9a796d70b36fa9223cec21c70ad86c0/image.png)
 
 웹 애플리케이션이기 때문에  클라이언트 - 서버 아키텍처를 따라간다
 
