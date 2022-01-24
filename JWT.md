@@ -70,4 +70,4 @@ JWT는 일반적으로 클라이언트와 서버, 서비스와 서비스 사이 
 JavaScript에서 클라이언트 IP 주소 가져 오기 -보안 약할것 같다.
 [https://www.delftstack.com/ko/howto/javascript/get-ip-address-javascript/](https://www.delftstack.com/ko/howto/javascript/get-ip-address-javascript/)
 
-반영구적 로그인 관련 JWT, 세션 쿠키 조사
+반영구적 로그인 관련 JWT, 세션 쿠키 조사.
