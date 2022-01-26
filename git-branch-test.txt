@@ -1,3 +1,0 @@
-git branch test입니다.
-
-feature2에서 수정!!! merge conflict 일어나겠지!
