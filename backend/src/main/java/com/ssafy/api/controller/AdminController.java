@@ -1,6 +1,7 @@
 package com.ssafy.api.controller;
 
-
+import org.springframework.security.core.Authentication;
+import com.ssafy.api.dto.ConsultantDto;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.AdminService;
@@ -18,14 +19,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/admin")
 public class AdminController {
+
+
 
     @Autowired
     AdminService adminService;
@@ -71,6 +74,59 @@ public class AdminController {
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
         return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "잘못된 비밀번호입니다", null));
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @GetMapping("/staff")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<List<ConsultantDto>> staffList() {
+
+        List<ConsultantDto> list=adminService.getConsultantList();
+
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body(list) ;
+    }
+
+
+
+
+
+    // staff 정보 조회
+    @GetMapping("/staff/{id}")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<ConsultantDto> staffList(@PathVariable("id") int  id) {
+
+        ConsultantDto result=adminService.getConsultant(id);
+
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body(result) ;
+    }
+
+
+
 }
 
 

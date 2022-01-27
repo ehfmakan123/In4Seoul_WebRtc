@@ -24,8 +24,6 @@ public class QStaff extends EntityPathBase<Staff> {
 
     public final StringPath adminYN = createString("adminYN");
 
-    public final DateTimePath<java.time.LocalDateTime> approvedAt = createDateTime("approvedAt", java.time.LocalDateTime.class);
-
     public final StringPath approveYN = createString("approveYN");
 
     public final QAreas areas;

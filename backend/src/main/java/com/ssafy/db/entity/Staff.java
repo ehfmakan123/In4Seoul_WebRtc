@@ -43,9 +43,6 @@ public class Staff {
     @Column(name = "created_at")
     LocalDateTime createdAt;
 
-    @Column(name = "approved_at")
-    LocalDateTime approvedAt;
-
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
 

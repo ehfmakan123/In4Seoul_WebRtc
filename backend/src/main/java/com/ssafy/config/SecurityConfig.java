@@ -63,5 +63,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/v1/users/me").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
     	        	    .anyRequest().permitAll()
                 .and().cors();
+
+
+        /*
+               antMatchers = 특정 리소스에 대해서 권한을 설정한다
+               permitAll = 설정한 리소스의 접근을 인증절차 없이 허용한다는 의미
+
+
+
+         */
+
+
+
     }
 }

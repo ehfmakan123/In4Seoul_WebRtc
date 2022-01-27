@@ -22,11 +22,14 @@ public class QDesks extends EntityPathBase<Desks> {
 
     public static final QDesks desks = new QDesks("desks");
 
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
     public final StringPath altitude = createString("altitude");
 
     public final QAreas area;
 
-    public final StringPath createdAt = createString("createdAt");
+    //inherited
+    public final StringPath createdAt = _super.createdAt;
 
     public final StringPath deleteYN = createString("deleteYN");
 
@@ -42,7 +45,8 @@ public class QDesks extends EntityPathBase<Desks> {
 
     public final StringPath password = createString("password");
 
-    public final StringPath updatedAt = createString("updatedAt");
+    //inherited
+    public final StringPath updatedAt = _super.updatedAt;
 
     public QDesks(String variable) {
         this(Desks.class, forVariable(variable), INITS);

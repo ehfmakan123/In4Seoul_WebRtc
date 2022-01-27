@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class Desks {
+public class Desks extends BaseTimeEntity {
 
 
     @Id
@@ -30,10 +30,10 @@ public class Desks {
     String korName;
     String latitude;
     String altitude;
-    @Column(name = "created_at")
-    String createdAt;
-    @Column(name = "updated_at")
-    String updatedAt;
+//    @Column(name = "created_at")
+//    String createdAt;
+//    @Column(name = "updated_at")
+//    String updatedAt;
 
     @Column(name = "delete_yn")
     String deleteYN;
