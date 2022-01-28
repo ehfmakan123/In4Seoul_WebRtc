@@ -11,6 +11,12 @@ import AdminHome from '@/views/AdminHome.vue'
 import AdminStaff from '@/components/admin/AdminStaff.vue'
 import AdminDesk from '@/components/admin/AdminDesk.vue'
 import AdminPost from '@/components/admin/AdminPost.vue'
+import AdminStaffEdit from '@/components/admin/AdminStaffEdit.vue'
+import AdminDeskCreate from '@/components/admin/AdminDeskCreate.vue'
+import AdminDeskEdit from '@/components/admin/AdminDeskEdit.vue'
+import AdminPostEdit from '@/components/admin/AdminPostEdit.vue'
+
+
 
 const routes = [
   {
@@ -72,6 +78,26 @@ const routes = [
     path: '/admin/post',
     name: 'AdminPost',
     component: AdminPost
+  },
+  {
+    path: '/admin/staff/edit',
+    name: 'AdminStaffEdit',
+    component: AdminStaffEdit
+  },
+  {
+    path: '/admin/desk/edit',
+    name: 'AdminDeskEdit',
+    component: AdminDeskEdit
+  },
+  {
+    path: '/admin/desk/create',
+    name: 'AdminDeskCreate',
+    component: AdminDeskCreate
+  },
+  {
+    path: '/admin/post/edit',
+    name: 'AdminPostEdit',
+    component: AdminPostEdit
   },
 ]
 
