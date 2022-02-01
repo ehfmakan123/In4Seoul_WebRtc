@@ -20,9 +20,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  * 인증(authentication) 와 인가(authorization) 처리를 위한 스프링 시큐리티 설정 정의.
  */
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity  // 기본적인 Web보안을 활성화 하겠다는 어노테이션
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적인 설정을 위해서 WebSecurityConfigurerAdapter를 상속받는다
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
     
@@ -51,6 +51,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.authenticationProvider(authenticationProvider());
     }
 
+
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -59,9 +62,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
-                .authorizeRequests()
-                .antMatchers("/api/v1/users/me").authenticated()       //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정
-    	        	    .anyRequest().permitAll()
+                .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다는 의미이다
+//                .antMatchers("/api/v1/admin//login").permitAll()
+//                   //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정  // 이 요청에 대해서는 인증을 받아야한다
+//    	        	    .anyRequest().authenticated() // 나머지 요청에 대해서는 인증절차 없이 접근 허용
+                .anyRequest().permitAll()
                 .and().cors();
 
 
@@ -72,8 +77,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
          */
-
-
-
     }
 }

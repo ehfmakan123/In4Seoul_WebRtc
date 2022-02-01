@@ -1,5 +1,6 @@
 package com.ssafy.api.controller;
 
+import com.ssafy.api.dto.DeskDto;
 import org.springframework.security.core.Authentication;
 import com.ssafy.api.dto.ConsultantDto;
 import com.ssafy.api.request.UserLoginPostReq;
@@ -28,6 +29,8 @@ import java.util.List;
 @RequestMapping("/api/v1/admin")
 public class AdminController {
 
+
+    //@ApiIgnore 는 스웨거 상 무시한다는 뜻
 
 
     @Autowired
@@ -124,6 +127,152 @@ public class AdminController {
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
         return ResponseEntity.status(200).body(result) ;
     }
+
+
+    //staff 정보 수정
+    @PutMapping("/staff/{id}")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<Boolean> staffUpdate(@PathVariable("id") int  id, @RequestBody ConsultantDto consultantDto) {
+
+        ConsultantDto result=adminService.getConsultant(id);
+
+        boolean b = adminService.updateConsultant(id, consultantDto);
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body(b) ;
+    }
+
+
+
+
+
+
+
+
+    //데스크 등록
+    @PostMapping("/desk")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<String> deskRegister(@RequestBody DeskDto deskDto ) {
+
+
+adminService.deskRegister(deskDto);
+
+
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body("check") ;
+    }
+
+
+
+
+
+
+    //데스크 수정
+    @PostMapping("/desk/{id}")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<String> deskUpdate(@RequestBody DeskDto deskDto ,@PathVariable("id") int id) {
+
+
+        adminService.deskUpdate(deskDto,id);
+
+
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body("check") ;
+    }
+
+
+
+    //데스크 하나 조회
+    @GetMapping("/desk/{id}")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<DeskDto> getDesk(@PathVariable("id") int id) {
+
+        DeskDto result = adminService.getDesk(id);
+
+
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body(result) ;
+    }
+
+
+
+    //데스크 목록 조회
+    @GetMapping("/desk")
+    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<List<DeskDto>> getDeskList() {
+
+        List<DeskDto> result = adminService.getDeskList();
+
+
+        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+        return ResponseEntity.status(200).body(result) ;
+    }
+
+
+
+
+
+
+
+
+
+
+
+//    //데스크 목록 가져오기
+//    @PostMapping("/desk/{id}")
+//    @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
+//    @ApiResponses({
+//            @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
+//            @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
+//            @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
+//            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+//    })
+//    public ResponseEntity<String> deskUpdate(@RequestBody DeskDto deskDto ,@PathVariable("id") int id) {
+//
+//
+//        adminService.deskUpdate(deskDto,id);
+//
+//
+//        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+//        return ResponseEntity.status(200).body("check") ;
+//    }
+
+
+
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ package com.ssafy.common.auth;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Base64;
+import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.FilterChain;
@@ -77,7 +78,6 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             JwtTokenUtil.handleError(token);
             DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
             String userId = decodedJWT.getSubject();
-            
             // Search in the DB if we find the user by token subject (username)
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
             if (userId != null) {

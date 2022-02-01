@@ -18,4 +18,13 @@ public class Areas {
     String engName;
     @Column(name = "kor_name")
     String korName;
+
+    public Areas() {
+    }
+
+    public Areas(int id, String engName, String korName) {
+        this.id = id;
+        this.engName = engName;
+        this.korName = korName;
+    }
 }

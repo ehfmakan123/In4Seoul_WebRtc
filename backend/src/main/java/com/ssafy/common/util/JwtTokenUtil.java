@@ -46,11 +46,22 @@ public class JwtTokenUtil {
                 .withIssuer(ISSUER)
                 .build();
     }
-    
+
+    /*
+
+    토큰을 발급해야 하는 대상은  어드민, 상담사 , 데스크인데
+    .withAudience()    토큰 대상자를 설정하는건데   여기에  어드민 상담사 데스크를 구분하게끔 넣어도 되는건지?????
+    1은 어드민  2는 상담사  3은 데스크 이런식으로..
+
+     */
+
+
+
     public static String getToken(String userId) {
     		Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
         return JWT.create()
-                .withSubject(userId)
+                .withSubject(userId)  //기본키
+                .withAudience("1")
                 .withExpiresAt(expires)
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
