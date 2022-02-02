@@ -9,7 +9,7 @@
     @click="selectPost(post)"
     >
     </post-list-item>
-    <post-detail :post="state.post"></post-detail>
+    <post-detail :selectedPost="state.selectedPost"></post-detail>
   </div>
 </template>
 
@@ -27,12 +27,12 @@ export default {
   props: ["postList"],
   setup() {
     const state = ref({
-      post: {}
+      selectedPost: {}
     })
     const selectPost = (post) => {
       console.log(`${post.id}번 포스트 선택됨`)
-      state.value.post = post
-      console.log(state.value.post)
+      state.value.selectedPost = post
+      console.log(state.value.selectedPost)
     }
     return {state, selectPost}
   }
