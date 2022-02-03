@@ -1,5 +1,5 @@
 <template>
-  <div id="desk-login" class="modal">
+  <div id="desk-login">
     <h3>안내데스크 로그인</h3>
     <input type="text" placeholder="아이디" v-model="deskLoginCredentials.id"><br/>
     <input type="password" placeholder="비밀번호" v-model="deskLoginCredentials.password"><br/>
@@ -7,7 +7,7 @@
     <button @click="deskLoginCancel">취소</button>
   </div>
   <hr>
-  <div id="staff-login" class="modal">
+  <div id="staff-login">
     <h3>상담사 로그인</h3>
     <input type="text" placeholder="아이디" v-model="staffLoginCredentials.id"><br/>
     <input type="password" placeholder="비밀번호" v-model="staffLoginCredentials.password"><br/>
@@ -15,7 +15,7 @@
     <button @click="staffLoginCancel">취소</button>
   </div>
   <hr>
-  <div id="staff-signup" class="modal">
+  <div id="staff-signup">
     <h3>상담사 회원가입</h3>
     <input type="text" placeholder="아이디" v-model="staffSignupCredentials.id"><button @click="staffSignupIdCheck">중복확인</button><br/>
     <input type="password" placeholder="비밀번호" v-model="staffSignupCredentials.password"><br/>
