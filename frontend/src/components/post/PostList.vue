@@ -3,7 +3,6 @@
     <!-- Modal -->
     <post-detail :selectedPost="state.selectedPost"></post-detail>
     
-    <h2>PostList</h2>
     <hr>
     <div class="row p-4">
       <post-list-item

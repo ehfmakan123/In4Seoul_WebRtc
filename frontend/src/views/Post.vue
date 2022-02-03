@@ -1,10 +1,29 @@
 <template>
-  <div>
-    <h1>게시판 페이지</h1>
-    <button @click="createPost">포스트 작성하기</button>
-    <post-form v-if="state.showPostForm"></post-form>
-    <post-filter></post-filter>
-    <post-list :postList="state.postList"></post-list>
+  <div class="d-flex">
+    <!-- 글 생성 Modal -->
+    <post-form></post-form>
+
+    <div class="d-flex flex-column flex-shrink-0 bg-light justify-content-center" style="width: 3.5rem;">
+      <ul class="nav nav-pills nav-flush flex-column text-center">
+        <!-- <li class="nav-item">
+          <a href="#" class="nav-link active py-3 border-bottom" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
+            <svg class="bi" width="24" height="24" role="img" aria-label="Home"><use xlink:href="#home"/></svg>
+          </a>
+        </li> -->
+        <a @click="createPost" class="mx-2 fs-4" data-bs-toggle="modal" data-bs-target="#createModal">
+          <i class="bi bi-plus-circle-fill"></i>
+        </a>
+      </ul>    
+    </div>
+
+    <div>
+      <h1>서울 여행자들의 담벼락</h1>
+      <p>같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</p>
+      <post-filter></post-filter>
+      
+      <post-list :postList="state.postList"></post-list>
+    </div>
+    
   </div>
 </template>
 
@@ -24,6 +43,9 @@ export default {
     PostList,
   },
   setup() {
+    // 여기에 created 때 필요한 로직 작성
+
+
     const state = ref({
       showPostForm: false,
       postList: [
