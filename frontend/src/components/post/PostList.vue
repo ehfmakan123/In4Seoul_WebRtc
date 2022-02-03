@@ -1,15 +1,20 @@
 <template>
   <div>
+    <!-- Modal -->
+    <post-detail :selectedPost="state.selectedPost"></post-detail>
+    
     <h2>PostList</h2>
     <hr>
-    <post-list-item
-    v-for="post in postList"
-    :key="post.id"
-    :post="post"
-    @click="selectPost(post)"
-    >
-    </post-list-item>
-    <post-detail :selectedPost="state.selectedPost"></post-detail>
+    <div class="row p-4">
+      <post-list-item
+        
+        v-for="post in postList"
+        :key="post.id"
+        :post="post"
+        @click="selectPost(post)"
+      >
+      </post-list-item>
+    </div>
   </div>
 </template>
 
