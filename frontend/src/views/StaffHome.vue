@@ -2,7 +2,8 @@
   <div class="staff-side-bar">
     <button @click="moveToStaffHome">상담기록</button> <tb/>
     <button @click="clickAlarm">상담알림</button> <tb/>
-    <button @click="moveToStaffProfile">프로필정보</button>    
+    <button @click="moveToStaffProfile">프로필정보</button> <tb/>
+    <button @click="logout">logout</button>
   </div>
   <div class="staff-main">
     <h1>상담사 이싸피 상담사 페이지</h1>
@@ -73,11 +74,17 @@ export default {
       router.push({ name: 'StaffProfile' })
     }
 
+    const logout = () => {
+      console.log("로그아웃 버튼 클릭됨!")
+      router.push({ name: 'Auth' })
+    }
+
     return {
       testArray,
       moveToStaffHome,
       clickAlarm,
       moveToStaffProfile,
+      logout,
     }
   }
 }

@@ -3,7 +3,8 @@
     <div class="staff-side-bar">
       <button @click="moveToStaffHome">상담기록</button> <tb/>
       <button @click="clickAlarm">상담알림</button> <tb/>
-      <button @click="moveToStaffProfile">프로필정보</button>    
+      <button @click="moveToStaffProfile">프로필정보</button> <tb/>
+      <button @click="logout">logout</button>  
     </div>
     <div class="staff-profile">
       <h2>프로필 정보>프로필조회</h2>
@@ -55,6 +56,11 @@ export default {
       router.push({ name: 'StaffProfile' })
     }
 
+    const logout = () => {
+      console.log("로그아웃 버튼 클릭됨!")
+      router.push({ name: 'Auth' })
+    }
+
     const staffProfileCancle = () => {
       console.log("스태프 프로필 취소 버튼 클릭됨!")
       router.push({ name: 'StaffHome' })
@@ -70,6 +76,7 @@ export default {
       moveToStaffHome,
       clickAlarm,
       moveToStaffProfile,
+      logout,
       staffProfileCancle,
       staffProfileEdit,
     }
