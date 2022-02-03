@@ -1,7 +1,7 @@
 <template>
   <div class="staff-side-bar">
-    <button @click="moveToStaffHome">상담기록</button>
-    <button @click="clickAlarm">상담알림</button>
+    <button @click="moveToStaffHome">상담기록</button> <tb/>
+    <button @click="clickAlarm">상담알림</button> <tb/>
     <button @click="moveToStaffProfile">프로필정보</button>    
   </div>
   <div class="staff-main">
