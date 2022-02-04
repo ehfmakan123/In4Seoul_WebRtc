@@ -1,14 +1,8 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.api.dto.ConsultantDto;
-import com.ssafy.api.dto.DeskDto;
-import com.ssafy.api.dto.QConsultantDto;
-import com.ssafy.api.dto.QDeskDto;
-import com.ssafy.db.entity.QAreas;
-import com.ssafy.db.entity.QDesks;
-import com.ssafy.db.entity.QStaff;
-import com.ssafy.db.entity.Staff;
+import com.ssafy.api.dto.*;
+import com.ssafy.db.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,7 +20,7 @@ public class AdminRepositorySupport {
     QStaff qstaff= QStaff.staff;
     QAreas qareas= QAreas.areas;
     QDesks desk=QDesks.desks;
-
+    QPosts qpost=QPosts.posts;
 
 
     //admin 로그인 시 정보 조회
@@ -46,11 +40,11 @@ public class AdminRepositorySupport {
 
 
     // 상담사 목록 가져오기
-    public List<ConsultantDto> getConsultantList()
+    public List<StaffDto> getConsultantList()
     {
 
-        List<ConsultantDto> result = jpaQueryFactory
-                .select(new QConsultantDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
+        List<StaffDto> result = jpaQueryFactory
+                .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName")))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
@@ -64,11 +58,11 @@ return result;
 
 
     //상담사 정보
-    public ConsultantDto getConsultant(int id)
+    public StaffDto getConsultant(int id)
     {
 
-        ConsultantDto result = jpaQueryFactory
-                .select(new QConsultantDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
+        StaffDto result = jpaQueryFactory
+                .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName")))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
@@ -80,6 +74,8 @@ return result;
 
 
 
+
+// 데스크 정보
     public DeskDto getDesk(int id)
     {
 
@@ -97,7 +93,7 @@ return result;
     }
 
 
-
+// 데스크 목록
     public List<DeskDto> getDeskList()
     {
 
@@ -114,6 +110,41 @@ return result;
         return result;
 
     }
+
+
+
+
+
+    // 게시글 목록 조회
+    public List<PostDto> getPostList()
+    {
+        List<PostDto> result = jpaQueryFactory
+                .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+                .from(qpost)
+                .orderBy(qpost.id.desc())
+                .fetch();
+
+
+        return result;
+
+
+    }
+
+
+    //게시글 조회
+     public PostDto getPost(long id)
+     {
+
+         PostDto result = jpaQueryFactory
+                 .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+                 .from(qpost)
+                 .where(qpost.id.eq(id))
+                 .fetchOne();
+
+         return result;
+
+     }
+
 
 
 

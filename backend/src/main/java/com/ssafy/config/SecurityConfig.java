@@ -1,5 +1,7 @@
 package com.ssafy.config;
 
+import com.ssafy.api.service.AdminService;
+import com.ssafy.api.service.StaffService;
 import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import com.ssafy.common.auth.SsafyUserDetailService;
@@ -28,12 +30,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적�
     
     @Autowired
     private UserService userService;
-    
+
+
+
+    @Autowired
+    private AdminService adminService;
+
+    @Autowired
+    private StaffService staffService;
+
     // Password 인코딩 방식에 BCrypt 암호화 방식 사용
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+
+
+
 
     // DAO 기반으로 Authentication Provider를 생성
     // BCrypt Password Encoder와 UserDetailService 구현체를 설정
@@ -54,6 +68,37 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적�
 
 
 
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception {
+//        http
+//                .httpBasic().disable()
+//                .csrf().disable()
+//                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
+//                .and()
+//                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+//                .authorizeRequests()
+//                .anyRequest().hasRole("ADMIN")
+//                .and().cors();
+//
+//
+//        /*
+//               antMatchers = 특정 리소스에 대해서 권한을 설정한다
+//               permitAll = 설정한 리소스의 접근을 인증절차 없이 허용한다는 의미
+//
+//
+//
+//         */
+//    }
+
+
+
+
+
+
+
+
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
@@ -61,12 +106,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적�
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService,adminService,staffService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다는 의미이다
-//                .antMatchers("/api/v1/admin//login").permitAll()
-//                   //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정  // 이 요청에 대해서는 인증을 받아야한다
+                .antMatchers("/api/v1/staff/id").permitAll()
+                .antMatchers("/api/v1/staff/signup").permitAll()
+                .antMatchers("/api/v1/staff/login").permitAll()
+                .antMatchers("/api/v1/admin/login").permitAll()
+                .antMatchers("/api/v1/admin/**").hasAnyAuthority("ROLE_ADMIN")
+                .antMatchers("/api/v1/staff/**").hasAnyAuthority("ROLE_STAFF")
+                  //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정  // 이 요청에 대해서는 인증을 받아야한다
 //    	        	    .anyRequest().authenticated() // 나머지 요청에 대해서는 인증절차 없이 접근 허용
-                .anyRequest().permitAll()
                 .and().cors();
 
 

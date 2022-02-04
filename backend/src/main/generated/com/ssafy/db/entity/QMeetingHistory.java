@@ -22,6 +22,8 @@ public class QMeetingHistory extends EntityPathBase<MeetingHistory> {
 
     public static final QMeetingHistory meetingHistory = new QMeetingHistory("meetingHistory");
 
+    public final StringPath content = createString("content");
+
     public final QDesks desks;
 
     public final DateTimePath<java.time.LocalDateTime> endedAt = createDateTime("endedAt", java.time.LocalDateTime.class);

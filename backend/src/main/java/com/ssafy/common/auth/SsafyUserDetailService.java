@@ -2,6 +2,8 @@ package com.ssafy.common.auth;
 
 import java.util.Optional;
 
+import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +27,7 @@ public class SsafyUserDetailService implements UserDetailsService{
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     		User user = userService.getUserByUserId(username);
     		if(user != null) {
-    			SsafyUserDetails userDetails = new SsafyUserDetails(user);
+    			SsafyUserDetails userDetails = new SsafyUserDetails(user,new Staff(),new Desks());
     			return userDetails;
     		}
     		return null;

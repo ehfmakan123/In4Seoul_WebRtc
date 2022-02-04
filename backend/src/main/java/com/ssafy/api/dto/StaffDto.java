@@ -2,13 +2,12 @@ package com.ssafy.api.dto;
 
 
 import com.querydsl.core.annotations.QueryProjection;
+import com.ssafy.common.model.response.BaseResponseBody;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 
 
 @Data
-public class ConsultantDto {
+public class StaffDto extends BaseResponseBody {
 
     int id;
     String userId;
@@ -21,11 +20,11 @@ public class ConsultantDto {
     String areaName;
 
 
-    public ConsultantDto() {
+    public StaffDto() {
     }
 
     @QueryProjection
-    public ConsultantDto(int id, String userId, String name, String phone, String email, String deleteYN, String approveYN, int areaId, String areaName) {
+    public StaffDto(int id, String userId, String name, String phone, String email, String deleteYN, String approveYN, int areaId, String areaName) {
         this.id = id;
         this.userId = userId;
         this.name = name;

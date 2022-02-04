@@ -36,4 +36,8 @@ public class MeetingHistory {
     @JoinColumn(name = "desks_id")
     Desks desks;
 
+
+
+    String content;
+
 }

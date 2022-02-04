@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -56,27 +57,35 @@ public class JwtTokenUtil {
      */
 
 
+//
+//    public static String getToken(String userId) {
+//    		Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+//        return JWT.create()
+//                .withSubject(userId)  //기본키
+//                .withAudience("1")
+//                .withExpiresAt(expires)
+//                .withIssuer(ISSUER)
+//                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+//                .sign(Algorithm.HMAC512(secretKey.getBytes()));
+//    }
 
-    public static String getToken(String userId) {
-    		Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+
+
+    public static String getToken(String userId,String role) {
+        Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+
         return JWT.create()
+                .withClaim("role",role)  //payload에 추가하기
                 .withSubject(userId)  //기본키
-                .withAudience("1")
                 .withExpiresAt(expires)
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
 
-    public static String getToken(Instant expires, String userId) {
-        return JWT.create()
-                .withSubject(userId)
-                .withExpiresAt(Date.from(expires))
-                .withIssuer(ISSUER)
-                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-                .sign(Algorithm.HMAC512(secretKey.getBytes()));
-    }
-    
+
+
+
     public static Date getTokenExpiration(int expirationTime) {
     		Date now = new Date();
     		return new Date(now.getTime() + expirationTime);
