@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <!-- 글 생성 Modal -->
-    <post-form></post-form>
+    <post-form @add-new-post="addPost"></post-form>
 
     <div class="d-flex flex-column flex-shrink-0 bg-light justify-content-center" style="width: 3.5rem;">
       <ul class="nav nav-pills nav-flush flex-column text-center">
@@ -17,8 +17,8 @@
     </div>
 
     <div>
-      <h1 class="t-blue-4">서울 여행자들의 담벼락</h1>
-      <p>같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</p>
+      <h1>서울 여행자들의 담벼락</h1>
+      <p class="t-gray-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</p>
       <post-filter></post-filter>
       
       <post-list :postList="state.postList"></post-list>
@@ -116,6 +116,10 @@ export default {
       console.log(state.value.showPostForm)
     }
 
+    const addPost = (newPost) => {
+      state.value.postList.push(newPost)
+    }
+
 
     // const deskId = 1
     // const areaId = 1
@@ -134,7 +138,22 @@ export default {
     //   fetchPost(postId)
     // })
     
-    return {state, createPost}
+    return {state, createPost, addPost}
   }
 }
 </script>
+<style>
+  h1 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+
+  .input-title {
+    height: 2.5rem;
+  }
+
+  .input-content {
+    width:100%;
+    height:15rem;
+  }
+</style>

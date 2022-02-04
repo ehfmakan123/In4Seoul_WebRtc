@@ -5,17 +5,17 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <h3><input type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></h3>
+            <p class="w-100"><input class="w-100 input-title" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
           </div>
           <div class="modal-body" style="height: 27rem;">
-            <p><input type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요" style="width:27rem;height:15rem;"></p>
+            <p><input class="input-content" type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p>
             <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
             <p style="font-size:13px;">※ 등록한 비밀번호는 포스트를 수정/삭제할 때 사용됩니다.</p>
-            <p>비밀번호: <input type="password" v-model="state.myPost.password" placeholder="비밀번호를 입력해주세요"></p>
-            <p class="mb-0">비밀번호 확인: <input type="password" v-model="state.myPost.passwordConfirm" placeholder="비밀번호를 입력해주세요"></p>
+            <p>비밀번호: <input class="w-50" type="password" v-model="state.myPost.password" placeholder="비밀번호를 입력해주세요"></p>
+            <p class="mb-0">비밀번호 확인: <input class="w-50" type="password" v-model="state.myPost.passwordConfirm" placeholder="비밀번호를 입력해주세요"></p>
           </div>
           <div class="modal-footer">
-            <button @click="savePost" type="button" class="btn btn-primary">저장</button>
+            <button @click="savePost" type="button" class="btn btn-primary" data-bs-dismiss="modal">저장</button>
             <button @click="cancle" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
           </div>
         </div>
@@ -43,7 +43,7 @@ export default {
   name: 'PostForm',
   components: {
   },
-  setup() {
+  setup(props, { emit }) {
     const state = ref({
       myPost: {
         title: '',
@@ -53,15 +53,55 @@ export default {
       }
     })
 
+    // const tokenHeader = () => {
+    //   const token = localStorage.getItem('token')
+    //   return {
+    //     Authorization: `Token ${token}`
+    //   }
+    // }
+
     const savePost = () => {
       console.log("저장 버튼 클릭됨!")
       console.log(state.value.myPost)
+
+      // post를 추가하기 위한 임시 emit 코드
+      emit('add-new-post', {
+        "id":"1",
+        "title":state.value.myPost.title,
+        "content":state.value.myPost.content,
+        "createdAt":"2022-01-01 11:20:00",
+        "updatedAt":"2022-01-01 11:20:00"
+      })
       state.value.myPost = {
-        title: '',
-        content: '',
-        password: '',
-        passwordConfirm: ''
-      }
+            title: '',
+            content: '',
+            password: '',
+            passwordConfirm: ''
+          }
+      //
+
+      // axios({
+      //   method: 'post',
+      //   url: `http://127.0.0.1:8000/board/posts`,
+      //   headers: tokenHeader(),
+      //   data: {
+      //     deskId: 1,
+      //     areaId: 1,
+      //     title: state.value.myPost.title,
+      //     content: state.value.myPost.content,
+      //     password: state.value.myPost.password,
+      //   }
+      // })
+      //   .then(() => {
+      //     // fetchPostList
+      //     state.value.myPost = {
+      //       title: '',
+      //       content: '',
+      //       password: '',
+      //       passwordConfirm: ''
+      //     }
+      //   })
+      //   .catch(err => console.error(err))      
     }
 
     const cancle = () => {
