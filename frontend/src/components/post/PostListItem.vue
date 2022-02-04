@@ -24,3 +24,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  strong {
+    font-weight: bold;
+  }
+</style>
