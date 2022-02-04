@@ -1,0 +1,113 @@
+  /* 배경색 */
+  .bg-blue-1{
+    background-color: #AFDAF2;
+  }
+  .bg-blue-2{
+    background-color: #73BCE4;
+  }
+  .bg-blue-3{
+    background-color: #3BA2DB;/* 상담사 */
+  }
+  .bg-blue-4{
+    background-color: #007DC3;/* 포인트 */
+  }
+  .bg-blue-5{
+    background-color: #103A53; /* 관리자 */
+  }
+  .bg-blue-6{
+    background-color: #071e2b;
+  }
+  .bg-red-1{
+    background-color: #DE3434;
+  }
+  .bg-red-2{
+    background-color: #DE0808;
+  }
+  .bg-gray-1{
+    background-color:  #EEF2F5!important;/*채팅창, 상담사배경, admin배경*/
+  }
+  .bg-gray-2{
+    background-color:  #C6C9D4!important;/*상담화면 배경*/
+  }
+  .bg-gray-3{
+    background-color:  #6B6B6B!important; /*연한회색 글씨 색*/
+  }
+  .bg-gray-4{
+    background-color:  #4F4E4E!important; /**/
+  }
+
+  /* text 색상 */
+  .t-blue-1{
+    color: #AFDAF2;
+  }
+  .t-blue-2{
+    color: #73BCE4;
+  }
+  .t-blue-3{
+    color: #3BA2DB;
+  }
+  .t-blue-4{
+    color: #007DC3;/* modal text, button*/
+  }
+  .t-blue-5{
+    color: #103A53;
+  }
+  .t-blue-6{
+    color: #071e2b;
+  }
+  .t-red-1{
+    color: #DE3434;
+  }
+  .t-red-2{
+    color: #DE0808;
+  }
+  .t-gray-1{
+    color:  #EEF2F5!important;
+  }
+  .t-gray-2{
+    color:  #C6C9D4!important;
+  }
+  .t-gray-3{
+    color:  #6B6B6B!important; /*연한회색 글씨*/
+  }
+  .t-gray-4{
+    color:  #4F4E4E!important; /*진한회색 글씨*/
+  }
+
+  /* border색상 */
+  .bd-blue-1{
+    border-color: #AFDAF2;
+  }
+  .bd-blue-2{
+    border-color: #73BCE4;
+  }
+  .bd-blue-3{
+    border-color: #3BA2DB;
+  }
+  .bd-blue-4{
+    border-color: #007DC3;/* modal text, button*/
+  }
+  .bd-blue-5{
+    border-color: #103A53;
+  }
+  .bd-blue-6{
+    border-color: #071e2b;
+  }
+  .bd-red-1{
+    border-color: #DE3434;
+  }
+  .bd-red-2{
+    border-color: #DE0808;
+  }
+  .bd-gray-1{
+    border-color:  #EEF2F5!important;
+  }
+  .bd-gray-2{
+    border-color:  #C6C9D4!important; 
+  }
+  .bd-gray-3{
+    border-color:  #6B6B6B!important; /*연한회색 글씨*/
+  }
+  .bd-gray-4{
+    border-color:  #4F4E4E!important; /*진한회색 글씨*/
+  }
