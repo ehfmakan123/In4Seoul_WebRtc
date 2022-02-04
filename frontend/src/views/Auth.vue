@@ -92,15 +92,16 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-weight: bold;
-  font-size: 50px;
-}
-
 #auth-container {
   text-align: center;
   margin-top: 15vh;
 }
+
+#auth-container h1 {
+  font-weight: bold;
+  font-size: 50px;
+}
+
 
 #auth-button-container {
   margin-top: 10vh;
@@ -112,12 +113,10 @@ h1 {
 }
 
 #desk-login {
-  /* background-color: #007DC3; */
-  /* border-color: #007DC3; */
   border: 1px solid #007DC3;
   border-radius: 20px;
-  user-select:none;
   height: 36vh;
+  user-select:none;
 }
 
 #desk-login:hover {
@@ -128,10 +127,10 @@ h1 {
 }
 
 #staff-login {
-  /* background-color: #3BA2DB; */
   border: 1px solid #0d6efd;
   border-radius: 20px;
   height: 17.8vh;
+  user-select:none;
 }
 
 #staff-login:hover {
@@ -142,10 +141,10 @@ h1 {
 }
 
 #staff-signup {
-  /* background-color: #3BA2DB; */
   border: 1px solid #0d6efd;
   border-radius: 20px;
   height: 17.5vh;
+  user-select:none;
 }
 
 #staff-signup:hover {
