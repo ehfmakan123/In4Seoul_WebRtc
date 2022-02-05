@@ -153,7 +153,12 @@ export default {
   }
 
   .input-content {
-    width:100%;
-    height:15rem;
+    width: 100%;
+    height: 15rem;
+  }
+
+  .second-modal {
+    width: 10rem;
+    height: 5rem;
   }
 </style>

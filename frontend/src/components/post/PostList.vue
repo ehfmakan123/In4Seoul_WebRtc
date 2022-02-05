@@ -1,9 +1,12 @@
 <template>
   <div>
-    <!-- Modal -->
-    <post-detail :selectedPost="state.selectedPost"></post-detail>
-    
     <hr>
+    <!-- Detail Modal -->
+    <post-detail :selectedPost="state.selectedPost"></post-detail>
+    <!-- password modal -->
+    <post-password-form></post-password-form>
+
+
     <div class="row p-4">
       <post-list-item
         
@@ -21,12 +24,15 @@
 import { ref } from 'vue'
 import PostListItem from '@/components/post/PostListItem'
 import PostDetail from '@/components/post/PostDetail'
+import PostPasswordForm from '@/components/post/PostPasswordForm'
+
 
 export default {
   name: 'PostList',
   components: {
     PostListItem,
-    PostDetail
+    PostDetail,
+    PostPasswordForm
   },
   props: ["postList"],
   setup() {
