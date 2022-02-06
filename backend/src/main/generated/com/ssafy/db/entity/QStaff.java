@@ -22,13 +22,16 @@ public class QStaff extends EntityPathBase<Staff> {
 
     public static final QStaff staff = new QStaff("staff");
 
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
     public final StringPath adminYN = createString("adminYN");
 
     public final StringPath approveYN = createString("approveYN");
 
     public final QAreas areas;
 
-    public final DateTimePath<java.time.LocalDateTime> createdAt = createDateTime("createdAt", java.time.LocalDateTime.class);
+    //inherited
+    public final StringPath createdAt = _super.createdAt;
 
     public final StringPath deleteYN = createString("deleteYN");
 
@@ -44,7 +47,8 @@ public class QStaff extends EntityPathBase<Staff> {
 
     public final StringPath staffId = createString("staffId");
 
-    public final DateTimePath<java.time.LocalDateTime> updatedAt = createDateTime("updatedAt", java.time.LocalDateTime.class);
+    //inherited
+    public final StringPath updatedAt = _super.updatedAt;
 
     public QStaff(String variable) {
         this(Staff.class, forVariable(variable), INITS);
