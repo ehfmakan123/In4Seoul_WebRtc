@@ -3,11 +3,11 @@
     <!-- 모달들 먼저 선언 -->
     <!-- <post-password-form @password-correct="editPost"></post-password-form> -->
     
-    <div style="display: none;">
+    <!-- <div style="display: none;">
       <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="selectedPost"></post-update-form>
       <post-delete-form></post-delete-form>
       <post-close-form></post-close-form>
-    </div>
+    </div> -->
 
     <!-- 상세조회 Modal -->
     <div class="modal fade" id="detailModal" style="z-index: 1055;" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
@@ -44,14 +44,14 @@
 <script>
 import { ref } from 'vue'
 // import PostPasswordForm from '@/components/post/PostPasswordForm'
-import PostUpdateForm from '@/components/post/PostUpdateForm'
-import PostCloseForm from '@/components/post/PostCloseForm'
-import PostDeleteForm from '@/components/post/PostDeleteForm'
+// import PostUpdateForm from '@/components/post/PostUpdateForm'
+// import PostCloseForm from '@/components/post/PostCloseForm'
+// import PostDeleteForm from '@/components/post/PostDeleteForm'
 
 
 export default {
   name: 'PostDetail',
-  components: { PostUpdateForm, PostCloseForm, PostDeleteForm },
+  // components: { PostUpdateForm, PostCloseForm, PostDeleteForm },
   props:["selectedPost"],
   setup() {
     const state = ref({
@@ -76,15 +76,10 @@ export default {
       console.log(state.value.showUpdateForm)
     }
 
-    const tryDelete = () => {
-      state.value.showDeleteForm = !state.value.showDeleteForm
-    }
-    const tryUnsaveClose = () => {
-      state.value.showCloseForm = !state.value.showCloseForm
-    }
 
 
-    return {state, tryEdit, cancle, editPost, tryDelete, tryUnsaveClose}
+
+    return {state, tryEdit, cancle, editPost}
   }
 }
 </script>
