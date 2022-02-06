@@ -22,15 +22,17 @@ public class QMeetingHistory extends EntityPathBase<MeetingHistory> {
 
     public static final QMeetingHistory meetingHistory = new QMeetingHistory("meetingHistory");
 
+    public final StringPath content = createString("content");
+
     public final QDesks desks;
 
-    public final DateTimePath<java.time.LocalDateTime> endedAt = createDateTime("endedAt", java.time.LocalDateTime.class);
+    public final StringPath endedAt = createString("endedAt");
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
     public final QStaff staff;
 
-    public final DateTimePath<java.time.LocalDateTime> startedAt = createDateTime("startedAt", java.time.LocalDateTime.class);
+    public final StringPath startedAt = createString("startedAt");
 
     public QMeetingHistory(String variable) {
         this(MeetingHistory.class, forVariable(variable), INITS);

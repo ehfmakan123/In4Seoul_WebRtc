@@ -21,10 +21,10 @@ public class MeetingHistory {
     int id;
 
     @Column(name = "started_at")
-    LocalDateTime startedAt;
+   String startedAt;
 
     @Column(name = "ended_at")
-    LocalDateTime endedAt;
+    String endedAt;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,5 +35,9 @@ public class MeetingHistory {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "desks_id")
     Desks desks;
+
+
+
+    String content;
 
 }

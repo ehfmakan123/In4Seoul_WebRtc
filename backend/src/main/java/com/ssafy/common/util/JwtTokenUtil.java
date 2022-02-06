@@ -7,6 +7,7 @@ import com.auth0.jwt.exceptions.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.config.annotation.rsocket.RSocketSecurity;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
@@ -46,26 +47,45 @@ public class JwtTokenUtil {
                 .withIssuer(ISSUER)
                 .build();
     }
-    
-    public static String getToken(String userId) {
-    		Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+
+    /*
+
+    토큰을 발급해야 하는 대상은  어드민, 상담사 , 데스크인데
+    .withAudience()    토큰 대상자를 설정하는건데   여기에  어드민 상담사 데스크를 구분하게끔 넣어도 되는건지?????
+    1은 어드민  2는 상담사  3은 데스크 이런식으로..
+
+     */
+
+
+//
+//    public static String getToken(String userId) {
+//    		Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+//        return JWT.create()
+//                .withSubject(userId)  //기본키
+//                .withAudience("1")
+//                .withExpiresAt(expires)
+//                .withIssuer(ISSUER)
+//                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
+//                .sign(Algorithm.HMAC512(secretKey.getBytes()));
+//    }
+
+
+
+    public static String getToken(String userId,String role) {
+        Date expires = JwtTokenUtil.getTokenExpiration(expirationTime);
+
         return JWT.create()
-                .withSubject(userId)
+                .withClaim("role",role)  //payload에 추가하기
+                .withSubject(userId)  //기본키
                 .withExpiresAt(expires)
                 .withIssuer(ISSUER)
                 .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
                 .sign(Algorithm.HMAC512(secretKey.getBytes()));
     }
 
-    public static String getToken(Instant expires, String userId) {
-        return JWT.create()
-                .withSubject(userId)
-                .withExpiresAt(Date.from(expires))
-                .withIssuer(ISSUER)
-                .withIssuedAt(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()))
-                .sign(Algorithm.HMAC512(secretKey.getBytes()));
-    }
-    
+
+
+
     public static Date getTokenExpiration(int expirationTime) {
     		Date now = new Date();
     		return new Date(now.getTime() + expirationTime);

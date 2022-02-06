@@ -1,11 +1,8 @@
 package com.ssafy.db.repository;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import com.ssafy.api.dto.ConsultantDto;
-import com.ssafy.api.dto.QConsultantDto;
-import com.ssafy.db.entity.QAreas;
-import com.ssafy.db.entity.QStaff;
-import com.ssafy.db.entity.Staff;
+import com.ssafy.api.dto.*;
+import com.ssafy.db.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +19,11 @@ public class AdminRepositorySupport {
 
     QStaff qstaff= QStaff.staff;
     QAreas qareas= QAreas.areas;
+    QDesks desk=QDesks.desks;
+    QPosts qpost=QPosts.posts;
 
+
+    //admin 로그인 시 정보 조회
     public Optional<Staff> findStaffById(String userId) {
 
 
@@ -37,12 +38,14 @@ public class AdminRepositorySupport {
         return Optional.ofNullable(staff);
     }
 
-    public List<ConsultantDto> getConsultantList()
+
+    // 상담사 목록 가져오기
+    public List<StaffDto> getConsultantList()
     {
 
-        List<ConsultantDto> result = jpaQueryFactory
-                .select(new QConsultantDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
-                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName")))
+        List<StaffDto> result = jpaQueryFactory
+                .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
+                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
                 .orderBy(qstaff.id.desc())
@@ -53,12 +56,14 @@ return result;
     }
 
 
-    public ConsultantDto getConsultant(int id)
+
+    //상담사 정보
+    public StaffDto getConsultant(int id)
     {
 
-        ConsultantDto result = jpaQueryFactory
-                .select(new QConsultantDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
-                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName")))
+        StaffDto result = jpaQueryFactory
+                .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
+                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
                 .where(qstaff.id.eq(id))
@@ -67,18 +72,90 @@ return result;
         return result;
     }
 
-//
-//    public int updateConsultant(ConsultantDto dto)
-//    {
-//        jpaQueryFactory.update(qstaff)
-//                .set(qstaff.deleteYN,dto.getDeleteYN())
-//                .set(qstaff.approveYN,dto.getApproveYN())
-//                .set(qstaff.areas.id,dto.getAreaId())
-//                .set(qstaff.updatedAt,dto.get)
-//
-//
-//
-//    }
+
+
+
+// 데스크 정보
+    public DeskDto getDesk(int id)
+    {
+
+
+        DeskDto result = jpaQueryFactory
+                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
+                        desk.createdAt, desk.updatedAt, desk.deleteYN))
+                .from(desk)
+                .join(desk.area, qareas)
+                .where(desk.id.eq(id))
+                .fetchOne();
+
+
+        return result;
+    }
+
+
+// 데스크 목록
+    public List<DeskDto> getDeskList()
+    {
+
+
+        List<DeskDto> result = jpaQueryFactory
+                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
+                        desk.createdAt, desk.updatedAt, desk.deleteYN))
+                .from(desk)
+                .join(desk.area, qareas)
+                .orderBy(desk.id.desc())
+                .fetch();
+
+
+        return result;
+
+    }
+
+
+
+
+
+    // 게시글 목록 조회
+    public List<PostDto> getPostList()
+    {
+        List<PostDto> result = jpaQueryFactory
+                .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+                .from(qpost)
+                .orderBy(qpost.id.desc())
+                .fetch();
+
+
+
+        return result;
+
+
+    }
+
+
+    //게시글 조회
+     public PostDto getPost(long id)
+     {
+
+         PostDto result = jpaQueryFactory
+                 .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+                 .from(qpost)
+                 .where(qpost.id.eq(id))
+                 .fetchOne();
+
+         return result;
+
+     }
+
+
+        public List<AreaDto> getAreas()
+        {
+            List<AreaDto> result = jpaQueryFactory
+                    .select(new QAreaDto(qareas.id, qareas.korName.as("areaName")))
+                    .from(qareas)
+                    .fetch();
+
+            return result;
+        }
 
 
 
