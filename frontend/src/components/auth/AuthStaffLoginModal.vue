@@ -1,23 +1,22 @@
 <template>
   <div class="modal fade" id="staff-login-modal" tabindex="-1" aria-labelledby="staff-login-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span><i class="bi bi-headset fs-4"></i></span><h5 class="modal-title ms-2" id="staff-login-modal-label">상담사 로그인</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <div class="modal-content bd-blue-4 px-4 pt-3 pb-4">
+        <div id="staff-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
+          <span><i class="bi bi-headset fs-2"></i></span><h5 class="modal-title ms-3 fs-5" id="staff-login-modal-label"><strong class="t-blue-3">상담사</strong> 로그인</h5>
         </div>
         <div class="modal-body">
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="staff-login-id">아이디</span>
-            <input type="text" class="form-control" placeholder="" aria-label="staff-login-id" aria-describedby="staff-login-id" v-model="staffLoginCredentials.id">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-white fw-bold" id="staff-login-id">아이디</span>
+            <input type="text" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-id" aria-describedby="staff-login-id" v-model="staffLoginCredentials.id">
           </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="staff-login-password">비밀번호</span>
-            <input type="password" class="form-control" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password">
+          <div class="input-group mt-4">
+            <span class="input-group-text bg-white border-white fw-bold" id="staff-login-password">비밀번호</span>
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password">
           </div>
-          <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-outline-primary" @click="staffLoginConfirm">로그인</button>
-            <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" @click="staffLoginCancel">취소</button>
+          <div class="d-flex justify-content-center mt-5">
+            <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" @click="staffLoginConfirm">로그인</button>
+            <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal" @click="staffLoginCancel">취소</button>
           </div>
         </div>
       </div>
@@ -54,10 +53,21 @@ export default {
 
 <style scoped>
 #staff-login-modal .modal-content{
-  border: 1px solid #007DC3;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 1rem;
 }
 
 #staff-login-modal .input-group-text {
   width: 6rem;
+}
+
+#staff-login-modal-header {
+  height: 4rem;
+}
+
+.btn-yes-no {
+  width:25%;
+  border-radius:2rem;
 }
 </style>

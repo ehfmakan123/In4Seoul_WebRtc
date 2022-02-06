@@ -1,23 +1,22 @@
 <template>
   <div class="modal fade" id="desk-login-modal" tabindex="-1" aria-labelledby="desk-login-modal-label" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <span><i class="bi bi-camera fs-4"></i></span><h5 class="modal-title ms-2" id="desk-login-modal-label">안내데스크 로그인</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="deskLoginCancel"></button>
+      <div class="modal-content bd-blue-4 px-4 pt-3 pb-4">
+        <div id="desk-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
+          <span><i class="bi bi-camera fs-2"></i></span><h5 class="modal-title ms-3 fs-5" id="desk-login-modal-label"><strong class="t-blue-4">안내데스크</strong> 로그인</h5>
         </div>
         <div class="modal-body">
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="desk-login-id">아이디</span>
-            <input type="text" class="form-control" placeholder="" aria-label="desk-login-id" aria-describedby="desk-login-id" v-model="deskLoginCredentials.id">
+          <div class="input-group">
+            <span class="input-group-text bg-white border-white fw-bold" id="desk-login-id">아이디</span>
+            <input type="text" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-id" aria-describedby="desk-login-id" v-model="deskLoginCredentials.id">
           </div>
-          <div class="input-group mb-3">
-            <span class="input-group-text" id="desk-login-password">비밀번호</span>
-            <input type="password" class="form-control" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLoginCredentials.password">
+          <div class="input-group mt-4">
+            <span class="input-group-text bg-white border-white fw-bold" id="desk-login-password">비밀번호</span>
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLoginCredentials.password">
           </div>
-          <div class="d-flex justify-content-end">
-            <button type="button" class="btn btn-outline-primary" @click="deskLoginConfirm">로그인</button>
-            <button type="button" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" @click="deskLoginCancel">취소</button>
+          <div class="d-flex justify-content-center mt-5">
+            <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" @click="deskLoginConfirm">로그인</button>
+            <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal" @click="deskLoginCancel">취소</button>
           </div>
         </div>
       </div>
@@ -55,9 +54,20 @@ export default {
 
 <style scoped>
 #desk-login-modal .modal-content{
-  border: 1px solid #007DC3;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 1rem;
 }
 #desk-login-modal .input-group-text {
   width: 6rem;
+}
+
+#desk-login-modal-header {
+  height: 4rem;
+}
+
+.btn-yes-no {
+  width:25%;
+  border-radius:2rem;
 }
 </style>

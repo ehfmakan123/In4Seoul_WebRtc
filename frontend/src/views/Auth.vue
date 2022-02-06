@@ -11,41 +11,27 @@
     <!--auth-button-container-->
     <div id="auth-button-container" class="container">
       <div class="row">
-        <div id="desk-login" class="col-6 d-flex justify-content-center" data-bs-toggle="modal" data-bs-target="#desk-login-modal"  @click="deskLoginClick">
-          <div class="row">
-            <div class="col-3 d-flex flex-column justify-content-center">
-              <div>
-                <i class="bi bi-camera" style="font-size:4rem"></i>
-              </div>
-            </div>
-            <div class="col-9 d-flex flex-column justify-content-center">
-              <p>안내데스크</p>
+        <div id="desk-login" class="col-6 d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#desk-login-modal"  @click="deskLoginClick">
+          <i class="bi bi-camera" style="font-size:4rem"></i>
+          <div class="ms-5">
+            <p>안내데스크</p>
+            <p class="mt-3">로그인</p>
+          </div>
+        </div>
+        <div id="staff-login-signup" class="col-6">
+          <div id="staff-login" class="d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#staff-login-modal" @click="staffLoginClick">
+            <i class="bi bi-headset" style="font-size:4rem;"></i>
+            <div class="ms-5">
+              <p>상담사</p>
               <p class="mt-3">로그인</p>
             </div>
           </div>
-        </div>
-        <div class="col-6">
-          <div id="staff-login" class="d-flex justify-content-center" data-bs-toggle="modal" data-bs-target="#staff-login-modal" @click="staffLoginClick">
-            <div class="row">
-              <div class="col-3 d-flex flex-column justify-content-center">
-                <i class="bi bi-headset" style="font-size:4rem;"></i>
-              </div>
-              <div class="col-9 d-flex flex-column justify-content-center">
-                <p>상담사</p>
-                <p class="mt-3">로그인</p>
-              </div>
-            </div>
-          </div>
-          <div id="staff-signup" class="d-flex justify-content-center mt-2" data-bs-toggle="modal" data-bs-target="#staff-signup-modal" @click="staffSignupClick">
-            <div class="row">
-              <div class="col-3 d-flex flex-column justify-content-center">
-                <i class="bi bi-pencil-square" style="font-size:4rem;"></i>
-              </div>
-              <div class="col-9 d-flex flex-column justify-content-center">
+          <div id="staff-signup" class="d-flex justify-content-center align-items-center mt-2" data-bs-toggle="modal" data-bs-target="#staff-signup-modal" @click="staffSignupClick">
+              <i class="bi bi-pencil-square" style="font-size:4rem;"></i>
+              <div class="ms-5">
                 <p>상담사</p>
                 <p class="mt-3">회원가입</p>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -99,7 +85,7 @@ export default {
 
 #auth-container h1 {
   font-weight: bold;
-  font-size: 50px;
+  font-size: 4rem;
 }
 
 
