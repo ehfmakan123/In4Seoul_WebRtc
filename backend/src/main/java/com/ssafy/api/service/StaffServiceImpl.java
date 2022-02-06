@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 
+import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.db.entity.Staff;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,6 +73,9 @@ public class StaffServiceImpl implements StaffService{
         else return null;
     }
 
+
+
+    //내 정보 조회
     @Override
     public StaffDto getStaffDtoByStaffId(String id) {
 
@@ -79,9 +84,31 @@ public class StaffServiceImpl implements StaffService{
     }
 
 
-    //내 정보 수정
+
+
+    //내 정보 수정 (비밀번호 부분을 해윤님하고 같이 이야기해보고
     @Override
     public boolean updateStaff(StaffDto dto) {
-        return false;
+
+
+        Optional<Staff> result = staffRepository.findByStaffId(dto.getUserId());
+        Staff staff=result.get();
+
+
+        staff.setPhone(dto.getPhone());
+        staff.setEmail(dto.getEmail());
+
+
+         staffRepository.save(staff);
+
+
+         return true;
+    }
+
+    @Override
+    public List<MeetingLogDto> getMeetingLogList(int id) {   //상담목록 가져오기
+
+
+        return staffRepositorySupport.getMeetingLog(id);
     }
 }

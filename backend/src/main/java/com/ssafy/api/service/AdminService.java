@@ -1,6 +1,7 @@
 package com.ssafy.api.service;
 
 
+import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.dto.DeskDto;
 import com.ssafy.api.dto.PostDto;
@@ -43,5 +44,9 @@ public interface AdminService {
     //게시글 삭제
     boolean postDelete(long id);
 
+
+
+    //지역 목록 조회
+    List<AreaDto> getAreas();
 
 }

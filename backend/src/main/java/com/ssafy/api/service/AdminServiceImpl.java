@@ -1,5 +1,6 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.dto.DeskDto;
 import com.ssafy.api.dto.PostDto;
@@ -197,6 +198,15 @@ public class AdminServiceImpl implements AdminService {
 
 
         return true;
+    }
+
+
+    //지역목록 조회
+    @Override
+    public List<AreaDto> getAreas() {
+
+
+        return adminRepositorySupport.getAreas();
     }
 
 

@@ -7,7 +7,7 @@ import lombok.Data;
 
 
 @Data
-public class StaffDto extends BaseResponseBody {
+public class StaffDto  {
 
     int id;
     String userId;
@@ -18,13 +18,16 @@ public class StaffDto extends BaseResponseBody {
     String approveYN;
     int areaId;
     String areaName;
+    String createdAt;
+    String updatedAt;
 
 
     public StaffDto() {
     }
 
     @QueryProjection
-    public StaffDto(int id, String userId, String name, String phone, String email, String deleteYN, String approveYN, int areaId, String areaName) {
+
+    public StaffDto(int id, String userId, String name, String phone, String email, String deleteYN, String approveYN, int areaId, String areaName, String createdAt, String updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;
@@ -34,5 +37,7 @@ public class StaffDto extends BaseResponseBody {
         this.approveYN = approveYN;
         this.areaId = areaId;
         this.areaName = areaName;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
     }
 }

@@ -45,7 +45,7 @@ public class AdminRepositorySupport {
 
         List<StaffDto> result = jpaQueryFactory
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
-                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName")))
+                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
                 .orderBy(qstaff.id.desc())
@@ -63,7 +63,7 @@ return result;
 
         StaffDto result = jpaQueryFactory
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
-                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName")))
+                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
                 .where(qstaff.id.eq(id))
@@ -125,6 +125,7 @@ return result;
                 .fetch();
 
 
+
         return result;
 
 
@@ -145,6 +146,16 @@ return result;
 
      }
 
+
+        public List<AreaDto> getAreas()
+        {
+            List<AreaDto> result = jpaQueryFactory
+                    .select(new QAreaDto(qareas.id, qareas.korName.as("areaName")))
+                    .from(qareas)
+                    .fetch();
+
+            return result;
+        }
 
 
 
