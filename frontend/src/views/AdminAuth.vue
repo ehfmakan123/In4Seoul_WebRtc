@@ -1,13 +1,12 @@
 <template>
   <div id="admin-login-container" class="d-flex justify-content-center bg-gray-4">
       <div id="admin-login" class="bd-blue-5 p-3 bg-gray-2">
-        <div class="text-center">
-          <h3 class="fs-4">관리자 로그인</h3>
-          <hr>
-        </div>
+        <div id="admin-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
+          <h3 class="fs-4"><strong class="">관리자</strong> 로그인</h3>
+        </div>        
         <div class="input-group mt-3">
           <span class="input-group-text" id="admin-login-id">아이디</span>
-          <input type="text" class="form-control" placeholder="" aria-label="admin-login-id" aria-describedby="admin-login-id" v-model="adminCredentials.id">
+          <input type="text" class="form-control" placeholder="" aria-label="admin-login-id" aria-describedby="admin-login-id" v-model="adminCredentials.id" autofocus>
         </div>
         <div class="input-group mt-3">
           <span class="input-group-text" id="admin-login-password">비밀번호</span>
@@ -21,7 +20,7 @@
             @keypress.enter="adminLoginConfirm"
             >
         </div>
-        <div class="d-flex justify-content-end mt-3">
+        <div class="d-flex justify-content-end mt-4">
           <button class="btn btn btn-dark" @click="adminLoginConfirm">로그인</button>
         </div>
       </div>
@@ -66,11 +65,15 @@ export default {
   border-style: solid;
   border-radius: 10px;
   width: 400px;
-  height: 230px;
+  height: 300px;
 }
 
 .input-group-text {
   width: 6rem;
+}
+
+#admin-login-modal-header {
+  height: 4rem;
 }
 
 </style>
