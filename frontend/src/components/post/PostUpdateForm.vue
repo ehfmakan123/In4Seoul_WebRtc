@@ -15,7 +15,7 @@
             <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
           </div>
           <div class="modal-footer">
-            <button data-bs-toggle="modal" data-bs-target="#deleteModal" @click="deletePost" type="submit" class="btn">삭제</button>
+            <button data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tryDelete" type="submit" class="btn">삭제</button>
             <button @click="savePost" type="submit" class="btn btn-primary">저장</button>
             <button data-bs-toggle="modal" data-bs-target="#closeModal" @click="cancle" type="button" class="btn btn-secondary">닫기</button>
           </div>
@@ -36,8 +36,8 @@
 </template>
 
 <script>
-import axios from 'axios'
-import { ref } from 'vue'
+// import axios from 'axios'
+import { ref, watch } from 'vue'
 
 export default {
   name: 'PostUpdateForm',
@@ -47,14 +47,20 @@ export default {
     post: Object,
   },
   setup(props, { emit }) {
+    console.log('update form 생성됨', props.post)
+
     const state = ref({
       myPost: {
-        title: props.post.title,
-        content: props.post.content
+        title: '',
+        content: ''
       }
     })
 
-    const deletePost = () => {
+    const propsWatch = watch(props, () => {
+      "search 값이 바뀔 때 마다 실행되는 함수";
+    });
+
+    const tryDelete = () => {
       console.log("삭제 버튼 클릭됨!")
       // emit('try-delete')
     }
@@ -62,25 +68,25 @@ export default {
     const savePost = () => {
       console.log("저장 버튼 클릭됨!")
       console.log(state.value.myPost)
-      axios({
-        method: 'put',
-        url: `http://127.0.0.1:8000/board/posts/${props.post.postId}/`,
-        // headers: this.tokenHeader(),
-        data: {
-          title: state.value.myPost.title,
-          content: state.value.myPost.content
-        }
-      })
-        .then(() => {
-          console.log('업데이트 성공!')
+      // axios({
+      //   method: 'put',
+      //   url: `http://127.0.0.1:8000/board/posts/${props.post.postId}/`,
+      //   // headers: this.tokenHeader(),
+      //   data: {
+      //     title: state.value.myPost.title,
+      //     content: state.value.myPost.content
+      //   }
+      // })
+      //   .then(() => {
+      //     console.log('업데이트 성공!')
           // this.fetchReviewList(this.movieDetail.id)
           // 모달창 끄기
           const updateModal = document.querySelector('#updateModal')
           updateModal.classList.remove("in")
           document.querySelector(".modal-backdrop").remove()
           updateModal.style.display = "none"
-        })
-        .catch(err => console.error(err))
+        // })
+        // .catch(err => console.error(err))
 
     }
 
@@ -89,7 +95,7 @@ export default {
       emit('try-unsave-close')
     }
 
-    return {state, deletePost, savePost, cancle}
+    return {state, tryDelete, savePost, cancle, propsWatch}
   }
 }
 </script>

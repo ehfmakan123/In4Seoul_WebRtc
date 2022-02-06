@@ -68,6 +68,22 @@ export default {
 
       if (state.value.myPost.password === state.value.myPost.passwordConfirm) {
         console.log('비밀번호 일치함')
+        // post를 추가하기 위한 임시 emit 코드
+        emit('add-new-post', {
+          "id":"1",
+          "title":state.value.myPost.title,
+          "content":state.value.myPost.content,
+          "createdAt":"2022-01-01 11:20:00",
+          "updatedAt":"2022-01-01 11:20:00"
+        })
+        state.value.myPost = {
+              title: '',
+              content: '',
+              password: '',
+              passwordConfirm: ''
+            }
+        //
+
         // axios({
         //   method: 'post',
         //   url: `http://127.0.0.1:8000/board/posts`,
@@ -90,27 +106,19 @@ export default {
         //     }
         //   })
         //   .catch(err => console.error(err))      
+      
+      const createModal = document.querySelector('#createModal')
+      createModal.classList.remove("in")
+      document.querySelector(".modal-backdrop").remove()
+      createModal.style.display = "none"
+            
       } else {
         console.log('비밀번호가 다름!!!')
         const errorMessage = document.querySelector('#password-error')
         errorMessage.classList.remove('d-none')
       }
 
-      // post를 추가하기 위한 임시 emit 코드
-      emit('add-new-post', {
-        "id":"1",
-        "title":state.value.myPost.title,
-        "content":state.value.myPost.content,
-        "createdAt":"2022-01-01 11:20:00",
-        "updatedAt":"2022-01-01 11:20:00"
-      })
-      state.value.myPost = {
-            title: '',
-            content: '',
-            password: '',
-            passwordConfirm: ''
-          }
-      //
+
     }
 
     const cancle = () => {
