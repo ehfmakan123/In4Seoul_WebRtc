@@ -8,7 +8,7 @@
         <div class="modal-body">
           <div class="input-group">
             <span class="input-group-text bg-white border-white fw-bold" id="desk-login-id">아이디</span>
-            <input type="text" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-id" aria-describedby="desk-login-id" v-model="deskLoginCredentials.id">
+            <input type="text" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-id" aria-describedby="desk-login-id" v-model="deskLoginCredentials.userId">
           </div>
           <div class="input-group mt-4">
             <span class="input-group-text bg-white border-white fw-bold" id="desk-login-password">비밀번호</span>
@@ -26,20 +26,52 @@
 
 <script>
 import { ref } from 'vue'
+// import { useRouter} from 'vue-router'
+// import axios from 'axios'
 
 export default {
   name: 'AuthDeskLoginModal',
   setup() {
-    const deskLoginCredentials = ref({ id: "", password: "" })
+    const deskLoginCredentials = ref({ userId: "", password: "" })
+    // const router = useRouter()
 
     const deskLoginConfirm = () => {
       console.log("desk 로그인 확인버튼 클릭됨!")
-      console.log(deskLoginCredentials.value.id)
-      console.log(deskLoginCredentials.value.password)
+      console.log(deskLoginCredentials.value)
+
+      // 로그인 axios 요청
+      // axios({
+      //   method: 'post',
+      //   url: 'http://127.0.0.1:8080/desk/login',
+      //   data: deskLoginCredentials.value
+      // })      
+      //   .then(res => {
+      //     console.log(res)
+      //     // modal 닫는 부분
+      //     const deskLoginModal = document.querySelector('#desk-login-modal')
+      //     deskLoginModal.classList.remove("in")
+      //     document.querySelector(".modal-backdrop").remove()
+      //     deskLoginModal.style.display = "none"
+          
+      //     router.push({ name: 'DeskHome' })
+      //   })
+      //   .catch(err => {
+      //     console.log('desk 로그인 error발생!')
+      //     console.log(err.response.data)
+      //     const statusCode = err.response.data.statusCode
+      //     if (statusCode === 401) {
+      //       deskLoginCredentials.value.password = ''
+      //     }
+      //     else if (statusCode === 404) {
+      //       deskLoginCredentials.value.userId = ''
+      //       deskLoginCredentials.value.password = ''
+      //     }
+      //   })
     }
+    
     const deskLoginCancel = () => {
       console.log("desk 로그인 취소버튼 클릭됨!")
-      deskLoginCredentials.value.id = ""
+      deskLoginCredentials.value.userId = ""
       deskLoginCredentials.value.password = ""
     }
 
