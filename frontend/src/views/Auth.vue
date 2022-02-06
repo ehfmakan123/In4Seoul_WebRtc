@@ -1,92 +1,142 @@
 <template>
-  <div id="desk-login">
-    <h3>안내데스크 로그인</h3>
-    <input type="text" placeholder="아이디" v-model="deskLoginCredentials.id"><br/>
-    <input type="password" placeholder="비밀번호" v-model="deskLoginCredentials.password"><br/>
-    <button @click="deskLoginConfirm">확인</button>
-    <button @click="deskLoginCancel">취소</button>
+  <div id="auth-container">
+
+    <AuthDeskLoginModal/>
+    <AuthStaffLoginModal/>
+    <AuthStaffSignupModal/>
+
+    <h1>서울시 여행 안내 데스크</h1>
+    <h1 class="mt-3">Seoul Travel Information Service</h1>
+
+    <!--auth-button-container-->
+    <div id="auth-button-container" class="container">
+      <div class="row">
+        <div id="desk-login" class="col-6 d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#desk-login-modal"  @click="deskLoginClick">
+          <i class="bi bi-camera" style="font-size:4rem"></i>
+          <div class="ms-5">
+            <p>안내데스크</p>
+            <p class="mt-3">로그인</p>
+          </div>
+        </div>
+        <div id="staff-login-signup" class="col-6">
+          <div id="staff-login" class="d-flex justify-content-center align-items-center" data-bs-toggle="modal" data-bs-target="#staff-login-modal" @click="staffLoginClick">
+            <i class="bi bi-headset" style="font-size:4rem;"></i>
+            <div class="ms-5">
+              <p>상담사</p>
+              <p class="mt-3">로그인</p>
+            </div>
+          </div>
+          <div id="staff-signup" class="d-flex justify-content-center align-items-center mt-2" data-bs-toggle="modal" data-bs-target="#staff-signup-modal" @click="staffSignupClick">
+              <i class="bi bi-pencil-square" style="font-size:4rem;"></i>
+              <div class="ms-5">
+                <p>상담사</p>
+                <p class="mt-3">회원가입</p>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div><!--auth-button-container 끝-->
   </div>
-  <hr>
-  <div id="staff-login">
-    <h3>상담사 로그인</h3>
-    <input type="text" placeholder="아이디" v-model="staffLoginCredentials.id"><br/>
-    <input type="password" placeholder="비밀번호" v-model="staffLoginCredentials.password"><br/>
-    <button @click="staffLoginConfirm">확인</button>
-    <button @click="staffLoginCancel">취소</button>
-  </div>
-  <hr>
-  <div id="staff-signup">
-    <h3>상담사 회원가입</h3>
-    <input type="text" placeholder="아이디" v-model="staffSignupCredentials.id"><button @click="staffSignupIdCheck">중복확인</button><br/>
-    <input type="password" placeholder="비밀번호" v-model="staffSignupCredentials.password"><br/>
-    <input type="password" placeholder="비밀번호확인" v-model="staffSignupCredentials.passwordConfirm"><br/>
-    <input type="text" placeholder="이름" v-model="staffSignupCredentials.name"><br/>
-    <input type="text" placeholder="전화번호" v-model="staffSignupCredentials.phone"><br/>
-    <input type="text" placeholder="이메일" v-model="staffSignupCredentials.email"><br/>
-    <button @click="staffSignupConfirm">확인</button>
-    <button @click="staffSignupCancel">취소</button>
-  </div>  
 </template>
 
 <script>
 // @ is an alias to /src
-import { ref } from 'vue'
+// import { ref } from 'vue'
+import AuthDeskLoginModal from '@/components/auth/AuthDeskLoginModal.vue'
+import AuthStaffLoginModal from '@/components/auth/AuthStaffLoginModal.vue'
+import AuthStaffSignupModal from '@/components/auth/AuthStaffSignupModal.vue'
+
 
 export default {
   name: 'Auth',
   components: {
+    AuthDeskLoginModal,
+    AuthStaffLoginModal,
+    AuthStaffSignupModal
   },
   setup() {
+    
+    const deskLoginClick = () => {
+      console.log("desk 로그인 버튼 클릭됨!")
+    }
 
-    const deskLoginCredentials = ref({ id: "", password: "" })
-    const staffLoginCredentials = ref({ id: "", password: "" })
-    const staffSignupCredentials = ref({ id: "", password: "", passwordConfirm: "", name: "", phone: "", email: "" })
+    const staffLoginClick = () => {
+      console.log("staff 로그인 버튼 클릭됨!")
+    }
 
-    const deskLoginConfirm = () => {
-      console.log("desk 로그인 확인버튼 클릭됨!")
-      console.log(deskLoginCredentials.value.id)
-      console.log(deskLoginCredentials.value.password)
-    }
-    const deskLoginCancel = () => {
-      console.log("desk 로그인 취소버튼 클릭됨!")
-    }
-    const staffLoginConfirm = () => {
-      console.log("staff 로그인 확인버튼 클릭됨!")
-      console.log(staffLoginCredentials.value.id)
-      console.log(staffLoginCredentials.value.password)
-    }
-    const staffLoginCancel = () => {
-      console.log("staff 로그인 확인버튼 클릭됨!")
-    }
-    const staffSignupIdCheck = () => {
-      console.log("staff 회원가입 중복확인버튼 클릭됨!")
-      console.log(staffSignupCredentials.value.id)
-    }
-    const staffSignupConfirm = () => {
-      console.log("staff 회원가입 확인버튼 클릭됨!")
-      console.log(staffSignupCredentials.value.id)
-      console.log(staffSignupCredentials.value.password)
-      console.log(staffSignupCredentials.value.passwordConfirm)
-      console.log(staffSignupCredentials.value.name)
-      console.log(staffSignupCredentials.value.phone)
-      console.log(staffSignupCredentials.value.email)
-    }
-    const staffSignupCancel = () => {
-      console.log("staff 회원가입 확인버튼 클릭됨!")
+    const staffSignupClick = () => {
+      console.log("staff 회원가입 버튼 클릭됨!")
     }
 
     return { 
-      deskLoginCredentials,
-      staffLoginCredentials,
-      staffSignupCredentials,
-      deskLoginConfirm,
-      deskLoginCancel,
-      staffLoginConfirm,
-      staffLoginCancel,
-      staffSignupIdCheck,
-      staffSignupConfirm,
-      staffSignupCancel
+      deskLoginClick,
+      staffLoginClick,
+      staffSignupClick,
     }
   }
 }
 </script>
+
+<style scoped>
+#auth-container {
+  text-align: center;
+  margin-top: 15vh;
+}
+
+#auth-container h1 {
+  font-weight: bold;
+  font-size: 4rem;
+}
+
+
+#auth-button-container {
+  margin-top: 10vh;
+}
+
+#auth-button-container p {
+  font-size: 40px;
+  margin: 0px;
+}
+
+#desk-login {
+  border: 1px solid #007DC3;
+  border-radius: 20px;
+  height: 36vh;
+  user-select:none;
+}
+
+#desk-login:hover {
+  color: white;
+  background-color: #0d6efd;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#staff-login {
+  border: 1px solid #0d6efd;
+  border-radius: 20px;
+  height: 17.8vh;
+  user-select:none;
+}
+
+#staff-login:hover {
+  color: white;
+  background-color: #0d6efd;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+#staff-signup {
+  border: 1px solid #0d6efd;
+  border-radius: 20px;
+  height: 17.5vh;
+  user-select:none;
+}
+
+#staff-signup:hover {
+  color: white;
+  background-color: #0d6efd;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+</style>
