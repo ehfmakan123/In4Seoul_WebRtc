@@ -9,6 +9,9 @@ JPA가 제공하는 기능으로  데이터가 입력, 수정 될때마다 감�
 https://sgcomputer.tistory.com/284
 https://mchch.tistory.com/165
 https://kimseungjae.tistory.com/13
+
+생성시간 수정시간 자동 등록을 위한 클래스
+
  */
 
 

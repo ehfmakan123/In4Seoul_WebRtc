@@ -19,14 +19,12 @@ import java.time.format.DateTimeFormatter;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	UserRepository userRepository;
-	
+
 	@Autowired
 	UserRepositorySupport userRepositorySupport;
-	
+
 	@Autowired
 	PasswordEncoder passwordEncoder;
-
-
 
 
 
@@ -41,14 +39,6 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User getUserByUserId(String userId) {
-
-		//현재 수정 시간 기록
-		LocalDateTime localDateTime=LocalDateTime.now();
-
-		DateTimeFormatter pattern=DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-
-		pattern.format(localDateTime);
-
 
 
 		// 디비에 유저 정보 조회 (userId 를 통한 조회).
