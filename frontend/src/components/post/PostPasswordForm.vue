@@ -12,7 +12,7 @@
             <p id="password-error" class="d-none alert alert-danger my-3" role="alert">비밀번호가 일치하지 않습니다.</p>
             <p class="d-flex justify-content-end">
               <button @click="confirm" type="button" class="btn btn-primary">확인</button>
-              <button @click="cancle" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#detailModal">닫기</button>
+              <button @click="cancle" type="button" class="btn btn-secondary">닫기</button>
             </p>
           </div>
         </div>
@@ -55,15 +55,17 @@ export default {
       // })
       //   .then(() => {
       //     console.log('비밀번호 일치함. 편집모달로 이동!')
-          // 모달창 끄기
+          // passwordModal 끄기
           const passwordModal = document.querySelector('#passwordModal')
           passwordModal.classList.remove("in")
-          // document.querySelector(".modal-backdrop").remove()
           passwordModal.style.display = "none"
-          // 모달창 켜기
+          // detailModal 끄기
+          const detailModal = document.querySelector('#detailModal')
+          detailModal.classList.remove("show")
+          // detailModal.style.display = "none"
+          // updateModal 켜기
           const updateModal = document.querySelector('#updateModal')
           updateModal.classList.add("show")
-          // document.querySelector(".modal-backdrop").remove()
           updateModal.style.display = "block"
 
           state.value.passwordConfirm = ''
@@ -78,6 +80,10 @@ export default {
     }
     const cancle = () => {
       console.log("닫기 버튼 클릭됨!")
+      // 모달창 끄기
+      const passwordModal = document.querySelector('#passwordModal')
+      passwordModal.classList.remove("in")
+      passwordModal.style.display = "none"
     }
     return { state, confirm, cancle }
   }

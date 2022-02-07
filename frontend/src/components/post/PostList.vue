@@ -6,7 +6,7 @@
     <!-- password modal -->
     <post-password-form :postId="state.selectedPost.postId"></post-password-form>
     <!-- update modal -->
-    <post-update-form v-if="state.selectedPost" @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="state.selectedPost"></post-update-form>
+    <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="state.selectedPost"></post-update-form>
     <!-- close modal -->
     <post-close-form></post-close-form>
     <!-- delete modal -->

@@ -7,7 +7,7 @@
             <p>글을 삭제하시겠습니까?</p>
             <p class="d-flex justify-content-end">
               <button @click="deletePost" type="button" class="btn btn-primary" data-bs-dismiss="modal">삭제</button>
-              <button @click="cancle" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateModal">취소</button>
+              <button @click="cancle" type="button" class="btn btn-secondary"  data-bs-dismiss="modal">취소</button>
             </p>
           </div>
         </div>
@@ -42,6 +42,11 @@ export default {
         .then(res => {
           console.log(res)
           // this.fetchReviewList(this.movieDetail.id)
+          // 모달창 끄기
+          const updateModal = document.querySelector('#updateModal')
+          updateModal.classList.remove("in")
+          document.querySelector(".modal-backdrop").remove()
+          updateModal.style.display = "none"
         })
         .catch(err => console.error(err))
     }
