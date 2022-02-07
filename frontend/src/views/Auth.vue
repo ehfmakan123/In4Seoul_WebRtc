@@ -1,9 +1,12 @@
 <template>
   <div id="auth-container">
 
-    <AuthDeskLoginModal/>
+    <auth-desk-login-modal/>
+    <auth-staff-login-modal/>
+    <auth-staff-signup-modal/>
+    <!-- <AuthDeskLoginModal/>
     <AuthStaffLoginModal/>
-    <AuthStaffSignupModal/>
+    <AuthStaffSignupModal/> -->
 
     <h1>서울시 여행 안내 데스크</h1>
     <h1 class="mt-3">Seoul Travel Information Service</h1>

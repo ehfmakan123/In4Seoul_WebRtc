@@ -6,7 +6,7 @@
         </div>        
         <div class="input-group mt-3">
           <span class="input-group-text" id="admin-login-id">아이디</span>
-          <input type="text" class="form-control" placeholder="" aria-label="admin-login-id" aria-describedby="admin-login-id" v-model="adminCredentials.id" autofocus>
+          <input type="text" class="form-control" placeholder="" aria-label="admin-login-id" aria-describedby="admin-login-id" v-model="adminLoginCredentials.userId" autofocus>
         </div>
         <div class="input-group mt-3">
           <span class="input-group-text" id="admin-login-password">비밀번호</span>
@@ -16,7 +16,7 @@
             placeholder=""
             aria-label="admin-login-password"
             aria-describedby="admin-login-password"
-            v-model="adminCredentials.password"
+            v-model="adminLoginCredentials.password"
             @keypress.enter="adminLoginConfirm"
             >
         </div>
@@ -30,23 +30,46 @@
 <script>
 // @ is an alias to /src
 import { ref } from 'vue'
+// import { useRouter} from 'vue-router'
+// import axios from 'axios'
 
 export default {
   name: 'AdminAuth',
   components: {
   },
   setup() {
-
-    const adminCredentials = ref({ id: "", password: ""})
+    const adminLoginCredentials = ref({ userId: "", password: ""})
+    // const router = useRouter()
 
     const adminLoginConfirm = () => {
       console.log("admin 로그인 확인버튼 클릭됨!")
-      console.log("아이디: ",adminCredentials.value.id)
-      console.log("비밀번호: ",adminCredentials.value.password)
+
+      // axios({
+      //   method: 'post',
+      //   url: 'http://127.0.0.1:8080/admin/login',
+      //   data: adminLoginCredentials.value
+      // })      
+      //   .then(res => {
+      //     console.log(res)
+      //     // modal 닫는 부분
+      //     router.push({ name: 'AdminHome' })
+      //   })
+      //   .catch(err => {
+      //     console.log('admin 로그인 error발생!')
+      //     console.log(err.response.data)
+      //     const statusCode = err.response.data.statusCode
+      //     if (statusCode === 401) {
+      //       adminLoginCredentials.value.password = ''
+      //     }
+      //     else if (statusCode === 404) {
+      //       adminLoginCredentials.value.userId = ''
+      //       adminLoginCredentials.value.password = ''
+      //     }
+      //   })
     }
 
     return {
-      adminCredentials,
+      adminLoginCredentials,
       adminLoginConfirm,
     }
   }
