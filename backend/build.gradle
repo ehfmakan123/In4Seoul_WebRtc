@@ -124,6 +124,14 @@ processResources {
 ////[끝]
 
 dependencies {
+
+
+
+    //firebase-admin 의존성 추가
+    implementation("com.google.firebase:firebase-admin:7.1.1")
+
+
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-security")

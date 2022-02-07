@@ -38,7 +38,7 @@ public class StaffController {
 
 
     // 아이디 중복 확인
-    @GetMapping("/{id}")
+    @PostMapping("/idcheck")
     @ApiOperation(value = "아이디 중복확인", notes = "<strong>이미 존재하는 아이디인지 확인한다.</strong>")
     @ApiResponses({
             @ApiResponse(code = 200, message = "사용 가능한 아이디", response = UserLoginPostRes.class),
@@ -46,9 +46,11 @@ public class StaffController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> checkId(@PathVariable(value = "id") String id) {
+    public ResponseEntity<BaseResponseBody> checkId(@RequestBody StaffRequest request) {
 
-        boolean b = staffService.checkId(id);
+
+
+        boolean b = staffService.checkId(request.getUserId());
         System.out.println(b);
         if (b) {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200, "사용 가능한 아이디"));
@@ -108,7 +110,7 @@ public class StaffController {
 
         if (passwordEncoder.matches(password, result.getPassword())) {
 
-            return ResponseEntity.status(401).body(UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff")));
+            return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff")));
 
 
         } else {
