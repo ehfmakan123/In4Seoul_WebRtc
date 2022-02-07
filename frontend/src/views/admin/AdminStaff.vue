@@ -1,6 +1,6 @@
 <template>
   <div class="row flex-nowrap bg-gray-1">
-     <AdminSidebar />
+     <admin-sidebar />
     <router-view/>   
     <div class="w-80 p-5">
        <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
@@ -50,7 +50,7 @@
               <td>2022-01-01 11:20</td>
               <td>2022-01-01 11:20</td>
             </tr>
-            <desk-list-row
+            <admin-staff-item
               v-for="(article, index) in articles"
               :key="index"
               v-bind="article"
@@ -88,13 +88,20 @@
 <script>
 
 
-import AdminSidebar from '@/views/AdminHome.vue'
+import AdminSidebar from '@/components/admin/AdminSidebar.vue'
+import AdminStaffItem from '@/components/admin/AdminStaffItem.vue'
 // @ is an alias to /src
 
 export default {
   name: 'AdminStaff',
   components: {
     AdminSidebar,
+    AdminStaffItem,
+  },
+  data() {
+    return {
+      articles: [],
+    }
   },
   methods: {
     staffEdit(){
