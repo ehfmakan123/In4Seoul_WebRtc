@@ -89,7 +89,8 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             String userId = decodedJWT.getSubject();
             Claim roles = decodedJWT.getClaim("role");
 
-            System.out.println(roles.asString());
+            System.out.println("role= "+roles.asString());
+
 
             // Search in the DB if we find the user by token subject (username)
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
@@ -102,8 +103,11 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                 Desks desk=null;
 
                String role="STAFF";
-                if(!roles.equals("desk"))  // 로그인 한 사람이 관리자나 상담사인 경우
+                if(!roles.asString().equals("desk"))  // 로그인 한 사람이 관리자나 상담사인 경우
                 {
+
+
+
                             staff=staffService.getStaffByStaffId(userId);
 
                         if(staff.getAdminYN().equals("Y"))
