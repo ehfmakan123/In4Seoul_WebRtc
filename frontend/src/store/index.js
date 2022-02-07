@@ -4,8 +4,15 @@ import axios from 'axios'
 export default createStore({
   state: {
     postList: [],
-    post: null,
-    serverHost: 'http://127.0.0.1:8000',
+    post: {
+      "id":"3",
+      "title":"뮤지컬 프랑켄슈타인",
+      "content":"블루스퀘어에서 하고있어요 괴물 너무 마음 아파 ㅠㅠ",
+      "createdAt":"2022-01-01 11:20:00",
+      "updatedAt":"2022-01-01 11:20:00"
+    },
+    // selectedPost: {},
+    serverHost: 'http://127.0.0.1:8080',
   },
   mutations: {
     SET_POST_LIST(state, postList) {
@@ -30,15 +37,8 @@ export default createStore({
         })
         .catch(err => console.error(err))
     },
-    fetchPost({ state, commit }, postId) {
-      axios({
-        method: 'get',
-        url: `${state.serverHost}/board/posts/${postId}/`,
-      })
-        .then(res => {
-          commit('SET_POST', res.data)
-        })
-        .catch(err => console.error(err))
+    fetchPost({ commit }, post) {
+      commit('SET_POST', post)
     }
   },
   modules: {

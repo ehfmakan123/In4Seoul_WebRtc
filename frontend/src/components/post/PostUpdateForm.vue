@@ -5,12 +5,11 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
-            <p class="w-100"><input class="w-100 input-title" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
+            <p class="w-100"><input class="w-100 input-title" type="text" v-model="postData" placeholder="제목을 입력해주세요"></p>
           </div>
           <div class="modal-body" style="height: 27rem;">
-            <p>prop > post: {{post}}</p><br>
-            <p>state > myPost: {{myPost}}</p><br><br>
-            <textarea rows="5" v-model="state.myPost.content" type="text" class="form-control"></textarea>
+            <p>vuex post: {{post}}</p><br>
+            <textarea rows="5" v-model="postData" type="text" class="form-control"></textarea>
             <!-- <p><input class="input-content" type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p> -->
             <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
           </div>
@@ -37,7 +36,8 @@
 
 <script>
 // import axios from 'axios'
-import { ref, watch } from 'vue'
+import { computed, reactive } from 'vue'
+// import { mapState } from 'vuex'
 
 export default {
   name: 'PostUpdateForm',
@@ -46,19 +46,23 @@ export default {
   props:{
     post: Object,
   },
-  setup(props, { emit }) {
-    console.log('update form 생성됨', props.post)
+  // computed: {
+  //   ...mapState(['post'])
+  // },
+  data() {
+    return {
+      postData: this.post
+    }
+  },
+  setup(post, { emit }) {
+    console.log('update form 생성됨')
 
-    const state = ref({
+    const state = reactive({
       myPost: {
-        title: '',
-        content: ''
+        title: computed(() => post.title),
+        content: computed(() => post.content)
       }
     })
-
-    const propsWatch = watch(props, () => {
-      "search 값이 바뀔 때 마다 실행되는 함수";
-    });
 
     const tryDelete = () => {
       console.log("삭제 버튼 클릭됨!")
@@ -95,7 +99,7 @@ export default {
       emit('try-unsave-close')
     }
 
-    return {state, tryDelete, savePost, cancle, propsWatch}
+    return {state, tryDelete, savePost, cancle}
   }
 }
 </script>
