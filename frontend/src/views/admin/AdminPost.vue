@@ -1,13 +1,13 @@
 <template>
   <div>
-    <navi-bar/>
+    <admin-sidebar/>
     <router-view/>
-    (staff 관리로 들어왔다!)
+    (게시판관리로 들어왔다!)
     <br><br>
 
     <div>
     <b-container class="bv-example-row mt-3">
-
+      
     <br>
     <b-row>
       <b-col>
@@ -15,22 +15,20 @@
           <thead head-variant="dark">
             <tr>
               <th>No.</th>
-              <th>UserID</th>
-              <th>이름</th>
-              <th>email</th>
-              <th>휴대폰번호</th>
-              <th>지역코드</th>
-              <th>지역명</th>
-              <th>승인</th>
-              <th>생성날짜</th>
+              <th>지역정보</th>
+              <th>데스크</th>
+              <th>제목</th>
+              <th>내용</th>
+              <th>비밀번호</th>
+              <th>등록날짜</th>
               <th>수정날짜</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td colspan="10">
-                <button variant="outline-primary" @click="staffEdit()">
-                 (staff 정보가 여기 삽입됨)
+              <td colspan="9">
+                <button variant="outline-primary" @click="postEdit()">
+                 (게시판 정보가 여기 삽입됨)
                 </button>
               </td>
             </tr>
@@ -48,22 +46,21 @@
     </div>
 
 
-
   </div>
 </template>
 
 <script>
-import NaviBar from '@/views/AdminHome.vue'
+import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 // @ is an alias to /src
 
 export default {
-  name: 'AdminStaff',
+  name: 'AdminPost',
   components: {
-    NaviBar,
+    AdminSidebar,
   },
   methods: {
-    staffEdit(){
-      this.$router.push({ name: 'AdminStaffEdit' })
+    postEdit(){
+      this.$router.push({ name: 'AdminPostEdit' })
     },
   }
 }
