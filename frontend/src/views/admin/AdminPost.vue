@@ -1,6 +1,6 @@
 <template>
   <div>
-    <navi-bar/>
+    <admin-sidebar/>
     <router-view/>
     (게시판관리로 들어왔다!)
     <br><br>
@@ -50,13 +50,13 @@
 </template>
 
 <script>
-import NaviBar from '@/views/AdminHome.vue'
+import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 // @ is an alias to /src
 
 export default {
   name: 'AdminPost',
   components: {
-    NaviBar,
+    AdminSidebar,
   },
   methods: {
     postEdit(){

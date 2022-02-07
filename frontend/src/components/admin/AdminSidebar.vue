@@ -1,7 +1,7 @@
 <template>
-
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-blue-5">
             <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+              
               <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                     <span class="fs-5 d-none d-sm-inline"></span>
                 </a>
@@ -33,30 +33,30 @@
                     </li>
                 </ul>
                 <hr>
-                <div class="pb-4">
-                    <div class="d-flex align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#exampleModal">
-                        
-                        <span class="d-none d-sm-inline mx-1 text-center">Logout</span>
-                    </div>
-                    
-                </div>
+                
+                
+
             </div>
+              <div class="pb-4">
+                  <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#exampleModal">
+                      
+                      <span class="d-none d-sm-inline mx-1 text-center">Logout</span>
+                  </div>
+                  
+              </div>            
       </div>
       <!-- Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">로그아웃하시겠습니까?</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content modal-rounded bd-blue-4 px-4 pt-3 pb-4">
+            <div class="d-flex justify-content-center align-items-center mt-3">
+              <h5 class="modal-title ms-3 fs-5" id="staff-login-modal-label"><strong class="t-blue-3">로그아웃</strong>하시겠습니까?</h5>
             </div>
             <div class="modal-body">
-              ...
-            </div>
-            <div class="modal-footer">
-              
-              <button type="button" class="btn btn-primary">네</button>
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">아니오</button>
+              <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no">네</button>
+                <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
+              </div>          
             </div>
           </div>
         </div>
@@ -68,7 +68,7 @@
 // @ is an alias to /src
 
 export default {
-  name: 'AdminHome',
+  name: 'AdminSidebar',
   components: {
   }
 }
@@ -84,9 +84,15 @@ export default {
     background: #CECECE;
     color: #656565;
   }
-
+  .bt-pdd{
+    padding-right: 1.5rem!important;
+    padding-left: 1.5rem!important;
+  }
   .bd-bt {
     border-bottom: 2px solid #CECECE;
+  }
+  .bd-top {
+    border-top: 2px solid #CECECE;
   }
   .th-class > tr > th {
     padding: 1rem!important;
@@ -99,7 +105,7 @@ export default {
     padding: inherit;
   }
   .tr-info > td:nth-child(1) {
-    width: 15%;
+    width: 18%;
     padding: 1rem!important;
     padding-left: 3rem!important;
     padding-right: 3rem!important;
@@ -114,7 +120,6 @@ export default {
   }
   .form-25{
     width: 25% !important;
-    text-align: center;
   }
   .w-80 {
     width: 80%!important;
@@ -126,5 +131,13 @@ export default {
   /*승인 YN*/
   .table-yes{
     color: #00AC45;
+  }
+  .modal-rounded{
+    border-radius: 1rem !important;
+    border-width: 2px;
+  }
+  .btn-yes-no {
+    width:25%!important;
+    border-radius:2rem!important;
   }
 </style>
