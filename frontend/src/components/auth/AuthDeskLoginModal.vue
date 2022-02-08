@@ -29,6 +29,8 @@ import { ref } from 'vue'
 // import { useRouter} from 'vue-router'
 // import axios from 'axios'
 
+// const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 export default {
   name: 'AuthDeskLoginModal',
   setup() {
@@ -42,7 +44,7 @@ export default {
       // 로그인 axios 요청
       // axios({
       //   method: 'post',
-      //   url: 'http://127.0.0.1:8080/desk/login',
+      //   url: `${SERVER_HOST}/desk/login`,
       //   data: deskLoginCredentials.value
       // })      
       //   .then(res => {

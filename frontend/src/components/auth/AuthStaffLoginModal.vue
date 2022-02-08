@@ -29,6 +29,8 @@ import { ref } from 'vue'
 import { useRouter} from 'vue-router'
 import axios from 'axios'
 
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 export default {
   name: 'AuthStaffLoginModal',
   setup() {
@@ -40,11 +42,13 @@ export default {
 
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8080/staff/login',
+        url: `${SERVER_HOST}/staff/login`,
         data: staffLoginCredentials.value
       })      
         .then(res => {
           console.log(res)
+          localStorage.setItem('token', res.data.accessToken)
+
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')
           staffLoginModal.classList.remove("in")
@@ -65,8 +69,8 @@ export default {
             staffLoginCredentials.value.password = ''
           }
         })
-
     }
+    
     const staffLoginCancel = () => {
       console.log("staff 로그인 확인버튼 클릭됨!")
       staffLoginCredentials.value.userId = ""

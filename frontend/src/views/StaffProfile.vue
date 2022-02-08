@@ -9,6 +9,8 @@
     <div class="staff-profile">
       <h2>프로필 정보>프로필조회</h2>
       <hr>
+      <button @click="axiosProfile" class="btn btn-primary">프로필 axios</button>
+
       <p>유저아이디: {{ testObj.staffId }}</p>
       <p>이름: {{ testObj.userName }}</p>
       <p>휴대폰번호: {{ testObj.phone }}</p>
@@ -24,6 +26,8 @@
 // @ is an alias to /src
 import { useRouter} from 'vue-router'
 import { ref } from 'vue'
+import axios from 'axios'
+// import { useStore } from 'vuex';
 
 export default {
   name: 'StaffProfile',
@@ -31,6 +35,8 @@ export default {
   },
   setup() {
     const router = useRouter()
+    // const store = useStore()
+
     let testObj = ref({
       "statusCode":"200",
       "message":"로그인 성공",
@@ -71,6 +77,29 @@ export default {
       router.push({ name: 'StaffProfileEdit' })
     }
 
+    const axiosProfile = () => {
+      console.log("프로필 axios 버튼 클릭됨!")
+
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8080/staff/me',
+        headers: config
+      })      
+        .then(res => {
+          console.log(res)
+          
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
+
+    }
+
     return {
       testObj,
       moveToStaffHome,
@@ -79,6 +108,7 @@ export default {
       logout,
       staffProfileCancle,
       staffProfileEdit,
+      axiosProfile
     }
   }
 }
