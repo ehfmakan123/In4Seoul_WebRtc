@@ -50,7 +50,7 @@ export default {
         .then(res => {
           console.log(res)
           localStorage.setItem('token', res.data.accessToken)
-          store.dispatch("admin_login")
+          store.dispatch("staff_login")
 
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')
