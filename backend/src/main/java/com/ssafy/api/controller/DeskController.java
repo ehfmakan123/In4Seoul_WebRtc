@@ -1,13 +1,16 @@
 package com.ssafy.api.controller;
 
 
+import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.PostDto;
+import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.DeskService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.db.entity.BaseEntity;
@@ -19,6 +22,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/desk")
@@ -133,6 +138,31 @@ public class DeskController {
 
 
 
+    }
+
+
+
+    // 지역 목록 가져오기
+
+    @GetMapping("/areas")
+    public ResponseEntity <ListResult<AreaDto>> getAreas() {
+
+        List<AreaDto> result = deskService.getAreas();
+        return ResponseEntity.status(200).body(new ListResult<>(200,"성공",result));
+    }
+
+
+
+
+
+    //  선택 지역에 해당하는 데스크 목록 가져오기
+    @GetMapping("/areas/{id}")        //url 이 이게 맞을까..
+    public ResponseEntity <ListResult<SelectedDeskDto>> getDeskList(@PathVariable("id") int id) {
+
+
+        List<SelectedDeskDto> result = deskService.getDeskList(id);
+
+        return ResponseEntity.status(200).body(new ListResult<>(200,"성공",result));
     }
 
 

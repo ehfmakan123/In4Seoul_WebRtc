@@ -13,8 +13,8 @@ public class QAreaDto extends ConstructorExpression<AreaDto> {
 
     private static final long serialVersionUID = -580446456L;
 
-    public QAreaDto(com.querydsl.core.types.Expression<Integer> id, com.querydsl.core.types.Expression<String> areaName) {
-        super(AreaDto.class, new Class<?>[]{int.class, String.class}, id, areaName);
+    public QAreaDto(com.querydsl.core.types.Expression<Integer> id, com.querydsl.core.types.Expression<String> korName, com.querydsl.core.types.Expression<String> engName) {
+        super(AreaDto.class, new Class<?>[]{int.class, String.class, String.class}, id, korName, engName);
     }
 
 }

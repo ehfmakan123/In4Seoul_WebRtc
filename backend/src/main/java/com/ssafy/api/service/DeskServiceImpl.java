@@ -1,7 +1,9 @@
 package com.ssafy.api.service;
 
 
+import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.PostDto;
+import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Posts;
@@ -11,6 +13,7 @@ import com.ssafy.db.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -114,5 +117,19 @@ public class DeskServiceImpl implements DeskService{
 
 
         return true;
+    }
+
+    @Override
+    public List<AreaDto> getAreas() {
+
+        return deskRepositorySupport.getAreas();
+    }
+
+
+
+    //선택지역에 해당하는 데스크 목록 가져오기
+    @Override
+    public List<SelectedDeskDto> getDeskList(int id) {
+        return deskRepositorySupport.getDeskList(id);
     }
 }

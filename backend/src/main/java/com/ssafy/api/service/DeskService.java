@@ -1,8 +1,12 @@
 package com.ssafy.api.service;
 
+import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.PostDto;
+import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.db.entity.Desks;
+
+import java.util.List;
 
 public interface DeskService {
 
@@ -30,4 +34,14 @@ public interface DeskService {
 
     //게시글 삭제
     boolean deletePost(long id);
+
+
+
+    // 지역 목록 가져오기
+List<AreaDto> getAreas();
+
+
+
+//선택지역에 해당하는 데스크 목록 가져오기
+List<SelectedDeskDto> getDeskList(int id);
 }
