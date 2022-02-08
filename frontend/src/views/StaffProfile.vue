@@ -51,6 +51,7 @@
 // @ is an alias to /src
 import { useRouter} from 'vue-router'
 import { ref } from 'vue'
+import axios from 'axios'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
 
 export default {
