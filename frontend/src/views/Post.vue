@@ -148,6 +148,12 @@ export default {
     font-weight: bold;
   }
 
+  .postit{
+    background-color: lightgoldenrodyellow!important;
+  }
+
+
+
   .input-title {
     height: 2.5rem;
   }

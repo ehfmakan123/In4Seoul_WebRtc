@@ -1,7 +1,7 @@
 <template>
   <div class="col-3 p-3">
-    <div class="card" style="height: 15rem;">
-      <div class="card-body" data-bs-toggle="modal" data-bs-target="#detailModal">
+    <div class="card shadow" style="height: 15rem; border: 0rem">
+      <div class="card-body postit" data-bs-toggle="modal" data-bs-target="#detailModal">
         <p class="card-title"><strong>{{ post.title }}</strong></p>
         <p class="card-text">{{ post.content }}</p>
         <!-- <a href="#" class="card-link">Card link</a> -->

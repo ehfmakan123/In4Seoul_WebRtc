@@ -3,7 +3,7 @@
     <!-- 글 수정 Modal -->
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content postit">
           <div class="modal-header">
             <p class="w-100"><input class="w-100 input-title" type="text" v-model="postData" placeholder="제목을 입력해주세요"></p>
           </div>
