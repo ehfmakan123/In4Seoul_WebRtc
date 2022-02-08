@@ -1,10 +1,14 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
 
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 export default createStore({
   state: {
     isLoggedIn: false,
-    config: {},
+    isDesk: false,
+    isStaff: false,
+    isAdmin: false,
     postList: [],
     post: {
       "id":"3",
@@ -16,9 +20,23 @@ export default createStore({
     // selectedPost: {},
   },
   mutations: {
-    LOGIN: function (state, config) {
+    DESK_LOGIN(state) {
       state.isLoggedIn = true
-      state.config = config
+      state.isDesk = true
+    },
+    STAFF_LOGIN(state) {
+      state.isLoggedIn = true
+      state.isStaff = true
+    },
+    ADMIN_LOGIN(state) {
+      state.isLoggedIn = true
+      state.isAdmin = true
+    },
+    LOGOUT(state) {
+      state.isLoggedIn = false
+      state.isDesk = false
+      state.isStaff = false
+      state.isAdmin = false
     },
     SET_POST_LIST(state, postList) {
       state.postList = postList
@@ -28,24 +46,25 @@ export default createStore({
     }
   },
   actions: {
-    actionTest() {
-      console.log('vuex action 테스트입니다')
+    desk_login({ commit }) {
+      console.log('desk_login action 실행됨!')
+      commit('staff_login')
     },
-
-    loginAction({ commit }, token) {
-      console.log('!!!!!!!!loginAction 실행됨!!!!!!!!!')
-      console.log(token)
-      localStorage.setItem('token', token)
-      const config = {
-        Authorization: `Bearer ${token}`
-      }
-      console.log(config)
-      commit('LOGIN', config)
+    staff_login({ commit }) {
+      console.log('staff_login action 실행됨!')
+      commit('STAFF_LOGIN')
     },
-    fetchPostList({ state, commit }, deskId, areaId) {
+    admin_login({ commit }) {
+      console.log('admin_login action 실행됨!')
+      commit('ADMIN_LOGIN')
+    },
+    logoutAction({ commit }) {
+      commit('LOGOUT')
+    },
+    fetchPostList({ commit }, deskId, areaId) {
       axios({
         method: 'get',
-        url: `${state.serverHost}/board/posts/`,
+        url: `${SERVER_HOST}/board/posts/`,
         data: {
           "deskId":`${deskId}`,
           "areaId":`${areaId}`
