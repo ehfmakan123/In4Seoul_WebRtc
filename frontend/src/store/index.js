@@ -48,7 +48,7 @@ export default createStore({
   actions: {
     desk_login({ commit }) {
       console.log('desk_login action 실행됨!')
-      commit('staff_login')
+      commit('DESK_LOGIN')
     },
     staff_login({ commit }) {
       console.log('staff_login action 실행됨!')
