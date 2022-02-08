@@ -3,6 +3,8 @@ import axios from 'axios'
 
 export default createStore({
   state: {
+    isLoggedIn: false,
+    config: {},
     postList: [],
     post: {
       "id":"3",
@@ -10,11 +12,14 @@ export default createStore({
       "content":"블루스퀘어에서 하고있어요 괴물 너무 마음 아파 ㅠㅠ",
       "createdAt":"2022-01-01 11:20:00",
       "updatedAt":"2022-01-01 11:20:00"
-    },
+    }
     // selectedPost: {},
-    serverHost: 'http://127.0.0.1:8080',
   },
   mutations: {
+    LOGIN: function (state, config) {
+      state.isLoggedIn = true
+      state.config = config
+    },
     SET_POST_LIST(state, postList) {
       state.postList = postList
     },
@@ -23,6 +28,15 @@ export default createStore({
     }
   },
   actions: {
+    loginAction({ commit }) {
+      console.log('loginAction 실행됨!')
+      const token = localStorage.getItem("accessToken")
+      console.log(token)
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      commit('LOGIN', config)
+    },
     fetchPostList({ state, commit }, deskId, areaId) {
       axios({
         method: 'get',

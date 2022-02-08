@@ -27,6 +27,7 @@
 <script>
 import { ref } from 'vue'
 import { useRouter} from 'vue-router'
+import { useStore } from 'vuex';
 import axios from 'axios'
 
 export default {
@@ -34,6 +35,7 @@ export default {
   setup() {
     const staffLoginCredentials = ref({ userId: "", password: "" })
     const router = useRouter()
+    const store = useStore()
 
     const staffLoginConfirm = () => {
       console.log("staff 로그인 확인버튼 클릭됨!")
@@ -45,6 +47,8 @@ export default {
       })      
         .then(res => {
           console.log(res)
+          store.dispatch("loginAction")
+
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')
           staffLoginModal.classList.remove("in")
@@ -65,8 +69,8 @@ export default {
             staffLoginCredentials.value.password = ''
           }
         })
-
     }
+    
     const staffLoginCancel = () => {
       console.log("staff 로그인 확인버튼 클릭됨!")
       staffLoginCredentials.value.userId = ""
