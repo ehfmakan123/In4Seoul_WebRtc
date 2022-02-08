@@ -31,7 +31,7 @@ public class AdminController {
 
 
     //@ApiIgnore 는 스웨거 상 무시한다는 뜻
-  //확인
+  //확인, 현규 확인
 
     @Autowired
     AdminService adminService;
