@@ -108,10 +108,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적�
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService,adminService,staffService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다는 의미이다
-                .antMatchers("/staff/id").permitAll()
+                .antMatchers("/staff/idcheck").permitAll()
                 .antMatchers("/staff/signup").permitAll()
                 .antMatchers("/staff/login").permitAll()
                 .antMatchers("/admin/login").permitAll()
+                .antMatchers("/desk/login").permitAll()
+                .antMatchers("/desk/**").hasAnyAuthority("ROLE_DESK")
                 .antMatchers("/admin/**").hasAnyAuthority("ROLE_ADMIN")
                 .antMatchers("/staff/**").hasAnyAuthority("ROLE_STAFF")
                   //인증이 필요한 URL과 필요하지 않은 URL에 대하여 설정  // 이 요청에 대해서는 인증을 받아야한다
