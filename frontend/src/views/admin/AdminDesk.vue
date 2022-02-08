@@ -1,56 +1,86 @@
 <template>
-  <div>
-    <admin-sidebar/>
-    <router-view/>
-    (데스크관리로 들어왔다!)
-    <br><br>
+    <div class="row flex-nowrap bg-gray-1">
+     <admin-sidebar />
+    <router-view/>   
+    <div class="w-80 p-5">
+       <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
+    <b-container class="bv-example-row mt-3 ">
 
-    <div>
-    <b-container class="bv-example-row mt-3">
-      <b-row class="mb-1">
-      <b-col class="text-right">
-        <button variant="outline-primary" @click="deskCreate()">
-          데스크 생성하기
-        </button>
-      </b-col>
-    </b-row>
     <br>
-    <b-row>
-      <b-col>
-        <table hover responsive>
-          <thead head-variant="dark">
+    <div class="bg-white shadow">
+      <div class="text-start p-3 fw-bold bd-bt">
+        데스크 관리
+        <button class="btn btn-outline-primary border-color btn bd-highlight rounded-pill btn-sm float-end" @click="deskCreate()">데스크등록</button>
+          </div>
+   
+        <table hover responsive class="table-class  p-3 mb-5 bg-body rounded">
+          <thead head-variant="dark" class="th-class">
             <tr>
               <th>No.</th>
               <th>아이디</th>
-              <th>비밀번호</th>
               <th>이름</th>
               <th>위도</th>
               <th>경도</th>
-              <th>지역정보</th>
+              <th>지역코드</th>
+              <th>지역명</th>
               <th>생성날짜</th>
               <th>수정날짜</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td colspan="9">
-                <button variant="outline-primary" @click="deskEdit()">
-                 (desk 정보가 여기 삽입됨)
-                </button>
-              </td>
+            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="deskEdit()">
+              <td>1</td>
+              <td>hongdong</td>
+              <td>홍대1</td>
+              <td>37.55486722863767</td>
+              <td>126.9226391549618</td>
+              <td>01</td>
+              <td>강남구</td>
+              <td>2022-01-01 11:20</td>
+              <td>2022-01-01 11:20</td>
             </tr>
-            <desk-list-row
+            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="deskEdit()">
+              <td>1</td>
+              <td>hongdong</td>
+              <td>홍대1</td>
+              <td>37.55486722863767</td>
+              <td>126.9226391549618</td>
+              <td>01</td>
+              <td>강남구</td>
+              <td>2022-01-01 11:20</td>
+              <td>2022-01-01 11:20</td>
+            </tr>
+            <!-- <admin-staff-item
               v-for="(article, index) in articles"
               :key="index"
               v-bind="article"
-            />
+            /> -->
           </tbody>
         </table>
-      </b-col>
-    </b-row>
     
+
+    
+    
+    </div>
+
+    <nav aria-label="..." class="d-flex justify-content-center">
+  <ul class="pagination d-flex justify-content-between">
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">＜</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item active" aria-current="page">
+      <a class="page-link" href="#">2</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#">＞</a>
+    </li>
+  </ul>
+</nav>
   </b-container>
     </div>
+
 
   </div>
 </template>

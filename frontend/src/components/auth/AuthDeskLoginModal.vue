@@ -27,13 +27,17 @@
 <script>
 import { ref } from 'vue'
 // import { useRouter} from 'vue-router'
+// import { useStore } from 'vuex';
 // import axios from 'axios'
+
+// const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'AuthDeskLoginModal',
   setup() {
     const deskLoginCredentials = ref({ userId: "", password: "" })
     // const router = useRouter()
+    // const store = useStore()
 
     const deskLoginConfirm = () => {
       console.log("desk 로그인 확인버튼 클릭됨!")
@@ -42,11 +46,13 @@ export default {
       // 로그인 axios 요청
       // axios({
       //   method: 'post',
-      //   url: 'http://127.0.0.1:8080/desk/login',
+      //   url: `${SERVER_HOST}/desk/login`,
       //   data: deskLoginCredentials.value
       // })      
       //   .then(res => {
       //     console.log(res)
+      //     localStorage.setItem('token', res.data.accessToken)
+      //     store.dispatch("desk_login")
       //     // modal 닫는 부분
       //     const deskLoginModal = document.querySelector('#desk-login-modal')
       //     deskLoginModal.classList.remove("in")

@@ -8,11 +8,14 @@ import lombok.Data;
 public class AreaDto {
 
     int id;
-    String areaName;
+    String korName;
+    String engName;
 
     @QueryProjection
-    public AreaDto(int id, String areaName) {
+
+    public AreaDto(int id, String korName, String engName) {
         this.id = id;
-        this.areaName = areaName;
+        this.korName = korName;
+        this.engName = engName;
     }
 }

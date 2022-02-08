@@ -1,8 +1,14 @@
 import { createStore } from 'vuex'
 import axios from 'axios'
 
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 export default createStore({
   state: {
+    isLoggedIn: false,
+    isDesk: false,
+    isStaff: false,
+    isAdmin: false,
     postList: [],
     post: {
       "id":"3",
@@ -10,11 +16,28 @@ export default createStore({
       "content":"블루스퀘어에서 하고있어요 괴물 너무 마음 아파 ㅠㅠ",
       "createdAt":"2022-01-01 11:20:00",
       "updatedAt":"2022-01-01 11:20:00"
-    },
+    }
     // selectedPost: {},
-    serverHost: 'http://127.0.0.1:8080',
   },
   mutations: {
+    DESK_LOGIN(state) {
+      state.isLoggedIn = true
+      state.isDesk = true
+    },
+    STAFF_LOGIN(state) {
+      state.isLoggedIn = true
+      state.isStaff = true
+    },
+    ADMIN_LOGIN(state) {
+      state.isLoggedIn = true
+      state.isAdmin = true
+    },
+    LOGOUT(state) {
+      state.isLoggedIn = false
+      state.isDesk = false
+      state.isStaff = false
+      state.isAdmin = false
+    },
     SET_POST_LIST(state, postList) {
       state.postList = postList
     },
@@ -23,10 +46,25 @@ export default createStore({
     }
   },
   actions: {
-    fetchPostList({ state, commit }, deskId, areaId) {
+    desk_login({ commit }) {
+      console.log('desk_login action 실행됨!')
+      commit('DESK_LOGIN')
+    },
+    staff_login({ commit }) {
+      console.log('staff_login action 실행됨!')
+      commit('STAFF_LOGIN')
+    },
+    admin_login({ commit }) {
+      console.log('admin_login action 실행됨!')
+      commit('ADMIN_LOGIN')
+    },
+    logoutAction({ commit }) {
+      commit('LOGOUT')
+    },
+    fetchPostList({ commit }, deskId, areaId) {
       axios({
         method: 'get',
-        url: `${state.serverHost}/board/posts/`,
+        url: `${SERVER_HOST}/board/posts/`,
         data: {
           "deskId":`${deskId}`,
           "areaId":`${areaId}`

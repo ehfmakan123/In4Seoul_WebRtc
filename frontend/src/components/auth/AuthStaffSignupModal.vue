@@ -46,6 +46,8 @@ import { ref } from 'vue'
 import { useRouter} from 'vue-router'
 import axios from 'axios'
 
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 export default {
   name: 'AuthStaffSignupModal',
   setup() {
@@ -54,10 +56,10 @@ export default {
 
     const staffSignupIdCheck = () => {
       console.log("staff 회원가입 중복확인버튼 클릭됨!")
-      console.log(`http://127.0.0.1:8080/staff/${staffSignupCredentials.value.userId}`)
+      console.log(`${SERVER_HOST}/staff/${staffSignupCredentials.value.userId}`)
       axios({
         method: 'get',
-        url: `http://127.0.0.1:8080/staff/${staffSignupCredentials.value.userId}`
+        url: `${SERVER_HOST}/staff/${staffSignupCredentials.value.userId}`
       })
         .then(res => {
           console.log(res)
@@ -69,13 +71,16 @@ export default {
 
     const staffSignupConfirm = () => {
       console.log("staff 회원가입 확인버튼 클릭됨!")
+      console.log("호스트값: ")
+          console.log(`${SERVER_HOST}`)
       axios({
         method: 'post',
-        url: 'http://127.0.0.1:8080/staff/signup',
+        url: `${SERVER_HOST}/staff/signup`,
         data: staffSignupCredentials.value
       })      
         .then(res => {
           console.log(res)
+          
           // modal 닫는 부분
           const staffSignupModal = document.querySelector('#staff-signup-modal')
           staffSignupModal.classList.remove("in")
@@ -83,6 +88,7 @@ export default {
           staffSignupModal.style.display = "none"
           
           router.go()
+          
         })
         .catch(err => {
           console.log('staff 로그인 error발생!')

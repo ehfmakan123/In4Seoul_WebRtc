@@ -1,5 +1,5 @@
 <template>
-  <tr align="center" bgcolor="white">
+  <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip">
       <td>{{ index }}</td>
       <td>{{ tableItem.id }}</td>
       <td>{{ tableItem.deskName }}</td>
