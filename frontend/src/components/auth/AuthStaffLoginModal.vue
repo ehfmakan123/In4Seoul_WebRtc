@@ -47,7 +47,8 @@ export default {
       })      
         .then(res => {
           console.log(res)
-          store.dispatch("loginAction")
+          store.dispatch("actionTest")
+          store.dispatch("loginAction", res.data.accessToken)
 
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')

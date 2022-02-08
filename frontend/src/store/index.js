@@ -28,13 +28,18 @@ export default createStore({
     }
   },
   actions: {
-    loginAction({ commit }) {
-      console.log('loginAction 실행됨!')
-      const token = localStorage.getItem("accessToken")
+    actionTest() {
+      console.log('vuex action 테스트입니다')
+    },
+
+    loginAction({ commit }, token) {
+      console.log('!!!!!!!!loginAction 실행됨!!!!!!!!!')
       console.log(token)
+      localStorage.setItem('token', token)
       const config = {
         Authorization: `Bearer ${token}`
       }
+      console.log(config)
       commit('LOGIN', config)
     },
     fetchPostList({ state, commit }, deskId, areaId) {
