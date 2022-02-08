@@ -1,27 +1,105 @@
 <template>
-    <div>(데스크 상세 페이지)</div>
-
-    <div>
-        <div>데스크 아이디: <input></div>
-        <div>이름: <input></div>
-        <div>비밀번호: <input type="password" id="pass" name="password"> </div>
-        <div>비밀번호 확인:<input  type="password"></div>
-        <div>위도 <input></div>
-        <div>경도 <input></div>
-        <div>지역정보: <select></select> </div>
-        <div>등록날짜:  </div>
-        <div>수정날짜: </div>
+    <div class="row flex-nowrap bg-gray-1">
+     <AdminSidebar />
+     <router-view/> 
+        <div class="w-80 p-5">
+            <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
+        <br>
+    <div class="bg-white shadow">
+      <div class="text-start p-3 fw-bold bd-bt ">데스크 관리＞데스크 수정</div>
+        <table hover responsive class="p-3 mt-3 bg-body rounded"><tbody>
+            <thead class="th-calss">
+                <tr class="tr-info"><th><br></th><th><br></th></tr>
+            </thead>        
+            <tr class="tr-info" data-bs-placement="top" >
+              <td>아이디: </td>
+              <td><input class="form-control form-25" value=""></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>이름: </td>
+              <td><input class="form-control form-25 "></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>위도: </td>
+              <td><input class="form-control form-25 "></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>경도: </td>
+              <td><input class="form-control form-25 "></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>지역코드: </td>
+              <td><input class="form-control form-25 "></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>지역명: </td>
+              <td>강남구</td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>생성일 </td>
+              <td>2022-01-01 11:20</td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>수정일 </td>
+              <td>2022-01-01 11:20</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="bd-top">
+          <div class="d-flex flex-row-reverse bd-highlight">
+            <button class="btn btn-outline-danger bd-red-2 bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#admindesk_deleteModal">삭제</button>
+            <button class="btn btn-outline-dark bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#admindesk_cancelModal">취소</button>
+            <button class="btn btn-outline-primary border-color btn bd-highlight m-2 rounded-pill bt-pdd" @click="deskUpdate()">수정</button>
+          </div>
+          
+        </div>
+        
+        </div>
     </div>
-    <button variant="outline-primary" @click="deskUpdate()">수정</button>
-    <button variant="outline-primary" @click="deskCancel()">취소</button>
-    <button variant="outline-primary" @click="deskDelete()">계정삭제</button>
+        
+    </div>
+    <!-- delete modal -->
+    <div class="modal fade" id="admindesk_deleteModal" tabindex="-1" aria-labelledby="admindesk_deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content modal-rounded bd-red-2 px-4 pt-3 pb-4">
+            <div id="staff-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
+              <h5 class="modal-title ms-3 fs-5" >계정을 <strong class="t-red-2">삭제</strong>하시겠습니까?</h5>
+            </div>
+            <div class="modal-body">
+              <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-outline-danger bd-red-2 btn-yes-no " data-bs-dismiss="modal" @click="deskDelete()">네</button>
+                <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
+              </div>          
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- cancel modal -->
+      <div class="modal fade" id="admindesk_cancelModal" tabindex="-1" aria-labelledby="admindesk_cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content modal-rounded bd-blue-4 px-4 pt-3 pb-4">
+            <div class="d-flex justify-content-center align-items-center mt-3">
+              <h5 class="modal-title ms-3 fs-5" id="staff-login-modal-label">수정을<strong class="t-blue-3">취소</strong>하시겠습니까?</h5>
+            </div>
+            <div class="modal-body">
+              <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" data-bs-dismiss="modal" @click="deskCancel()" >네</button>
+                <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
+              </div>          
+            </div>
+          </div>
+        </div>
+      </div>
 </template>
 
 <script>
+import AdminSidebar from '@/components/admin/AdminSidebar.vue'
+
 
 export default({
     name: 'AdminDeskEdit',
     components: {
+        AdminSidebar,
     },
     methods: {
         deskUpdate(){

@@ -2,67 +2,67 @@
     <div class="row flex-nowrap bg-gray-1">
      <AdminSidebar />
      <router-view/> 
-        <div class="w-80 p-5">
-            <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
-        <br>
-    <div class="bg-white shadow">
-      <div class="text-start p-3 fw-bold bd-bt ">스태프 관리＞수정페이지</div>
-        <table hover responsive class="p-3 mt-3 bg-body rounded"><tbody>
-            <thead class="th-calss">
-                <tr class="tr-info"><th><br></th><th><br></th></tr>
-            </thead>        
-            <tr class="tr-info" data-bs-placement="top" >
-              <td>아이디: </td>
-              <td><input class="form-control form-25"></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>이름: </td>
-              <td><input class="form-control form-25 "></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>이메일 </td>
-              <td><input type="email" class="form-control form-25"></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>휴대폰번호 </td>
-              <td><input class="form-control form-25"></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>지역코드 </td>
-              <td><input class="form-control  form-25"></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>지역명 </td>
-              <td><input class="form-control  form-25"></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>승인 </td>
-              <td><select class="form-select form-10" aria-label="Default select example" name="assign" id="assign">
-                    <option value="Y">Y</option>
-                    <option value="N">N</option>
-                  </select></td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>생성일 </td>
-              <td>2022-01-01 11:20</td>
-            </tr>
-            <tr class="tr-info" data-bs-placement="top">
-              <td>수정일 </td>
-              <td>2022-01-01 11:20</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="bd-top">
-          <div class="d-flex flex-row-reverse bd-highlight">
-            <button class="btn btn-outline-danger bd-red-2 bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</button>
-            <button class="btn btn-outline-dark bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#cancelModal">취소</button>
-            <button class="btn btn-outline-primary border-color btn bd-highlight m-2 rounded-pill bt-pdd" @click="staffUpdate()">수정</button>
+      <div class="w-80 p-5">
+              <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
+          <br>
+      <div class="bg-white shadow">
+        <div class="text-start p-3 fw-bold bd-bt ">스태프 관리＞수정페이지</div>
+          <table hover responsive class="p-3 mt-3 bg-body rounded"><tbody>
+              <thead class="th-calss">
+                  <tr class="tr-info"><th><br></th><th><br></th></tr>
+              </thead>        
+              <tr class="tr-info" data-bs-placement="top" >
+                <td>아이디: </td>
+                <td><input class="form-control form-25"></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>이름: </td>
+                <td><input class="form-control form-25 "></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>이메일 </td>
+                <td><input type="email" class="form-control form-25"></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>휴대폰번호 </td>
+                <td><input class="form-control form-25"></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>지역코드 </td>
+                <td><input class="form-control  form-25"></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>지역명 </td>
+                <td><input class="form-control  form-25"></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>승인 </td>
+                <td><select class="form-select form-10" aria-label="Default select example" name="assign" id="assign">
+                      <option value="Y">Y</option>
+                      <option value="N">N</option>
+                    </select></td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>생성일 </td>
+                <td>2022-01-01 11:20</td>
+              </tr>
+              <tr class="tr-info" data-bs-placement="top">
+                <td>수정일 </td>
+                <td>2022-01-01 11:20</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="bd-top">
+            <div class="d-flex flex-row-reverse bd-highlight">
+              <button class="btn btn-outline-danger bd-red-2 bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#deleteModal">삭제</button>
+              <button class="btn btn-outline-dark bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#cancelModal">취소</button>
+              <button class="btn btn-outline-primary border-color btn bd-highlight m-2 rounded-pill bt-pdd" @click="staffUpdate()">수정</button>
+            </div>
+            
           </div>
           
-        </div>
-        
-        </div>
-    </div>
+          </div>
+      </div>
         
     </div>
     <!-- delete modal -->

@@ -71,6 +71,8 @@ export default {
 
     const staffSignupConfirm = () => {
       console.log("staff 회원가입 확인버튼 클릭됨!")
+      console.log("호스트값: ")
+          console.log(`${SERVER_HOST}`)
       axios({
         method: 'post',
         url: `${SERVER_HOST}/staff/signup`,
@@ -78,6 +80,7 @@ export default {
       })      
         .then(res => {
           console.log(res)
+          
           // modal 닫는 부분
           const staffSignupModal = document.querySelector('#staff-signup-modal')
           staffSignupModal.classList.remove("in")
@@ -85,6 +88,7 @@ export default {
           staffSignupModal.style.display = "none"
           
           router.go()
+          
         })
         .catch(err => {
           console.log('staff 로그인 error발생!')
