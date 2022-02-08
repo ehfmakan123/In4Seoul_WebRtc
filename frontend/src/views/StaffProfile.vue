@@ -60,6 +60,8 @@ export default {
   },
   setup() {
     const router = useRouter()
+    // const store = useStore()
+
     let testObj = ref({
       "statusCode":"200",
       "message":"로그인 성공",
@@ -100,6 +102,29 @@ export default {
       router.push({ name: 'StaffProfileEdit' })
     }
 
+    const axiosProfile = () => {
+      console.log("프로필 axios 버튼 클릭됨!")
+
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+      axios({
+        method: 'get',
+        url: 'http://127.0.0.1:8080/staff/me',
+        headers: config
+      })      
+        .then(res => {
+          console.log(res)
+          
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
+
+    }
+
     return {
       testObj,
       moveToStaffHome,
@@ -108,6 +133,7 @@ export default {
       logout,
       staffProfileCancle,
       staffProfileEdit,
+      axiosProfile
     }
   }
 }

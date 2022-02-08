@@ -39,8 +39,8 @@ public class AdminController {
     @Autowired
     UserService userService;
 
-    // @Autowired
-    // PasswordEncoder passwordEncoder;
+     @Autowired
+     PasswordEncoder passwordEncoder;
 
     @PostMapping("/login")
     @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
@@ -153,7 +153,7 @@ public class AdminController {
 
 
     //데스크 아이디 중복 체크
-    @PostMapping("/desks/{id}")
+    @PostMapping("/desks/idcheck")
     @ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
     @ApiResponses({
             @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
@@ -161,10 +161,11 @@ public class AdminController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> deskRegister(@PathVariable("id") String id) {
+    public ResponseEntity<BaseResponseBody> deskRegister(@RequestBody UserLoginPostReq request) {
 
 
-        Desks result = adminService.findByDeskId(id);
+
+        Desks result = adminService.findByDeskId(request.getUserId());
 
         if(result==null)
         {
@@ -194,6 +195,7 @@ public class AdminController {
     public ResponseEntity<BaseResponseBody> deskRegister(@RequestBody DeskDto deskDto) {
 
 
+        deskDto.setPassword(passwordEncoder.encode(deskDto.getPassword()));
         adminService.deskRegister(deskDto);
         return ResponseEntity.status(201).body(BaseResponseBody.of(201,"성공"));
     }
@@ -295,7 +297,7 @@ public class AdminController {
         PostDto post = adminService.getPost(id);
 
 
-        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+
         return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",post));
     }
 
@@ -315,7 +317,7 @@ public class AdminController {
         boolean b = adminService.postDelete(id);
 
 
-        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
     }
 

@@ -150,7 +150,7 @@ return result;
         public List<AreaDto> getAreas()
         {
             List<AreaDto> result = jpaQueryFactory
-                    .select(new QAreaDto(qareas.id, qareas.korName.as("areaName")))
+                    .select(new QAreaDto(qareas.id, qareas.korName,qareas.engName))
                     .from(qareas)
                     .fetch();
 
