@@ -31,6 +31,7 @@
 // @ is an alias to /src
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex';
 import axios from 'axios'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
@@ -42,6 +43,7 @@ export default {
   setup() {
     const adminLoginCredentials = ref({ userId: "", password: ""})
     const router = useRouter()
+    const store = useStore()
 
     const adminLoginConfirm = () => {
       console.log("admin 로그인 확인버튼 클릭됨!")
@@ -54,6 +56,8 @@ export default {
         .then(res => {
           console.log(res)
           localStorage.setItem('token', res.data.accessToken)
+          store.dispatch("staff_login")
+
           // modal 닫는 부분
           router.push({ name: 'AdminHome' })
         })
