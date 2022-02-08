@@ -13,13 +13,15 @@
       </div>
 
       
-      <button @click="logout">로그아웃</button>
+      <p id="desk-logout" @click="logout" class="t-gray-2 mt-auto">logout</p>
 
-      <div id="desk-home-post">
-        <!-- <img src="@/assets/seoul_place/경복궁낮.jpg" alt="test"> -->
-        <button @click="moveToPost">게시판으로 이동!</button>
+      <div id="go-post">
+        <p @click="moveToPost" class="text-white mb-3">담벼락 보러가기</p>
+        <a @click="moveToPost" class="arrow-button ms-4 text-white">
+          <i class="bi bi-arrow-right-circle"></i>
+        </a>
+        
       </div>
-      <hr>
     </div>
   </div>
 </template>
@@ -99,15 +101,29 @@ export default {
     opacity: 0.4; */
   }
 
+  .arrow-button {
+    font-size: 4rem;
+  }
+
   #go-meeting {
-    width: 40rem;
+    width: 50vw;
     height: 10rem;
     padding: 1.8rem;
     /* opacity: 0.8; */ 
   }
 
   #desk-content {
-    padding-top: 10rem;
-    padding-left: 9rem;
+    padding-top: 15vw;
+    padding-left: 15vw;
+  }
+
+  #go-post {
+    position: absolute;
+    top: 13vw; left: 87vw;
+  }
+
+  #desk-logout {
+    position: absolute;
+    top: 96vh; left: 20px;
   }
 </style>
