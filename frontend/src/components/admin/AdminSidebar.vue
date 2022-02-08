@@ -6,23 +6,79 @@
                     <span class="fs-5 d-none d-sm-inline"></span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
-                    <li class="nav-item">
-                      <router-link :to="{ name: 'AdminStaff' }" class="nav-link text-white align-middle px-0"> 
+                    <li v-if="currentTab =='0'" class="nav-item">
+                      <div type="button" class="nav-link text-white align-middle px-0" @click="moveToAdminStaff"> 
                         <span class="ms-1 d-none d-sm-inline">
                           <i class="bi bi-people-fill fs-3"></i>
                           스태프관리
                         </span>
                         
-                      </router-link>
+                      </div>
                     </li>
+                    <li v-else class="nav-item">
+                      <div type="button" class="nav-link text-white align-middle px-0" @click="moveToAdminStaff"> 
+                        <span class="ms-1 d-none d-sm-inline">
+                          <i class="bi bi-people-fill fs-3"></i>
+                          스태프관리ㅁ
+                        </span>
+                        
+                      </div>
+                    </li>
+
+                    <li v-if="currentTab =='1'" class="nav-item">
+                      <div type="button" class="nav-link text-white align-middle px-0" @click="moveToAdminDesk"> 
+                        <span class="ms-1 d-none d-sm-inline">
+                          <i class="bi bi-info-circle-fill fs-3"></i>
+                          데스크관리
+                        </span>
+                      </div>
+                    </li>
+                    <li v-else class="nav-item">
+                      <div type="button" class="nav-link text-white align-middle px-0" @click="moveToAdminDesk"> 
+                        <span class="ms-1 d-none d-sm-inline">
+                          <i class="bi bi-info-circle-fill fs-3"></i>
+                          데스크관리
+                        </span>
+                      </div>
+                    </li>
+
+
+                    <li v-if="currentTab =='2'" class="nav-item">
+                      <div type="button" class="nav-link text-white align-middle px-0" @click="moveToAdminPost"> 
+                        <span class="ms-1 d-none d-sm-inline">
+                          <i class="bi bi-clipboard-fill fs-3"></i>
+                          게시글관리ㅁ
+                        </span>
+                      </div>
+                    </li>
+                    <li v-else class="nav-item">
+                      <div type="button" class="nav-link text-white align-middle px-0" @click="moveToAdminPost"> 
+                        <span class="ms-1 d-none d-sm-inline">
+                          <i class="bi bi-clipboard-fill fs-3"></i>
+                          게시글관리
+                        </span>
+                      </div>
+                    </li>
+                    <!-- <li class="nav-item">
+                      <router-link :to="{ name: 'AdminStaff' }" class="nav-link text-white align-middle px-0" v-on:click="currentTab= 0"> 
+                        <span class="ms-1 d-none d-sm-inline">
+                          <i class="bi bi-people-fill fs-3"></i>
+                          스태프관리2
+                        </span>
+                        
+                      </router-link>
+                    </li> 
+ 
                     <li class="nav-item">
-                      <router-link :to="{ name: 'AdminDesk' }" class="nav-link text-white align-middle px-0"> 
+                      <router-link :to="{ name: 'AdminDesk' }" class="nav-link text-white align-middle px-0" v-on:click="currentTab= 1"> 
                         <span class="ms-1 d-none d-sm-inline">
                           <i class="bi bi-info-circle-fill fs-3"></i>
                           데스크관리
                         </span>
                       </router-link>
                     </li>
+
+
                     <li class="nav-item">
                       <router-link :to="{ name: 'AdminPost' }" class="nav-link text-white align-middle px-0"> 
                         <span class="ms-1 d-none d-sm-inline">
@@ -30,7 +86,7 @@
                           게시글관리
                         </span>
                       </router-link>
-                    </li>
+                    </li>-->
                 </ul>
                 <hr>
                 
@@ -65,11 +121,48 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'AdminSidebar',
+  data(){
+    return {
+      currentTab: 0, //기본값 0.
+      tabs: ['tabs1', 'tabs2', 'tabs3']
+    }
+  },
   components: {
+  },  
+  setup() {
+    const router = useRouter()
+
+
+    const moveToAdminStaff = () => {
+      //this.$currentTab= 0;
+      router.push({ name: 'AdminStaff' })
+    }
+
+    const moveToAdminDesk = () => {
+      //this.$currentTab= 1;
+      router.push({ name: 'AdminDesk' })
+    }
+
+    const moveToAdminPost = () => {
+      //this.$currentTab= 2;
+      router.push({ name: 'AdminPost' })
+    }
+
+
+    const logout = () => {
+      router.push({ name: 'AdminAuth' })
+    }
+
+    return {
+      moveToAdminStaff,
+      moveToAdminDesk,
+      moveToAdminPost,
+      logout,
+    }
   }
 }
 </script>

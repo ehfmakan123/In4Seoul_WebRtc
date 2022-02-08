@@ -50,8 +50,13 @@
               <td>2022-01-01 11:20</td>
               <td>2022-01-01 11:20</td>
             </tr>
-            <admin-staff-item
+            <!-- <admin-staff-item
               v-for="(article, index) in articles"
+              :key="index"
+              v-bind="article"
+            /> -->
+            <admin-staff-item
+              v-for="(adminstaff, index) in pageArray"
               :key="index"
               v-bind="article"
             />
@@ -59,6 +64,7 @@
         </table>
     
 
+    
     
     </div>
 
@@ -90,6 +96,7 @@
 
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import AdminStaffItem from '@/components/admin/AdminStaffItem.vue'
+import axios from 'axios'
 // @ is an alias to /src
 
 export default {
@@ -98,15 +105,34 @@ export default {
     AdminSidebar,
     AdminStaffItem,
   },
-  data() {
+  // data() {
+  //   return {
+  //     articles: [],
+  //   }
+  // },
+  data () {
     return {
-      articles: [],
+      pageArray: [],
+      adminpage: 'test'
     }
+  },
+  created () {
+    axios.get('http://127.0.0.1:8080/admin/staff', {headers: {
+                  //  Authorization: `Bearer ${token}`
+                    }})
+    .then(response => {
+      console.log(response);
+      this.pageArray = response.data.contacts;
+    })
+    .catch(err => {
+      console.log(err);
+    });
   },
   methods: {
     staffEdit(){
       this.$router.push({ name: 'AdminStaffEdit' })
     },
-  }
+  },
+  
 }
 </script>

@@ -1,27 +1,94 @@
 <template>
-    <div>(게시판 상세 페이지)</div>
-
-    <div>
-        <div>지역정보: <input></div>
-        <div>데스크정보: <input></div>
-        <div>제목: </div>
-        <div>내용: </div>
-        <div>비밀번호: </div>
-        <div>등록날짜:  </div>
-        <div>수정날짜: </div>
+    <div class="row flex-nowrap bg-gray-1">
+     <AdminSidebar />
+     <router-view/> 
+        <div class="w-80 p-5">
+            <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
+        <br>
+    <div class="bg-white shadow">
+      <div class="text-start p-3 fw-bold bd-bt ">게시판 관리＞게시글 상세정보</div>
+        <table hover responsive class="p-3 mt-3 bg-body rounded"><tbody>
+            <thead class="th-calss">
+                <tr class="tr-info"><th><br></th><th><br></th></tr>
+            </thead>        
+            <tr class="tr-info" data-bs-placement="top" >
+              <td>지역정보: </td>
+              <td><input class="form-control form-25" value=""></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>데스크이름: </td>
+              <td><input class="form-control form-25 "></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>내용 </td>
+              <td> <textarea class="form-control form-25" id="exampleFormControlTextarea1" rows="3"></textarea></td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>생성일 </td>
+              <td>2022-01-01 11:20</td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>수정일 </td>
+              <td>2022-01-01 11:20</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="bd-top">
+          <div class="d-flex flex-row-reverse bd-highlight">
+            <button class="btn btn-outline-danger bd-red-2 bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#adminpost_deleteModal">삭제</button>
+            <button class="btn btn-outline-dark bd-highlight m-2 rounded-pill bt-pdd" type="button"  data-bs-toggle="modal" data-bs-target="#adminpost_cancelModal">취소</button>
+          </div>
+          
+        </div>
+        
+        </div>
     </div>
-    <button variant="outline-primary" @click="postUpdate()">수정</button>
-    <button variant="outline-primary" @click="postCancel()">취소</button>
+        
+    </div>
+    <!-- delete modal -->
+    <div class="modal fade" id="adminpost_deleteModal" tabindex="-1" aria-labelledby="adminpost_deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content modal-rounded bd-red-2 px-4 pt-3 pb-4">
+            <div id="staff-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
+              <h5 class="modal-title ms-3 fs-5" >계정을 <strong class="t-red-2">삭제</strong>하시겠습니까?</h5>
+            </div>
+            <div class="modal-body">
+              <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-outline-danger bd-red-2 btn-yes-no " data-bs-dismiss="modal" @click="postDelete()">네</button>
+                <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
+              </div>          
+            </div>
+          </div>
+        </div>
+      </div>
+    <!-- cancel modal -->
+      <div class="modal fade" id="adminpost_cancelModal" tabindex="-1" aria-labelledby="adminpost_cancelModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+          <div class="modal-content modal-rounded bd-blue-4 px-4 pt-3 pb-4">
+            <div class="d-flex justify-content-center align-items-center mt-3">
+              <h5 class="modal-title ms-3 fs-5" id="staff-login-modal-label">수정을<strong class="t-blue-3">취소</strong>하시겠습니까?</h5>
+            </div>
+            <div class="modal-body">
+              <div class="d-flex justify-content-center mt-4">
+                <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" data-bs-dismiss="modal" @click="postCancel()" >네</button>
+              <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
+              </div>          
+            </div>
+          </div>
+        </div>
+      </div>
 </template>
 
 <script>
+import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 
 export default({
     name: 'AdminPostEdit',
     components: {
+        AdminSidebar,
     },
     methods: {
-        postUpdate(){
+        postDelete(){
             this.$router.push({ name: 'AdminPost' })
         },
         postCancel(){
