@@ -1,12 +1,12 @@
 <template>
   <div>
     <!-- 모달들 먼저 선언 -->
-    <!-- <post-password-form @password-correct="editPost"></post-password-form> -->
+    <post-password-form @password-correct="editPost"></post-password-form>
     
-    <!-- <div style="display: none;">
       <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="selectedPost"></post-update-form>
       <post-delete-form></post-delete-form>
       <post-close-form></post-close-form>
+    <!-- <div style="display: none;">
     </div> -->
 
     <!-- 상세조회 Modal -->
@@ -43,15 +43,15 @@
 
 <script>
 import { ref } from 'vue'
-// import PostPasswordForm from '@/components/post/PostPasswordForm'
-// import PostUpdateForm from '@/components/post/PostUpdateForm'
-// import PostCloseForm from '@/components/post/PostCloseForm'
-// import PostDeleteForm from '@/components/post/PostDeleteForm'
+import PostPasswordForm from '@/components/post/PostPasswordForm'
+import PostUpdateForm from '@/components/post/PostUpdateForm'
+import PostCloseForm from '@/components/post/PostCloseForm'
+import PostDeleteForm from '@/components/post/PostDeleteForm'
 
 
 export default {
   name: 'PostDetail',
-  // components: { PostUpdateForm, PostCloseForm, PostDeleteForm },
+  components: { PostPasswordForm, PostUpdateForm, PostCloseForm, PostDeleteForm },
   props:["selectedPost"],
   setup() {
     const state = ref({
