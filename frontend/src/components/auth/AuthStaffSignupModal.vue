@@ -32,7 +32,7 @@
             <input type="email" class="form-control bd-blue-3" placeholder="" aria-label="staff-signup-email" aria-describedby="staff-signup-email" v-model="staffSignupCredentials.email">
           </div>
           <div class="d-flex justify-content-center mt-5">
-            <button type="button" class="btn btn-outline-primary bd-blue-4 t-blue-3 btn-yes-no" @click="staffSignupConfirm">로그인</button>
+            <button type="button" class="btn btn-outline-primary bd-blue-4 t-blue-3 btn-yes-no" @click="staffSignupConfirm">회원가입</button>
             <button type="button" class="btn btn-outline-dark btn-yes-no ms-5" data-bs-dismiss="modal" @click="staffSignupCancel">취소</button>
           </div>
         </div>
@@ -56,10 +56,12 @@ export default {
 
     const staffSignupIdCheck = () => {
       console.log("staff 회원가입 중복확인버튼 클릭됨!")
-      console.log(`${SERVER_HOST}/staff/${staffSignupCredentials.value.userId}`)
       axios({
-        method: 'get',
-        url: `${SERVER_HOST}/staff/${staffSignupCredentials.value.userId}`
+        method: 'post',
+        url: `${SERVER_HOST}/staff/idcheck`,
+        data: {
+          "userId": staffSignupCredentials.value.userId
+          }
       })
         .then(res => {
           console.log(res)
