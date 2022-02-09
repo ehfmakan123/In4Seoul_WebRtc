@@ -26,7 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 public class AdminController {
 
 
@@ -55,7 +55,7 @@ public class AdminController {
         String password = loginInfo.getPassword();
         Staff admin = adminService.getStaffById(userId);
         if (admin == null) {
-            return ResponseEntity.ok(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
+            return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
         }
         if (password.equals(admin.getPassword())) {
 
@@ -65,7 +65,7 @@ public class AdminController {
                 // 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
                 return ResponseEntity.ok(UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "admin")));
             } else {
-                return ResponseEntity.ok(UserLoginPostRes.of(403, "권한이 없습니다", null));
+                return ResponseEntity.status(403).body(UserLoginPostRes.of(403, "권한이 없습니다", null));
             }
         }
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
@@ -169,7 +169,7 @@ public class AdminController {
 
         if(result==null)
         {
-            return ResponseEntity.status(201).body(BaseResponseBody.of(200,"사용 가능한 아이디"));
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"사용 가능한 아이디"));
         }
 
       else{

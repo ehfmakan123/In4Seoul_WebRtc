@@ -47,9 +47,16 @@ public class SsafyUserDetails implements UserDetails {
 		return  this.desk.getDeskId();
 	}
 
+	public int getDeskAreaId() {
+		return this.desk.getArea().getId();
+	}
+
+	public int getStaffAreaId() {
+		return this.staff.getAreas().getId();
+	}
 
 
-    public User getUser() {
+	public User getUser() {
     		return this.user;
     }
 	@Override

@@ -48,6 +48,7 @@ public class AdminRepositorySupport {
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
                 .join(qstaff.areas, qareas)
+                .where(qstaff.deleteYN.eq("N"))   // 삭제 상태인 상담원은 목록에 보이지 않는다
                 .orderBy(qstaff.id.desc())
                 .fetch();
 

@@ -54,6 +54,8 @@ public class StaffServiceImpl implements StaffService{
         staff.setDeleteYN("N");
         staff.setAdminYN("N");
         staff.setApproveYN("N");
+        staff.setFcmToken("0"); //기본값 0 로그아웃 상태
+        staff.setMatchYN("Y"); // 매치가능 여부 Y
 
         Staff save = staffRepository.save(staff);
 
