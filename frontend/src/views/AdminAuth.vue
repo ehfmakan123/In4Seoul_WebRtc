@@ -47,6 +47,7 @@ export default {
 
     const adminLoginConfirm = () => {
       console.log("admin 로그인 확인버튼 클릭됨!")
+      console.log(adminLoginCredentials.value)
 
       axios({
         method: 'post',
@@ -56,22 +57,22 @@ export default {
         .then(res => {
           console.log(res)
           localStorage.setItem('token', res.data.accessToken)
+          router.push({ name: 'AdminStaff' })
           store.dispatch("staff_login")
 
           // modal 닫는 부분
-          router.push({ name: 'AdminHome' })
         })
         .catch(err => {
           console.log('admin 로그인 error발생!')
           console.log(err.response.data)
-          const statusCode = err.response.data.statusCode
-          if (statusCode === 401) {
-            adminLoginCredentials.value.password = ''
-          }
-          else if (statusCode === 404) {
-            adminLoginCredentials.value.userId = ''
-            adminLoginCredentials.value.password = ''
-          }
+          // const statusCode = err.response.data.statusCode
+          // if (statusCode === 401) {
+          //   adminLoginCredentials.value.password = ''
+          // }
+          // else if (statusCode === 404) {
+          //   adminLoginCredentials.value.userId = ''
+          //   adminLoginCredentials.value.password = ''
+          // }
         })
     }
 
