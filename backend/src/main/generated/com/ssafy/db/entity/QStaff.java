@@ -37,7 +37,11 @@ public class QStaff extends EntityPathBase<Staff> {
 
     public final StringPath email = createString("email");
 
+    public final StringPath fcmToken = createString("fcmToken");
+
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
+
+    public final StringPath matchYN = createString("matchYN");
 
     public final StringPath name = createString("name");
 

@@ -30,4 +30,14 @@ public class Staff  extends BaseTimeEntity{
     @Column(name = "approve_yn")
     String approveYN;
 
+
+
+    //FCM 토큰 값  로그아웃 시 0으로 바뀜   로그인하면 토큰값을 저장
+    @Column(name = "fcm_token")
+    String fcmToken;
+
+    // 현재 상담중인지 여부
+    @Column(name="match_yn")
+    String matchYN;
+
 }

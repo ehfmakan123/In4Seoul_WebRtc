@@ -1,6 +1,5 @@
 package com.ssafy.db.repository;
 
-import com.querydsl.core.Tuple;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.QMeetingLogDto;
@@ -22,8 +21,8 @@ public class StaffRepositorySupport {
     QAreas qareas= QAreas.areas;
     QDesks qdesk=QDesks.desks;
     QPosts qpost=QPosts.posts;
-    QMeetingHistory qmeeting=QMeetingHistory.meetingHistory;
-
+    QMeetingHistory qmeetingHistory =QMeetingHistory.meetingHistory;
+    QMeeting qmeeting= QMeeting.meeting;
 
 
     //내 정보 조회
@@ -51,14 +50,58 @@ public class StaffRepositorySupport {
     {
 
         List<MeetingLogDto> result = jpaQueryFactory
-                .select(new QMeetingLogDto(qmeeting.id, qdesk.korName.as("deskName"), qmeeting.startedAt, qmeeting.endedAt, qmeeting.content))
-                .from(qmeeting)
-                .join(qmeeting.desks, qdesk)
-                .where(qmeeting.staff.id.eq(id))
-                .orderBy(qmeeting.id.desc())
+                .select(new QMeetingLogDto(qmeetingHistory.id, qdesk.korName.as("deskName"), qmeetingHistory.startedAt, qmeetingHistory.endedAt, qmeetingHistory.content))
+                .from(qmeetingHistory)
+                .join(qmeetingHistory.desks, qdesk)
+                .where(qmeetingHistory.staff.id.eq(id))
+                .orderBy(qmeetingHistory.id.desc())
                 .fetch();
 
 
         return result;
     }
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 화상 상담 관련
+
+
+
+    // 알림을 보내줄 상담사들을 선택
+    public List<Staff> getStaffList(int areaId)
+    {
+        List<Staff> result = jpaQueryFactory
+                .select(qstaff)
+                .from(qstaff)
+                .where(qstaff.areas.id.eq(areaId).and(qstaff.matchYN.eq("Y")).and(qstaff.fcmToken.eq("0"
+                ).not()))
+                .fetch();
+
+        return result;
+    }
+
+
+
+    //지역에 해당하는 상담 대기 목록 가져오기
+    public long getMeeting(int areaId)
+    {
+
+        long count = jpaQueryFactory
+                .select(qmeeting)
+                .from(qmeeting)
+                .where(qmeeting.areaId.eq(areaId))
+                .fetchCount();
+return count;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

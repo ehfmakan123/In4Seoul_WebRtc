@@ -5,6 +5,7 @@ import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.api.response.UserLoginPostRes;
+import com.ssafy.api.service.FirebaseService;
 import com.ssafy.api.service.StaffService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
@@ -22,16 +23,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("/staff")
+@RequestMapping("api/staff")
 public class StaffController {
 
 
     @Autowired
     StaffService staffService;
 
+
+    @Autowired
+    FirebaseService firebaseService;
 
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -106,7 +112,6 @@ public class StaffController {
         if (result == null) {
             return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
         }
-
 
         if (passwordEncoder.matches(password, result.getPassword())) {
 
@@ -213,6 +218,58 @@ public class StaffController {
         return ResponseEntity.status(200).body(new ListResult<>(200, "성공", result));
 
 
+    }
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+    // 상담원 로그인 성공 후 fcm토큰 발급해서 백엔드로 넘겨준다
+
+    @PostMapping("/fcmtoken")
+    @ApiOperation(value = "아이디 중복확인", notes = "<strong>이미 존재하는 아이디인지 확인한다.</strong>")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "회원가입 성공", response = UserLoginPostRes.class),
+            @ApiResponse(code = 400, message = "비밀번호가 일치하지 않습니다", response = BaseResponseBody.class),
+            @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
+    })
+    public ResponseEntity<BaseResponseBody> fcmToken(@RequestBody Map<String, String> body,@ApiIgnore Authentication authentication) {
+
+
+        //프론트에서 발급받은 토큰
+        String token=body.get("token");
+
+        // 토큰 발급받은 상담사 아이디
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String userId = userDetails.getStaffId();
+
+        firebaseService.saveToken(token,userId);
+
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "성공"));
+    }
+
+
+
+
+    // 같은 지역의 대기중인 상담요청 개수를 가지고 온다
+    @GetMapping("/meeting")
+
+    public ResponseEntity<SingleResult<Map<String,Long>>> meeting(@ApiIgnore Authentication authentication) {
+
+
+
+        // 토큰 발급받은 상담사 아이디
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+
+        int areaId= userDetails.getStaffAreaId();
+
+
+        Map<String,Long> map=new HashMap<>();
+
+        System.out.println("지역코드="+areaId);
+        long result = firebaseService.getMeeting(areaId);
+
+        map.put("count",result);
+        return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
     }
 
 

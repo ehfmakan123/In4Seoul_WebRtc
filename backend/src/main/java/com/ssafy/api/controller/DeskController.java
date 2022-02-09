@@ -8,6 +8,7 @@ import com.ssafy.api.request.PostReq;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.DeskService;
+import com.ssafy.api.service.FirebaseService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.ListResult;
@@ -26,7 +27,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 
 @RestController
-@RequestMapping("/desk")
+@RequestMapping("api/desk")
 public class DeskController {
 
 
@@ -36,6 +37,9 @@ public class DeskController {
     @Autowired
     PasswordEncoder passwordEncoder;
 
+
+    @Autowired
+    FirebaseService firebaseService;
 
 
 
@@ -165,6 +169,26 @@ public class DeskController {
         return ResponseEntity.status(200).body(new ListResult<>(200,"성공",result));
     }
 
+
+
+    //화상 상담 관련
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+    //상담 신청
+    @PostMapping("/meeting")        //url 이 이게 맞을까..
+    public ResponseEntity <BaseResponseBody> Meeting(@ApiIgnore Authentication authentication) {
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String DeskId = userDetails.getDeskId();
+        int areaId=userDetails.getDeskAreaId();
+
+
+        firebaseService.sendMessage(DeskId,areaId);
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+    }
 
 
 }
