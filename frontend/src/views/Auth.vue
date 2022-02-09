@@ -45,7 +45,7 @@
       <hr>
       <p style="font-weight: bold; font-size: 2.5rem;" class="my-4 bg-blue-1">임시 이동 버튼입니다</p>
       <button @click="moveToDesk" type="button" class="btn btn-info me-4">Desk 메인페이지로 이동</button>
-      <button @click="moveToAdminLogin" type="button" class="btn btn-info me-4">Admin 로그인 페이지로 이동</button>
+      <button @click="moveToStaff" type="button" class="btn btn-info me-4">상담사 메인페이지로 이동</button>
       <button @click="moveToAdminStaff" type="button" class="btn btn-info me-4">Admin 상담사관리 페이지로 이동</button>
     </div>
 
@@ -86,10 +86,10 @@ export default {
       console.log("데스크 메인페이지 이동 버튼 클릭됨!")
       router.push({ name: 'DeskHome' })
     }
-
-    const moveToAdminLogin = () => {
-      console.log("관리자 로그인 페이지 이동 버튼 클릭됨!")
-      router.push({ name: 'AdminAuth' })
+    
+    const moveToStaff = () => {
+      console.log("상담사 메인페이지 이동 버튼 클릭됨!")
+      router.push({ name: 'StaffHome' })
     }
 
     const moveToAdminStaff = () => {
@@ -102,7 +102,7 @@ export default {
       staffLoginClick,
       staffSignupClick,
       moveToDesk,
-      moveToAdminLogin,
+      moveToStaff,
       moveToAdminStaff
     }
   }
