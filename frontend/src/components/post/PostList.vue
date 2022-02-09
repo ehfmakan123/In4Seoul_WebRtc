@@ -13,7 +13,7 @@
     <post-delete-form :postId="state.selectedPost.postId"></post-delete-form>
 
 
-    <div class="row p-4">
+    <div class="row p-5">
       <post-list-item
         
         v-for="post in postList"

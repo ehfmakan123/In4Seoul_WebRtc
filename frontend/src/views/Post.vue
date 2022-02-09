@@ -148,7 +148,7 @@ export default {
     font-weight: bold;
   }
 
-  .postit{
+  .bg-yellow{
     background-color: lightgoldenrodyellow!important;
   }
 
