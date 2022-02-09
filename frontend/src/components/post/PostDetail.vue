@@ -1,18 +1,18 @@
 <template>
   <div>
     <!-- 모달들 먼저 선언 -->
-    <!-- <post-password-form @password-correct="editPost"></post-password-form> -->
+    <post-password-form @password-correct="editPost"></post-password-form>
     
-    <!-- <div style="display: none;">
       <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="selectedPost"></post-update-form>
       <post-delete-form></post-delete-form>
       <post-close-form></post-close-form>
+    <!-- <div style="display: none;">
     </div> -->
 
     <!-- 상세조회 Modal -->
     <div class="modal fade" id="detailModal" style="z-index: 1055;" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content postit">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ selectedPost.title }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -43,15 +43,15 @@
 
 <script>
 import { ref } from 'vue'
-// import PostPasswordForm from '@/components/post/PostPasswordForm'
-// import PostUpdateForm from '@/components/post/PostUpdateForm'
-// import PostCloseForm from '@/components/post/PostCloseForm'
-// import PostDeleteForm from '@/components/post/PostDeleteForm'
+import PostPasswordForm from '@/components/post/PostPasswordForm'
+import PostUpdateForm from '@/components/post/PostUpdateForm'
+import PostCloseForm from '@/components/post/PostCloseForm'
+import PostDeleteForm from '@/components/post/PostDeleteForm'
 
 
 export default {
   name: 'PostDetail',
-  // components: { PostUpdateForm, PostCloseForm, PostDeleteForm },
+  components: { PostPasswordForm, PostUpdateForm, PostCloseForm, PostDeleteForm },
   props:["selectedPost"],
   setup() {
     const state = ref({

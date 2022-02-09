@@ -3,13 +3,13 @@
     <!-- 글 수정 Modal -->
     <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
+        <div class="modal-content postit">
           <div class="modal-header">
-            <p class="w-100"><input class="w-100 input-title" type="text" v-model="postData" placeholder="제목을 입력해주세요"></p>
+            <p class="w-100"><input class="w-100 input-title" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
           </div>
           <div class="modal-body" style="height: 27rem;">
             <p>vuex post: {{post}}</p><br>
-            <textarea rows="5" v-model="postData" type="text" class="form-control"></textarea>
+            <textarea rows="5" v-model="state.myPost.content" type="text" class="form-control"></textarea>
             <!-- <p><input class="input-content" type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p> -->
             <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
           </div>
@@ -36,7 +36,7 @@
 
 <script>
 // import axios from 'axios'
-import { computed, reactive } from 'vue'
+import { computed, ref } from 'vue'
 // import { mapState } from 'vuex'
 
 export default {
@@ -49,18 +49,18 @@ export default {
   // computed: {
   //   ...mapState(['post'])
   // },
-  data() {
-    return {
-      postData: this.post
-    }
-  },
-  setup(post, { emit }) {
+  // data() {
+  //   return {
+  //     postData: this.post
+  //   }
+  // },
+  setup(props, { emit }) {
     console.log('update form 생성됨')
 
-    const state = reactive({
+    const state = ref({
       myPost: {
-        title: computed(() => post.title),
-        content: computed(() => post.content)
+        title: computed(() => props.post.title),
+        content: computed(() => props.post.content)
       }
     })
 

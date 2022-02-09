@@ -148,6 +148,12 @@ export default {
     font-weight: bold;
   }
 
+  .bg-yellow{
+    background-color: lightgoldenrodyellow!important;
+  }
+
+
+
   .input-title {
     height: 2.5rem;
   }
