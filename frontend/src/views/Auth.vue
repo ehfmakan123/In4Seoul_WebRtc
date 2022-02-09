@@ -8,6 +8,7 @@
     <AuthStaffLoginModal/>
     <AuthStaffSignupModal/> -->
 
+
     <h1>서울시 여행 안내 데스크</h1>
     <h1 class="mt-3">Seoul Travel Information Service</h1>
 
@@ -39,6 +40,15 @@
         </div>
       </div>
     </div><!--auth-button-container 끝-->
+
+    <div>
+      <hr>
+      <p style="font-weight: bold; font-size: 2.5rem;" class="my-4 bg-blue-1">임시 이동 버튼입니다</p>
+      <button @click="moveToDesk" type="button" class="btn btn-info me-4">Desk 메인페이지로 이동</button>
+      <button @click="moveToStaff" type="button" class="btn btn-info me-4">상담사 메인페이지로 이동</button>
+      <button @click="moveToAdminStaff" type="button" class="btn btn-info me-4">Admin 상담사관리 페이지로 이동</button>
+    </div>
+
   </div>
 </template>
 
@@ -48,7 +58,7 @@
 import AuthDeskLoginModal from '@/components/auth/AuthDeskLoginModal.vue'
 import AuthStaffLoginModal from '@/components/auth/AuthStaffLoginModal.vue'
 import AuthStaffSignupModal from '@/components/auth/AuthStaffSignupModal.vue'
-
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'Auth',
@@ -58,6 +68,7 @@ export default {
     AuthStaffSignupModal
   },
   setup() {
+    const router = useRouter()
     
     const deskLoginClick = () => {
       console.log("desk 로그인 버튼 클릭됨!")
@@ -71,10 +82,28 @@ export default {
       console.log("staff 회원가입 버튼 클릭됨!")
     }
 
+    const moveToDesk = () => {
+      console.log("데스크 메인페이지 이동 버튼 클릭됨!")
+      router.push({ name: 'DeskHome' })
+    }
+    
+    const moveToStaff = () => {
+      console.log("상담사 메인페이지 이동 버튼 클릭됨!")
+      router.push({ name: 'StaffHome' })
+    }
+
+    const moveToAdminStaff = () => {
+      console.log("관리자 상담사관리 페이지 이동 버튼 클릭됨!")
+      router.push({ name: 'AdminStaff' })
+    }
+
     return { 
       deskLoginClick,
       staffLoginClick,
       staffSignupClick,
+      moveToDesk,
+      moveToStaff,
+      moveToAdminStaff
     }
   }
 }
