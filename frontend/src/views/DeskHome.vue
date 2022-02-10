@@ -20,7 +20,6 @@
         <a @click="moveToPost" class="arrow-button ms-4 text-white">
           <i class="bi bi-arrow-right-circle"></i>
         </a>
-        
       </div>
     </div>
   </div>
@@ -29,6 +28,9 @@
 <script>
 // @ is an alias to /src
 import { useRouter } from 'vue-router'
+import axios from 'axios'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'DeskHome',
@@ -44,7 +46,22 @@ export default {
 
     const moveToMeeting = () => {
       console.log("화상 상담 연결하기 버튼 클릭됨!")
-      router.push({ name: 'Meeting' })
+      const jwtToken = localStorage.getItem('token')
+      axios({
+        method: 'post',
+        url: `${SERVER_HOST}/desk/meeting`,
+        headers : {
+          Authorization: `Bearer ${jwtToken}` 
+        }
+      })
+        .then((res) => {
+          // console.log('알람개수 갱신:', res.data.data.count)
+          // console.log(typeof res.data.data.count)
+          console.log(`화상상담 연결!: ${res}`)
+          router.push({ name: 'Meeting' })
+        })
+        .catch((err) => console.log(err))
+
     }
 
     const logout = () => {
