@@ -1,9 +1,9 @@
 <template>
   <div>
     <!-- 모달들 먼저 선언 -->
-    <post-password-form @password-correct="editPost"></post-password-form>
+    <post-password-form></post-password-form>
     
-      <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="selectedPost"></post-update-form>
+      <post-update-form :post="selectedPost"></post-update-form>
       <post-delete-form></post-delete-form>
       <post-close-form></post-close-form>
     <!-- <div style="display: none;">
@@ -47,6 +47,7 @@ import PostPasswordForm from '@/components/post/PostPasswordForm'
 import PostUpdateForm from '@/components/post/PostUpdateForm'
 import PostCloseForm from '@/components/post/PostCloseForm'
 import PostDeleteForm from '@/components/post/PostDeleteForm'
+import { Modal } from 'bootstrap'
 
 
 export default {
@@ -60,14 +61,13 @@ export default {
       showDeleteForm: false,
       showCloseForm: false,
     })
+
     const tryEdit = () => {
-      console.log("편집 버튼 클릭됨!")
-      console.log("비밀번호 입력 모달 열림")
-      // 모달창 켜기
+      console.log("편집 버튼 클릭됨. 비밀번호 입력 모달 열림!")
+
       const passwordModal = document.querySelector('#passwordModal')
-      passwordModal.classList.add("show")
-      // document.querySelector(".modal-backdrop").remove()
-      passwordModal.style.display = "block"
+      const modal = Modal.getOrCreateInstance(passwordModal)
+      modal.show()
     }
     const cancle = () => {
       console.log("닫기 버튼 클릭됨!")

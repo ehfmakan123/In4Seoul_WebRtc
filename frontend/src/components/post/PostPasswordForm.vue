@@ -31,13 +31,14 @@
 <script>
 // import axios from 'axios'
 import { ref } from 'vue'
+import { Modal } from 'bootstrap'
 
 export default {
   name: 'PostPasswordForm',
   components: {
   },
   props: ['postId'],
-  setup(props, {emit}) {
+  setup() {
     
     const state = ref({
       passwordConfirm: ''
@@ -55,18 +56,30 @@ export default {
       // })
       //   .then(() => {
       //     console.log('비밀번호 일치함. 편집모달로 이동!')
+          
           // passwordModal 끄기
           const passwordModal = document.querySelector('#passwordModal')
-          passwordModal.classList.remove("in")
-          passwordModal.style.display = "none"
+          let modal = Modal.getOrCreateInstance(passwordModal)
+          modal.hide()
+          // const passwordModal = document.querySelector('#passwordModal')
+          // passwordModal.classList.remove("in")
+          // passwordModal.style.display = "none"
+          
           // detailModal 끄기
           const detailModal = document.querySelector('#detailModal')
-          detailModal.classList.remove("show")
+          modal = Modal.getOrCreateInstance(detailModal)
+          modal.hide()
+          // const detailModal = document.querySelector('#detailModal')
+          // detailModal.classList.remove("show")
           // detailModal.style.display = "none"
+
           // updateModal 켜기
           const updateModal = document.querySelector('#updateModal')
-          updateModal.classList.add("show")
-          updateModal.style.display = "block"
+          modal = Modal.getOrCreateInstance(updateModal)
+          modal.show()
+          // const updateModal = document.querySelector('#updateModal')
+          // updateModal.classList.add("show")
+          // updateModal.style.display = "block"
 
           state.value.passwordConfirm = ''
         // })
@@ -75,15 +88,17 @@ export default {
         //   console.log('비밀번호가 다름!!!')
         //   const errorMessage = document.querySelector('#password-error')
         //   errorMessage.classList.remove('d-none')
-        // })  
-      emit('password-correct')
+        // })
     }
     const cancle = () => {
-      console.log("닫기 버튼 클릭됨!")
+      console.log("닫기 버튼 클릭됨")
       // 모달창 끄기
       const passwordModal = document.querySelector('#passwordModal')
-      passwordModal.classList.remove("in")
-      passwordModal.style.display = "none"
+      const modal = Modal.getOrCreateInstance(passwordModal)
+      modal.hide()
+      // const passwordModal = document.querySelector('#passwordModal')
+      // passwordModal.classList.remove("in")
+      // passwordModal.style.display = "none"
     }
     return { state, confirm, cancle }
   }

@@ -7,7 +7,7 @@
             <p>내용을 저장하지 않고 닫으시겠습니까?</p>
             <p class="d-flex justify-content-end">
               <button @click="close" type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-              <button @click="cancle" type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button @click="cancle" type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateModal">취소</button>
             </p>
           </div>
         </div>
@@ -33,11 +33,6 @@ export default {
   setup() {
     const close = () => {
       console.log("확인 버튼 클릭됨!")
-      // 모달창 끄기
-      const updateModal = document.querySelector('#updateModal')
-      updateModal.classList.remove("in")
-      document.querySelector(".modal-backdrop").remove()
-      updateModal.style.display = "none"
     }
     const cancle = () => {
       console.log("취소 버튼 클릭됨!")

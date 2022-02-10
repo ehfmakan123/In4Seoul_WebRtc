@@ -8,13 +8,12 @@
             <p class="w-100"><input class="w-100 input-title" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
           </div>
           <div class="modal-body" style="height: 27rem;">
-            <p>vuex post: {{post}}</p><br>
             <textarea rows="5" v-model="state.myPost.content" type="text" class="form-control"></textarea>
             <!-- <p><input class="input-content" type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p> -->
             <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
           </div>
           <div class="modal-footer">
-            <button data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tryDelete" type="submit" class="btn">삭제</button>
+            <button @click="tryDelete" type="submit" class="btn">삭제</button>
             <button @click="savePost" type="submit" class="btn btn-primary">저장</button>
             <button data-bs-toggle="modal" data-bs-target="#closeModal" @click="cancle" type="button" class="btn btn-secondary">닫기</button>
           </div>
@@ -37,6 +36,7 @@
 <script>
 // import axios from 'axios'
 import { computed, ref } from 'vue'
+import { Modal } from 'bootstrap'
 // import { mapState } from 'vuex'
 
 export default {
@@ -54,7 +54,7 @@ export default {
   //     postData: this.post
   //   }
   // },
-  setup(props, { emit }) {
+  setup(props) {
     console.log('update form 생성됨')
 
     const state = ref({
@@ -66,7 +66,9 @@ export default {
 
     const tryDelete = () => {
       console.log("삭제 버튼 클릭됨!")
-      // emit('try-delete')
+      const deleteModal = document.querySelector('#deleteModal')
+      let modal = Modal.getOrCreateInstance(deleteModal)
+      modal.show()
     }
 
     const savePost = () => {
@@ -86,9 +88,12 @@ export default {
           // this.fetchReviewList(this.movieDetail.id)
           // 모달창 끄기
           const updateModal = document.querySelector('#updateModal')
-          updateModal.classList.remove("in")
-          document.querySelector(".modal-backdrop").remove()
-          updateModal.style.display = "none"
+          let modal = Modal.getOrCreateInstance(updateModal)
+          modal.hide()
+          // const updateModal = document.querySelector('#updateModal')
+          // updateModal.classList.remove("in")
+          // document.querySelector(".modal-backdrop").remove()
+          // updateModal.style.display = "none"
         // })
         // .catch(err => console.error(err))
 
@@ -96,7 +101,9 @@ export default {
 
     const cancle = () => {
       console.log("닫기 버튼 클릭됨!")
-      emit('try-unsave-close')
+      const closeModal = document.querySelector('#closeModal')
+      let modal = Modal.getOrCreateInstance(closeModal)
+      modal.show()
     }
 
     return {state, tryDelete, savePost, cancle}
