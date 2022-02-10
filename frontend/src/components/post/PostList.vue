@@ -4,16 +4,16 @@
     <!-- detail Modal -->
     <post-detail :selectedPost="state.selectedPost"></post-detail>
     <!-- password modal -->
-    <post-password-form :postId="state.selectedPost.postId"></post-password-form>
+    <!-- <post-password-form :postId="state.selectedPost.postId"></post-password-form> -->
     <!-- update modal -->
-    <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="state.selectedPost"></post-update-form>
+    <!-- <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="state.selectedPost"></post-update-form> -->
     <!-- close modal -->
-    <post-close-form></post-close-form>
+    <!-- <post-close-form></post-close-form> -->
     <!-- delete modal -->
-    <post-delete-form :postId="state.selectedPost.postId"></post-delete-form>
+    <!-- <post-delete-form :postId="state.selectedPost.postId"></post-delete-form> --> -->
 
 
-    <div class="row p-4">
+    <div class="row p-5">
       <post-list-item
         
         v-for="post in postList"
@@ -30,14 +30,14 @@
 import { ref } from 'vue'
 import PostListItem from '@/components/post/PostListItem'
 import PostDetail from '@/components/post/PostDetail'
-import PostPasswordForm from '@/components/post/PostPasswordForm'
-import PostUpdateForm from '@/components/post/PostUpdateForm'
-import PostCloseForm from '@/components/post/PostCloseForm'
-import PostDeleteForm from '@/components/post/PostDeleteForm'
+// import PostPasswordForm from '@/components/post/PostPasswordForm'
+// import PostUpdateForm from '@/components/post/PostUpdateForm'
+// import PostCloseForm from '@/components/post/PostCloseForm'
+// import PostDeleteForm from '@/components/post/PostDeleteForm'
 
 export default {
   name: 'PostList',
-  components: { PostListItem, PostDetail, PostPasswordForm, PostUpdateForm, PostCloseForm, PostDeleteForm },
+  components: { PostListItem, PostDetail}, //, PostPasswordForm, PostUpdateForm, PostCloseForm, PostDeleteForm 
   props: ["postList"],
   setup() {
     const state = ref({

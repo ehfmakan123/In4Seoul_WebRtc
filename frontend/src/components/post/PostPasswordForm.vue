@@ -2,7 +2,7 @@
   <div>
     <div class="modal fade" id="passwordModal" style="z-index: 1060;" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
       <div class="second-modal modal-dialog modal-dialog-centered">
-        <div class="modal-content" style="width:30rem; height:9rem">
+        <div class="modal-content bd-blue-4 px-4 pt-3 pb-4" style="width:30rem; height:9rem">
           <!-- <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ selectedPost.title }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -89,3 +89,10 @@ export default {
   }
 }
 </script>
+<style scoped>
+  #passwordModal .modal-content{
+    border-width: 2px;
+    border-style: solid;
+    border-radius: 1rem;
+  }
+</style>
