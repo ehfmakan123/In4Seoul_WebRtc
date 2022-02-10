@@ -16,7 +16,7 @@
       </ul>    
     </div>
 
-    <div>
+    <div class="vh-100">
       <h1 class="m-3">서울 여행자들의 담벼락</h1>
       <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
       <post-filter></post-filter>
@@ -141,13 +141,13 @@ export default {
 </script>
 <style>
   h1 {
-    font-size: 2rem!important;
+    font-size: 3vh!important;
     font-weight: bold!important;
     /* font-weight: 500!important; */
   }
 
   h3 {
-    font-size: 1rem!important;
+    font-size: 2vh!important;
   }
 
   .bg-yellow{

@@ -1,5 +1,5 @@
 <template>
-  <div class="wall-background">
+  <div class="wall-background w-100 h-auto">
     <div class="foggy-background">
       <!-- detail Modal -->
       <post-detail :selectedPost="state.selectedPost"></post-detail>
@@ -47,7 +47,7 @@ export default {
     background-image: url('../../assets/wall.jpg');
     background-repeat : no-repeat;
     background-size: cover;
-    height: 90%;
+    height: auto;
   }
 
   .foggy-background {
