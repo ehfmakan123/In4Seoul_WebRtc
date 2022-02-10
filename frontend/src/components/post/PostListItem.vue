@@ -31,6 +31,7 @@ export default {
 
   .postit {
     height: 20vw; 
+    width: 20vw; 
     border: 0rem
   }
 </style>

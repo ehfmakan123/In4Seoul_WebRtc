@@ -38,14 +38,16 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { ref } from 'vue'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'PostForm',
   components: {
   },
-  setup(props, { emit }) {
+  setup() {
     const state = ref({
       myPost: {
         title: '',
@@ -55,70 +57,65 @@ export default {
       }
     })
 
-    // const tokenHeader = () => {
-    //   const token = localStorage.getItem('token')
-    //   return {
-    //     Authorization: `Token ${token}`
-    //   }
-    // }
-
     const savePost = () => {
       console.log("저장 버튼 클릭됨!")
       console.log(state.value.myPost)
 
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
       if (state.value.myPost.password === state.value.myPost.passwordConfirm) {
         console.log('비밀번호 일치함')
-        // post를 추가하기 위한 임시 emit 코드
-        emit('add-new-post', {
-          "id":"1",
-          "title":state.value.myPost.title,
-          "content":state.value.myPost.content,
-          "createdAt":"2022-01-01 11:20:00",
-          "updatedAt":"2022-01-01 11:20:00"
-        })
-        state.value.myPost = {
-              title: '',
-              content: '',
-              password: '',
-              passwordConfirm: ''
-            }
-        //
-
-        // axios({
-        //   method: 'post',
-        //   url: `http://127.0.0.1:8000/board/posts`,
-        //   headers: tokenHeader(),
-        //   data: {
-        //     deskId: 1,
-        //     areaId: 1,
-        //     title: state.value.myPost.title,
-        //     content: state.value.myPost.content,
-        //     password: state.value.myPost.password,
-        //   }
+        // // post를 추가하기 위한 임시 emit 코드
+        // emit('add-new-post', {
+        //   "id":"1",
+        //   "title":state.value.myPost.title,
+        //   "content":state.value.myPost.content,
+        //   "createdAt":"2022-01-01 11:20:00",
+        //   "updatedAt":"2022-01-01 11:20:00"
         // })
-        //   .then(() => {
-        //     // fetchPostList
-        //     state.value.myPost = {
+        // state.value.myPost = {
         //       title: '',
         //       content: '',
         //       password: '',
         //       passwordConfirm: ''
         //     }
-        //   })
-        //   .catch(err => console.error(err))      
+        //
+
+        axios({
+          method: 'post',
+          url: `${SERVER_HOST}/desk/posts`,
+          headers: config,
+          data: {
+            title: state.value.myPost.title,
+            content: state.value.myPost.content,
+            password: state.value.myPost.password,
+          }
+        })
+          .then(res => {
+            console.log(res)
+            // fetchPostList
+            state.value.myPost = {
+              title: '',
+              content: '',
+              password: '',
+              passwordConfirm: ''
+            }
+            // 모달창 끄기
+            const createModal = document.querySelector('#createModal')
+            createModal.classList.remove("in")
+            document.querySelector(".modal-backdrop").remove()
+            createModal.style.display = "none"
+          })
+          .catch(err => console.error(err))      
       
-      const createModal = document.querySelector('#createModal')
-      createModal.classList.remove("in")
-      document.querySelector(".modal-backdrop").remove()
-      createModal.style.display = "none"
-            
       } else {
         console.log('비밀번호가 다름!!!')
         const errorMessage = document.querySelector('#password-error')
         errorMessage.classList.remove('d-none')
       }
-
-
     }
 
     const cancle = () => {

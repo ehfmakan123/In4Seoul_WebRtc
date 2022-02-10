@@ -8,13 +8,12 @@
             <p class="w-100"><input class="w-100 input-title" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
           </div>
           <div class="modal-body" style="height: 27rem;">
-            <p>vuex post: {{post}}</p><br>
-            <textarea rows="5" v-model="state.myPost.content" type="text" class="form-control"></textarea>
+            <textarea rows="15" v-model="state.myPost.content" type="text" class="form-control"></textarea>
             <!-- <p><input class="input-content" type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p> -->
             <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
           </div>
           <div class="modal-footer">
-            <button data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tryDelete" type="submit" class="btn">삭제</button>
+            <button data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tryDelete" type="submit" class="btn btn-secondary">삭제</button>
             <button @click="savePost" type="submit" class="btn btn-primary">저장</button>
             <button data-bs-toggle="modal" data-bs-target="#closeModal" @click="cancle" type="button" class="btn btn-secondary">닫기</button>
           </div>

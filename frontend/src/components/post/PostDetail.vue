@@ -2,10 +2,9 @@
   <div>
     <!-- 모달들 먼저 선언 -->
     <post-password-form @password-correct="editPost"></post-password-form>
-    
-      <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="selectedPost"></post-update-form>
-      <post-delete-form></post-delete-form>
-      <post-close-form></post-close-form>
+    <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="selectedPost"></post-update-form>
+    <post-delete-form></post-delete-form>
+    <post-close-form></post-close-form>
     <!-- <div style="display: none;">
     </div> -->
 

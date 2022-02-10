@@ -10,7 +10,7 @@
     <!-- close modal -->
     <!-- <post-close-form></post-close-form> -->
     <!-- delete modal -->
-    <!-- <post-delete-form :postId="state.selectedPost.postId"></post-delete-form> --> -->
+    <!-- <post-delete-form :postId="state.selectedPost.postId"></post-delete-form> -->
 
 
     <div class="row p-5">
