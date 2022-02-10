@@ -2,17 +2,14 @@
   <div>
     <!-- 모달들 먼저 선언 -->
     <post-password-form></post-password-form>
-    
-      <post-update-form :post="selectedPost"></post-update-form>
-      <post-delete-form></post-delete-form>
-      <post-close-form></post-close-form>
-    <!-- <div style="display: none;">
-    </div> -->
+    <post-update-form :post="selectedPost"></post-update-form>
+    <post-delete-form></post-delete-form>
+    <post-close-form></post-close-form>
 
     <!-- 상세조회 Modal -->
     <div class="modal fade" id="detailModal" style="z-index: 1055;" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content postit">
+        <div class="modal-content postit bg-yellow">
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLabel">{{ selectedPost.title }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

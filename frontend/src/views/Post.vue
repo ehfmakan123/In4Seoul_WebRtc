@@ -17,8 +17,8 @@
     </div>
 
     <div>
-      <h1>서울 여행자들의 담벼락</h1>
-      <p class="t-gray-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</p>
+      <h1 class="m-3">서울 여행자들의 담벼락</h1>
+      <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
       <post-filter></post-filter>
       
       <post-list :postList="state.postList"></post-list>
@@ -43,9 +43,6 @@ export default {
     PostList,
   },
   setup() {
-    // 여기에 created 때 필요한 로직 작성
-
-
     const state = ref({
       showPostForm: false,
       postList: [
@@ -144,15 +141,18 @@ export default {
 </script>
 <style>
   h1 {
-    font-size: 2rem;
-    font-weight: bold;
+    font-size: 2rem!important;
+    font-weight: bold!important;
+    /* font-weight: 500!important; */
+  }
+
+  h3 {
+    font-size: 1rem!important;
   }
 
   .bg-yellow{
-    background-color: lightgoldenrodyellow!important;
+    background-color: #FFEEAC!important;
   }
-
-
 
   .input-title {
     height: 2.5rem;
