@@ -73,7 +73,7 @@ export default {
               const fcmToken = localStorage.getItem('fcmtoken')
               console.log('fcmToken: ',fcmToken)
 
-              // 토큰을 받아오면 토큰값 서버에 보내기 (현재는 상담기록 불러오는 것 예시) <<<<<<<<<<<<<<<<<<<<<<<<<<<< 수정
+              // 토큰을 받아오면 토큰값 서버에 보내기
               axios({
                 method: 'post',
                 url: `${SERVER_HOST}/staff/fcmtoken` ,
