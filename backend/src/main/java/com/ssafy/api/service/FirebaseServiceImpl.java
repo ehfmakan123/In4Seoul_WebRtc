@@ -75,23 +75,23 @@ public class FirebaseServiceImpl implements FirebaseService{
         List<Staff> staffList = staffRepositorySupport.getStaffList(areaId);
 
 
-        System.out.println(staffList.size());
-
-
-        for (Staff staff : staffList) {
-
-
-            System.out.println(staff.getFcmToken());
-            Message message = Message.builder().putData("title", "상담 신청")
-                    .putData("content", deskId)
-                    .setToken(staff.getFcmToken())
-                    .build();
-
-
-           FirebaseMessaging.getInstance().sendAsync(message);
-
-
-        }
+//        System.out.println(staffList.size());
+//
+//
+//        for (Staff staff : staffList) {
+//
+//
+//            System.out.println(staff.getFcmToken());
+//            Message message = Message.builder().putData("title", "상담 신청")
+//                    .putData("content", deskId)
+//                    .setToken(staff.getFcmToken())
+//                    .build();
+//
+//
+//           FirebaseMessaging.getInstance().sendAsync(message);
+//
+//
+//        }
 return true;
 
 

@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("api/staff")
+@RequestMapping("/api/staff")
 public class StaffController {
 
 
@@ -271,6 +271,31 @@ public class StaffController {
         map.put("count",result);
         return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
     }
+
+
+    // 상담 연결 수락
+    @PostMapping("/meeting")
+
+    public ResponseEntity<SingleResult<Map<String,Long>>> meetingConnect(@ApiIgnore Authentication authentication) {
+
+
+
+        // 토큰 발급받은 상담사 아이디
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+
+        int areaId= userDetails.getStaffAreaId();
+
+
+        Map<String,Long> map=new HashMap<>();
+
+        System.out.println("지역코드="+areaId);
+        long result = firebaseService.getMeeting(areaId);
+
+        map.put("count",result);
+        return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
+    }
+
+
 
 
 }

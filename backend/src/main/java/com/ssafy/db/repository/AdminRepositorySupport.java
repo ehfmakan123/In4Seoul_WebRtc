@@ -47,7 +47,7 @@ public class AdminRepositorySupport {
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
-                .join(qstaff.areas, qareas)
+                .leftJoin(qstaff.areas, qareas)
                 .where(qstaff.deleteYN.eq("N"))   // 삭제 상태인 상담원은 목록에 보이지 않는다
                 .orderBy(qstaff.id.desc())
                 .fetch();
@@ -66,7 +66,7 @@ return result;
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
-                .join(qstaff.areas, qareas)
+                .leftJoin(qstaff.areas, qareas)
                 .where(qstaff.id.eq(id))
                 .fetchOne();
 
