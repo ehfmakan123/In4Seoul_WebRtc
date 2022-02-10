@@ -37,6 +37,7 @@ const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'AuthStaffLoginModal',
+
   setup() {
     const messaging = firebase.messaging()
     const staffLoginCredentials = ref({ userId: "", password: "" })
@@ -53,7 +54,7 @@ export default {
       })      
         .then(res => {
           // console.log(res)
-          // jwt토큰 저장
+          // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
           const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")

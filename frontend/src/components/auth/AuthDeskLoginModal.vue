@@ -26,53 +26,55 @@
 
 <script>
 import { ref } from 'vue'
-// import { useRouter} from 'vue-router'
-// import { useStore } from 'vuex';
-// import axios from 'axios'
+import { useRouter} from 'vue-router'
+import { useStore } from 'vuex';
+import axios from 'axios'
 
-// const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'AuthDeskLoginModal',
   setup() {
     const deskLoginCredentials = ref({ userId: "", password: "" })
-    // const router = useRouter()
-    // const store = useStore()
+    const router = useRouter()
+    const store = useStore()
 
     const deskLoginConfirm = () => {
       console.log("desk 로그인 확인버튼 클릭됨!")
       console.log(deskLoginCredentials.value)
 
       // 로그인 axios 요청
-      // axios({
-      //   method: 'post',
-      //   url: `${SERVER_HOST}/desk/login`,
-      //   data: deskLoginCredentials.value
-      // })      
-      //   .then(res => {
-      //     console.log(res)
-      //     localStorage.setItem('token', res.data.accessToken)
-      //     store.dispatch("desk_login")
-      //     // modal 닫는 부분
-      //     const deskLoginModal = document.querySelector('#desk-login-modal')
-      //     deskLoginModal.classList.remove("in")
-      //     document.querySelector(".modal-backdrop").remove()
-      //     deskLoginModal.style.display = "none"
+      axios({
+        method: 'post',
+        url: `${SERVER_HOST}/desk/login`,
+        data: deskLoginCredentials.value
+      })      
+        .then(res => {
+          // console.log(res)
+          // jwt토큰 저장 & 스토어 갱신
+          localStorage.setItem('token', res.data.accessToken)
+          store.dispatch("desk_login")
+
+          // modal 닫는 부분
+          const deskLoginModal = document.querySelector('#desk-login-modal')
+          deskLoginModal.classList.remove("in")
+          document.querySelector(".modal-backdrop").remove()
+          deskLoginModal.style.display = "none"
           
-      //     router.push({ name: 'DeskHome' })
-      //   })
-      //   .catch(err => {
-      //     console.log('desk 로그인 error발생!')
-      //     console.log(err.response.data)
-      //     const statusCode = err.response.data.statusCode
-      //     if (statusCode === 401) {
-      //       deskLoginCredentials.value.password = ''
-      //     }
-      //     else if (statusCode === 404) {
-      //       deskLoginCredentials.value.userId = ''
-      //       deskLoginCredentials.value.password = ''
-      //     }
-      //   })
+          router.push({ name: 'DeskHome' })
+        })
+        .catch(err => {
+          console.log('desk 로그인 error발생!')
+          console.log(err.response.data)
+          const statusCode = err.response.data.statusCode
+          if (statusCode === 401) {
+            deskLoginCredentials.value.password = ''
+          }
+          else if (statusCode === 404) {
+            deskLoginCredentials.value.userId = ''
+            deskLoginCredentials.value.password = ''
+          }
+        })
     }
     
     const deskLoginCancel = () => {

@@ -42,7 +42,7 @@ Notification.requestPermission()
 
 // Handle received push notification at foreground
 messaging.onMessage(payload => {
-  console.log("메시지 수신!!")
+  console.log("main.js 메시지 수신!!")
   console.log(payload)
   // console.log("제목: ", payload.notification.title)
   // console.log("제목: ", payload.data.title)
