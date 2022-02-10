@@ -20,21 +20,11 @@
           </div>
           <div class="modal-footer">
             <button @click="tryEdit" type="button" class="btn btn-primary">편집</button>
-            <button @click="cancle" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <hr>
-    <h1>PostDetail</h1>
-    <p><strong>{{ selectedPost.title }}</strong></p>
-    <p>{{ selectedPost.updatedAt }}</p>
-    <p>{{ selectedPost.content }}</p>
-    <p>
-      <button @click="tryEdit">편집</button>
-      <button @click="cancle">닫기</button>
-    </p> -->
   </div>
 </template>
 
@@ -61,26 +51,12 @@ export default {
 
     const tryEdit = () => {
       console.log("편집 버튼 클릭됨. 비밀번호 입력 모달 열림!")
-
+      // passwordModal 열기
       const passwordModal = document.querySelector('#passwordModal')
       const modal = Modal.getOrCreateInstance(passwordModal)
       modal.show()
     }
-    const cancle = () => {
-      console.log("닫기 버튼 클릭됨!")
-      console.log("상세조회 모달창 꺼짐")
-    }
-    const editPost = () => {
-      console.log('비밀번호가 옳습니다.')
-      console.log('편집 폼 켜짐')
-      state.value.showUpdateForm = !state.value.showUpdateForm
-      console.log(state.value.showUpdateForm)
-    }
-
-
-
-
-    return {state, tryEdit, cancle, editPost}
+    return {state, tryEdit}
   }
 }
 </script>

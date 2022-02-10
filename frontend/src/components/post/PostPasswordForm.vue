@@ -3,10 +3,6 @@
     <div class="modal fade" id="passwordModal" style="z-index: 1060;" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
       <div class="second-modal modal-dialog modal-dialog-centered">
         <div class="modal-content bd-blue-4 px-4 pt-3 pb-4" style="width:30rem; height:9rem">
-          <!-- <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">{{ selectedPost.title }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div> -->
           <div class="modal-body">
             <p>비밀번호: <input type="password" v-model="state.passwordConfirm" placeholder="비밀번호를 입력해주세요" class="w-75"></p>
             <p id="password-error" class="d-none alert alert-danger my-3" role="alert">비밀번호가 일치하지 않습니다.</p>
@@ -18,13 +14,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <hr>
-    <p>비밀번호: <input type="password" v-model="state.passwordConfirm" placeholder="비밀번호를 입력해주세요"></p>
-    <p>
-      <button @click="confirm">확인</button>
-      <button @click="cancle">닫기</button>
-    </p> -->
   </div>
 </template>
 
@@ -61,25 +50,16 @@ export default {
           const passwordModal = document.querySelector('#passwordModal')
           let modal = Modal.getOrCreateInstance(passwordModal)
           modal.hide()
-          // const passwordModal = document.querySelector('#passwordModal')
-          // passwordModal.classList.remove("in")
-          // passwordModal.style.display = "none"
           
           // detailModal 끄기
           const detailModal = document.querySelector('#detailModal')
           modal = Modal.getOrCreateInstance(detailModal)
           modal.hide()
-          // const detailModal = document.querySelector('#detailModal')
-          // detailModal.classList.remove("show")
-          // detailModal.style.display = "none"
 
           // updateModal 켜기
           const updateModal = document.querySelector('#updateModal')
           modal = Modal.getOrCreateInstance(updateModal)
           modal.show()
-          // const updateModal = document.querySelector('#updateModal')
-          // updateModal.classList.add("show")
-          // updateModal.style.display = "block"
 
           state.value.passwordConfirm = ''
         // })
@@ -96,9 +76,6 @@ export default {
       const passwordModal = document.querySelector('#passwordModal')
       const modal = Modal.getOrCreateInstance(passwordModal)
       modal.hide()
-      // const passwordModal = document.querySelector('#passwordModal')
-      // passwordModal.classList.remove("in")
-      // passwordModal.style.display = "none"
     }
     return { state, confirm, cancle }
   }

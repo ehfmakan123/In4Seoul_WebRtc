@@ -20,16 +20,6 @@
         </div>
       </div>
     </div>
-
-    <!-- <hr>
-    <h3>PostUpdateForm</h3>
-    <p><input type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
-    <p><input type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p>
-    <p>
-      <button @click="deletePost">삭제</button>
-      <button @click="savePost">저장</button>
-      <button @click="cancle">닫기</button>
-    </p> -->
   </div>
 </template>
 
@@ -37,7 +27,6 @@
 // import axios from 'axios'
 import { computed, ref } from 'vue'
 import { Modal } from 'bootstrap'
-// import { mapState } from 'vuex'
 
 export default {
   name: 'PostUpdateForm',
@@ -46,17 +35,7 @@ export default {
   props:{
     post: Object,
   },
-  // computed: {
-  //   ...mapState(['post'])
-  // },
-  // data() {
-  //   return {
-  //     postData: this.post
-  //   }
-  // },
   setup(props) {
-    console.log('update form 생성됨')
-
     const state = ref({
       myPost: {
         title: computed(() => props.post.title),
@@ -90,10 +69,6 @@ export default {
           const updateModal = document.querySelector('#updateModal')
           let modal = Modal.getOrCreateInstance(updateModal)
           modal.hide()
-          // const updateModal = document.querySelector('#updateModal')
-          // updateModal.classList.remove("in")
-          // document.querySelector(".modal-backdrop").remove()
-          // updateModal.style.display = "none"
         // })
         // .catch(err => console.error(err))
 
