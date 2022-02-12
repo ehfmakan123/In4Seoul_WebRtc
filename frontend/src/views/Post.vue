@@ -17,9 +17,13 @@
     </div>
 
     <div class="vh-100">
-      <h1 class="m-3">서울 여행자들의 담벼락</h1>
-      <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
-      <post-filter></post-filter>
+      <div class="d-flex justify-content-between">
+        <div>
+          <h1 class="m-3">서울 여행자들의 담벼락</h1>
+          <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
+        </div>
+        <post-filter :areaList="state.areaList" :deskList="state.deskList"></post-filter>
+      </div>
       
       <!-- PostList -->
       <post-list :postList="state.postList"></post-list>
@@ -34,6 +38,9 @@ import PostForm from '@/components/post/PostForm'
 import PostFilter from '@/components/post/PostFilter'
 import PostList from '@/components/post/PostList'
 import { useStore } from 'vuex'
+import axios from 'axios'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'Post',
@@ -45,12 +52,10 @@ export default {
   setup() {
     const store = useStore()
 
-    // create 되면 vuex postlist fetch
-    store.dispatch('fetchPostList', 3)
-
-    console.log('store.state.postList: ', store.state.postList)
     const state = ref({
-      postList: computed(() => store.state.postList)
+      postList: computed(() => store.state.postList),
+      areaList: [],
+      deskList: []
     })
 
     const createPost = () => {
@@ -61,6 +66,53 @@ export default {
     const addPost = (newPost) => {
       state.value.postList.push(newPost)
     }
+
+    const getAreaList = () => {
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+      axios({
+        method: 'get',
+        url: `${SERVER_HOST}/desk/areas`,
+        headers: config
+      })
+        .then((res) => {
+          console.log('지역 목록 가져오기 성공')
+          console.log(res.data.data)
+          state.value.areaList = res.data.data
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
+
+    const getDeskList = (areaId) => {
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+      axios({
+        method: 'get',
+        url: `${SERVER_HOST}/desk/areas/${areaId}`,
+        headers: config
+      })
+        .then((res) => {
+          console.log('데스크 목록 가져오기 성공')
+          console.log(res.data.data)
+          state.value.deskList = res.data.data
+        })
+        .catch(err => {
+          console.error(err)
+        })
+    }
+    
+    // created
+    store.dispatch('fetchPostList', 3)
+    getAreaList()
+    getDeskList(14) // 매개변수 수정해야함
     
     return {state, createPost, addPost}
   }
