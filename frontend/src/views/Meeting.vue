@@ -1,6 +1,6 @@
 <template>
 	<div id="main-container" class="container">
-		<div id="join" v-if="!session">
+		<!-- <div id="join" v-if="!session">
 			<div id="img-div"><img src="resources/images/openvidu_grey_bg_transp_cropped.png" /></div>
 			<div id="join-dialog" class="jumbotron vertical-center">
 				<h1>Join a video session</h1>
@@ -18,7 +18,7 @@
 					</p>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div id="session" v-if="session">
 			<div id="session-header">
@@ -78,6 +78,18 @@ export default {
 		this.mySessionId = localStorage.getItem('ovSessionId')
 		this.ovToken = localStorage.getItem('ovToken')
 		console.log('ovToken: ', this.ovToken)
+		
+		if (this.$store.state.isStaff) {
+			this.myUserName = '상담사'
+		}
+		
+		if (this.$store.state.isDesk) {
+			this.myUserName = '데스크'
+		}
+		
+
+
+		this.joinSession()
 	},
 
 	methods: {
@@ -116,6 +128,7 @@ export default {
 			// this.session.connect(this.ovToken, { clientData: this.myUserName })
 			// 	.then(() => {
 			// 		// --- Get your own camera stream with the desired properties ---
+			// 		console.log("session connect: 들어오나!?")
 
 			// 		let publisher = this.OV.initPublisher(undefined, {
 			// 			audioSource: undefined, // The source of audio. If undefined default microphone
@@ -128,11 +141,14 @@ export default {
 			// 			mirror: false       	// Whether to mirror your local video or not
 			// 		});
 
+			// 		console.log("session connect: mainStreamManager")
 			// 		this.mainStreamManager = publisher;
+			// 		console.log("session connect: publisher")
 			// 		this.publisher = publisher;
 
 			// 		// --- Publish your stream ---
 
+			// 		console.log("session connect: session publish")
 			// 		this.session.publish(this.publisher);
 			// 	})
 			// 	.catch(error => {
@@ -185,6 +201,17 @@ export default {
 			this.OV = undefined;
 
 			window.removeEventListener('beforeunload', this.leaveSession);
+			console.log("Desk Meeting방 나가기 버튼 클릭됨!!")
+
+			console.log("Store isStaff 확인: ", this.$store.state.isStaff)
+			if (this.$store.state.isStaff) {
+				this.$router.push({ name: 'StaffHome' })
+			}
+			
+			if (this.$store.state.isDesk) {
+				this.$router.push({ name: 'DeskHome' })
+			}
+			
 		},
 
 		updateMainVideoStreamManager (stream) {
