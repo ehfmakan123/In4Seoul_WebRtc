@@ -32,6 +32,11 @@
 				<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
 				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
 			</div>
+			<div id="screen-container">
+
+			</div>
+			<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
+			<button class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
 		</div>
 	</div>
 </template>
@@ -68,6 +73,10 @@ export default {
 
 			// ovToken 추가
 			ovToken: undefined,
+
+			// chating 
+			myChat: '',
+			totalChats: [],
 		}
 	},
 
@@ -87,12 +96,102 @@ export default {
 			this.myUserName = '데스크'
 		}
 		
-
-
 		this.joinSession()
 	},
 
 	methods: {
+		shareScreen () {
+			// this.session.connect(this.ovToken).then(() => {
+			// 		let publisher = this.OV.initPublisher("html-element-id", { videoSource: "screen" });
+
+			// 		publisher.once('accessAllowed', (event) => {
+			// 				console.log(event)
+			// 				publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+			// 						console.log('User pressed the "Stop sharing" button');
+			// 				});
+			// 				this.publish(publisher);
+
+			// 		});
+
+			// 		publisher.once('accessDenied', (event) => {
+			// 				console.log(event)
+			// 				console.warn('ScreenShare: Access Denied');
+			// 		});
+
+			// }).catch((error => {
+			// 		console.warn('There was an error connecting to the session:', error.code, error.message);
+
+			// }));
+
+			this.getToken(localStorage.getItem('ovSessionId')).then((token) => {
+					// console.log("테스트", token)
+					// console.log("테스트", this.ovToken)
+					this.session.connect(token).then(() => {
+						console.log("테스트1", )
+							let publisher = this.OV.initPublisher("screen-container", { videoSource: "screen" });
+
+							publisher.once('accessAllowed', (event) => {
+								console.log(event)
+									publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+											console.log('User pressed the "Stop sharing" button');
+									});
+									this.session.publish(publisher);
+
+							});
+
+							publisher.once('accessDenied', (event) => {
+								console.log(event)
+									console.warn('ScreenShare: Access Denied');
+							});
+
+					}).catch((error => {
+							console.warn('There was an error connecting to the session:', error.code, error.message);
+
+					}));
+			});
+
+		
+		},
+		enterChat (message) {
+			console.log("채팅테스트: ", message)
+			
+			const data = { message: message, nickname: this.myUserName } 
+
+			if (this.$store.state.isDesk) {
+				// console.log('[채팅] 데스크가 보내기 시작')
+				this.session.signal({
+									data: JSON.stringify(data),  // Any string (optional)
+									to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+									type: 'desk-chat'             // The type of message (optional)
+								})
+								.then(() => {
+										console.log('Message successfully sent');
+								})
+								.catch(error => {
+										console.error(error);
+								});	
+	
+				this.myChat = ''
+			}
+
+			if (this.$store.state.isStaff) {
+				// console.log('[채팅] 스태프가 보내기 시작')
+				this.session.signal({
+									data: JSON.stringify(data),  // Any string (optional)
+									to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+									type: 'staff-chat'             // The type of message (optional)
+								})
+								.then(() => {
+										console.log('Message successfully sent');
+								})
+								.catch(error => {
+										console.error(error);
+								});	
+	
+				this.myChat = ''
+			}
+
+		},
 		joinSession () {
 			// --- Get an OpenVidu object ---
 			this.OV = new OpenVidu();
@@ -120,6 +219,15 @@ export default {
 			this.session.on('exception', ({ exception }) => {
 				console.warn(exception);
 			});
+
+			// Receiver of the message (usually before calling 'session.connect')
+			this.session.on('signal', (event) => {
+							const data = JSON.parse(event.data)
+							console.log('[채팅]', data); // Message
+							// console.log('[채팅][보낸사람]', event.from); // Connection object of the sender
+							// console.log('[채팅][타입]', event.type); // The type of message ("my-chat")
+					});
+
 
 			// --- Connect to the session with a valid user token ---
 
@@ -151,6 +259,20 @@ export default {
 
 					console.log("session connect: session publish")
 					this.session.publish(this.publisher);
+
+					// Sender of the message (after 'session.connect')
+					// this.session.signal({
+					// 					data: `My custom message ${this.myUserName}`,  // Any string (optional)
+					// 					to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+					// 					type: 'my-chat'             // The type of message (optional)
+					// 				})
+					// 				.then(() => {
+					// 						console.log('Message successfully sent');
+					// 				})
+					// 				.catch(error => {
+					// 						console.error(error);
+					// 				});
+
 				})
 				.catch(error => {
 					console.log('There was an error connecting to the session:', error.code, error.message);
@@ -293,11 +415,52 @@ export default {
 	}
 }
 </script>
-<style scoped>
-    h1 {
-      font-size: 3rem;
-      font-weight: 600;
-      margin-top: 2rem;
-      margin-left: 2rem;
-    }
+<style>
+h1 {
+	font-size: 3rem;
+	font-weight: 600;
+	margin-top: 2rem;
+	margin-left: 2rem;
+}
+
+#video-container video {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+}
+
+#video-container video + div {
+	float: left;
+	width: 50%;
+	position: relative;
+	margin-left: -50%;
+}
+
+#video-container p {
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
+
+video {
+	width: 100%;
+	height: auto;
+}
+
+#main-video p {
+	position: absolute;
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 22px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
 </style>
