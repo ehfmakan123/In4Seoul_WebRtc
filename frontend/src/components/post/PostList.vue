@@ -50,14 +50,7 @@ export default {
       console.log(state.value.selectedPost)
     }
 
-    const tryDelete = () => {
-      // state.value.showDeleteForm = !state.value.showDeleteForm
-    }
-    const tryUnsaveClose = () => {
-      // state.value.showCloseForm = !state.value.showCloseForm
-    }
-
-    return {state, selectPost, tryDelete, tryUnsaveClose}
+    return {state, selectPost}
   }
 }
 </script>

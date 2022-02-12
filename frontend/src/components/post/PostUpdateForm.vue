@@ -34,9 +34,12 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { computed, ref } from 'vue'
+import { useRouter} from 'vue-router'
 // import { mapState } from 'vuex'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'PostUpdateForm',
@@ -53,8 +56,10 @@ export default {
   //     postData: this.post
   //   }
   // },
+
   setup(props, { emit }) {
-    console.log('update form 생성됨')
+    // console.log('update form 생성됨')
+    const router = useRouter()
 
     const state = ref({
       myPost: {
@@ -71,25 +76,30 @@ export default {
     const savePost = () => {
       console.log("저장 버튼 클릭됨!")
       console.log(state.value.myPost)
-      // axios({
-      //   method: 'put',
-      //   url: `http://127.0.0.1:8000/board/posts/${props.post.postId}/`,
-      //   // headers: this.tokenHeader(),
-      //   data: {
-      //     title: state.value.myPost.title,
-      //     content: state.value.myPost.content
-      //   }
-      // })
-      //   .then(() => {
-      //     console.log('업데이트 성공!')
+
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+      axios({
+        method: 'put',
+        url: `${SERVER_HOST}/desk/posts/${props.post.id}`,
+        headers: config,
+        data: state.value.myPost
+      })
+        .then(() => {
+          console.log('업데이트 성공!')
           // this.fetchReviewList(this.movieDetail.id)
           // 모달창 끄기
+          console.log('업데이트 성공!')
           const updateModal = document.querySelector('#updateModal')
           updateModal.classList.remove("in")
           document.querySelector(".modal-backdrop").remove()
           updateModal.style.display = "none"
-        // })
-        // .catch(err => console.error(err))
+          router.go()
+        })
+        .catch(err => console.error(err))
 
     }
 

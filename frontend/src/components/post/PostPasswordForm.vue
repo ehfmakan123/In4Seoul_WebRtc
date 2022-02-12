@@ -29,15 +29,17 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { ref } from 'vue'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'PostPasswordForm',
   components: {
   },
   props: ['postId'],
-  setup(props, {emit}) {
+  setup(props) {
     
     const state = ref({
       passwordConfirm: ''
@@ -45,16 +47,31 @@ export default {
 
     const confirm = () => {
       console.log("확인 버튼 클릭됨!")
-      // axios({
-      //   method: 'post',
-      //   url: `http://127.0.0.1:8000/board/posts/${props.postId}`,
-        // headers: tokenHeader(),
-      //   data: {
-      //     password: state.value.passwordConfirm
-      //   }
-      // })
-      //   .then(() => {
-      //     console.log('비밀번호 일치함. 편집모달로 이동!')
+      console.log('props.postId: ', props.postId)
+
+      // passwordModal 끄기
+          const passwordModal = document.querySelector('#passwordModal')
+          // passwordModal.classList.remove("in")
+          passwordModal.style.display = "none"
+          // detailModal 끄기
+          const detailModal = document.querySelector('#detailModal')
+          detailModal.classList.remove("in")
+          detailModal.style.display = "none"
+          // updateModal 켜기
+          const updateModal = document.querySelector('#updateModal')
+          updateModal.classList.add("show")
+          updateModal.style.display = "block"
+          
+      axios({
+        method: 'post',
+        url: `${SERVER_HOST}/desk/posts/${props.postId}`,
+        data: {
+          password: state.value.passwordConfirm
+        }
+      })
+        .then((res) => {
+          console.log('비밀번호 일치함. 편집모달로 이동!')
+          console.log(res)
           // passwordModal 끄기
           const passwordModal = document.querySelector('#passwordModal')
           passwordModal.classList.remove("in")
@@ -69,14 +86,14 @@ export default {
           updateModal.style.display = "block"
 
           state.value.passwordConfirm = ''
-        // })
-        // .catch(err => {
-        //   console.error(err)
-        //   console.log('비밀번호가 다름!!!')
-        //   const errorMessage = document.querySelector('#password-error')
-        //   errorMessage.classList.remove('d-none')
-        // })  
-      emit('password-correct')
+        })
+        .catch(err => {
+          console.error(err)
+          console.log('비밀번호가 다름!!!')
+          const errorMessage = document.querySelector('#password-error')
+          errorMessage.classList.remove('d-none')
+        })  
+      // emit('password-correct')
     }
     const cancle = () => {
       console.log("닫기 버튼 클릭됨!")
