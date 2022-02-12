@@ -83,11 +83,13 @@ export default {
   name: 'StaffHome',
   components: {
   },
+
   setup() {
     const router = useRouter()
     let waitingMeetingCount = ref(0)
     const messaging = firebase.messaging()
 
+    // FCM 메시지 수신
     messaging.onMessage(payload => {
       console.log("StaffSidebar 메시지 수신!!")
       console.log(payload)
@@ -119,6 +121,7 @@ export default {
     const getWaitingMeeting = () => {
       // 대기 알람개수 세는 axios 
       const jwtToken = localStorage.getItem('token')
+      console.log('getWaitingMeeting jwtToken: ', jwtToken)
       axios({
         method: 'get',
         url: `${SERVER_HOST}/staff/meeting`,

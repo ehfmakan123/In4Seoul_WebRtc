@@ -57,7 +57,13 @@ export default {
         .then((res) => {
           // console.log('알람개수 갱신:', res.data.data.count)
           // console.log(typeof res.data.data.count)
-          console.log(`화상상담 연결!: ${res}`)
+          console.log(`화상상담 연결!`)
+          console.log(res)
+          
+          // OpenVidu Session Id와 Token(ovTOken)을 로컬스토리지에 저장
+          localStorage.setItem('ovToken', res.data.data.token)
+          localStorage.setItem('ovSessionId', res.data.data.sessionId)
+
           router.push({ name: 'Meeting' })
         })
         .catch((err) => console.log(err))
