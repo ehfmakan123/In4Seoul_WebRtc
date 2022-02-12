@@ -3,7 +3,7 @@
     <!-- 모달들 먼저 선언 -->
     <post-password-form :postId="selectedPost.id"></post-password-form>
     <post-update-form :post="selectedPost"></post-update-form>
-    <post-delete-form></post-delete-form>
+    <post-delete-form :postId="selectedPost.id"></post-delete-form>
     <post-close-form></post-close-form>
 
     <!-- 상세조회 Modal -->

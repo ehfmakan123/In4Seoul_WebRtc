@@ -19,6 +19,9 @@
 <script>
 import axios from 'axios'
 import { Modal } from 'bootstrap'
+import { useStore } from 'vuex'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'PostDeleteForm',
@@ -26,24 +29,34 @@ export default {
   },
   props: ['postId'],
   setup(props) {
+    const store = useStore()
+
     const deletePost = () => {
-      console.log("삭제")
+      console.log("글 삭제")
+
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+      axios({
+        method: 'delete',
+        url: `${SERVER_HOST}/desk/posts/${props.postId}`,
+        headers: config
+      })
+        .then(res => {
+          console.log(res)
+          // fetchPostList
+          store.dispatch('fetchPostList', 3)
+        })
+        .catch(err => console.error(err))
 
       // updateModal도 닫기
       const updateModal = document.querySelector('#updateModal')
       let modal = Modal.getOrCreateInstance(updateModal)
       modal.hide()
 
-      axios({
-        method: 'delete',
-        url: `http://127.0.0.1:8000/board/posts/${props.postId}`,
-        // headers: this.tokenHeader()
-      })
-        .then(res => {
-          console.log(res)
-          // this.fetchReviewList(this.movieDetail.id)
-        })
-        .catch(err => console.error(err))
+      
     }
     return { deletePost }
   }
