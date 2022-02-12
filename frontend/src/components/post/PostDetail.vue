@@ -29,7 +29,6 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 import PostPasswordForm from '@/components/post/PostPasswordForm'
 import PostUpdateForm from '@/components/post/PostUpdateForm'
 import PostCloseForm from '@/components/post/PostCloseForm'
@@ -48,13 +47,6 @@ export default {
     }
   },
   setup() {
-    const state = ref({
-      // showPasswordForm: false,
-      // showUpdateForm: false,
-      // showDeleteForm: false,
-      // showCloseForm: false,
-    })
-
     const tryEdit = () => {
       console.log("편집 버튼 클릭됨. 비밀번호 입력 모달 열림!")
       // passwordModal 열기
@@ -62,7 +54,7 @@ export default {
       const modal = Modal.getOrCreateInstance(passwordModal)
       modal.show()
     }
-    return {state, tryEdit}
+    return { tryEdit }
   }
 }
 </script>
