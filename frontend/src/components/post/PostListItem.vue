@@ -1,8 +1,8 @@
 <template>
   <div class="col-3 p-4">
-    <div class="card shadow box bg-yellow">
-      <div class="card-body p-4" data-bs-toggle="modal" data-bs-target="#detailModal">
-        <p class="card-title mb-3"><strong>{{ post.title }}</strong></p>
+    <div class="card shadow box-small bg-yellow" data-bs-toggle="modal" data-bs-target="#detailModal">
+      <div class="card-body p-4">
+        <p class="card-title mb-3 fw-bold">{{ post.title }}</p>
         <p class="card-text">{{ post.content }}</p>
       </div>
     </div>
@@ -23,15 +23,5 @@ export default {
 }
 </script>
 <style scoped>
-  strong {
-    font-weight: bold;
-  }
 
-  .box {
-    width: 100%;
-    height: 100%; 
-    padding-bottom: 60%;
-    border-radius: 1.5rem;
-    /* border: 0rem */
-  }
 </style>

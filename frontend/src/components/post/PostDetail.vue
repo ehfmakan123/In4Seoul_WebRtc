@@ -9,18 +9,18 @@
     <!-- 상세조회 Modal -->
     <div class="modal fade" id="detailModal" style="z-index: 1055;" tabindex="-1" aria-labelledby="detailModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content postit bg-yellow">
-          <div class="modal-header">
+        <div class="modal-content bg-yellow box-big p-3">
+          <div class="d-flex align-items-center justify-content-between p-3">
             <h5 class="modal-title" id="exampleModalLabel">{{ selectedPost.title }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body" style="height: 21rem;">
-            <p>수정일: {{ selectedPost.updatedAt }}</p>
-            {{ selectedPost.content }}
+            <p class="mb-3 t-gray-3 text-small">{{ slicedUpdatedAt }}</p>
+            <p class="my-2">{{ selectedPost.content }}</p>
           </div>
-          <div class="modal-footer">
-            <button @click="tryEdit" type="button" class="btn btn-primary">편집</button>
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+          <div class="d-flex justify-content-end p-1">
+            <button @click="tryEdit" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">편집</button>
+            <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">닫기</button>
           </div>
         </div>
       </div>
@@ -41,12 +41,18 @@ export default {
   name: 'PostDetail',
   components: { PostPasswordForm, PostUpdateForm, PostCloseForm, PostDeleteForm },
   props:["selectedPost"],
+  computed: {
+    // computed getter
+    slicedUpdatedAt() {
+      return this.selectedPost.updatedAt ? this.selectedPost.updatedAt.slice(0,10) : ''
+    }
+  },
   setup() {
     const state = ref({
-      showPasswordForm: false,
-      showUpdateForm: false,
-      showDeleteForm: false,
-      showCloseForm: false,
+      // showPasswordForm: false,
+      // showUpdateForm: false,
+      // showDeleteForm: false,
+      // showCloseForm: false,
     })
 
     const tryEdit = () => {

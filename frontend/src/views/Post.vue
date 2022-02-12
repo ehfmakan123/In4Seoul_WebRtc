@@ -140,16 +140,22 @@ export default {
 }
 </script>
 <style>
-  h1 {
-    font-size: 3vh!important;
-    font-weight: bold!important;
-    /* font-weight: 500!important; */
+  .box-small {
+    width: 17vw;
+    height: 17vw;
+    border-radius: 1.5rem!important;
   }
-
-  h3 {
-    font-size: 2vh!important;
+  .box-big {
+    /* width: 100%;
+    height: 100%; */
+    border-radius: 1.5rem!important;
   }
-
+  .rounded-btn {
+    border-radius: 2rem!important;
+  }
+  .text-small {
+    font-size: 0.85em;
+  }
   .bg-yellow{
     background-color: #FFEEAC!important;
   }
@@ -166,5 +172,15 @@ export default {
   .second-modal {
     width: 10rem;
     height: 5rem;
+  }
+</style>
+<style scoped>
+  h1 {
+    font-size: 3vh!important;
+    font-weight: bold!important;
+    /* font-weight: 500!important; */
+  }
+  h3 {
+    font-size: 2vh!important;
   }
 </style>
