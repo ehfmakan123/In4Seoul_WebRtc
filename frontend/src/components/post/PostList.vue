@@ -1,11 +1,11 @@
 <template>
-  <div class="wall-background w-100 h-auto">
+  <div class="wall-background">
     <div class="foggy-background">
       <!-- detail Modal -->
       <post-detail :selectedPost="state.selectedPost"></post-detail>
       
       <!-- Post List -->
-      <div class="row p-5">
+      <div class="row padding-postlist">
         <post-list-item
           v-for="post in postList"
           :key="post.id"
@@ -54,5 +54,11 @@ export default {
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .padding-postlist {
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: 10%
   }
 </style>

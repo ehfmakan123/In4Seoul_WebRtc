@@ -3,14 +3,14 @@
     <!-- 글 생성 Modal -->
     <post-form @add-new-post="addPost"></post-form>
 
-    <div class="d-flex flex-column flex-shrink-0 bg-light justify-content-center" style="width: 3.5rem;">
-      <ul class="nav nav-pills nav-flush flex-column text-center">
+    <div class="d-flex flex-column flex-shrink-0 shadow justify-content-center" style="width: 3.5rem;">
+      <ul class="nav nav-pills nav-flush flex-column text-center" style="margin-bottom: 20rem;">
         <!-- <li class="nav-item">
           <a href="#" class="nav-link active py-3 border-bottom" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
             <svg class="bi" width="24" height="24" role="img" aria-label="Home"><use xlink:href="#home"/></svg>
           </a>
         </li> -->
-        <a @click="createPost" class="mx-2 fs-4" data-bs-toggle="modal" data-bs-target="#createModal">
+        <a @click="createPost" class="mx-2 fs-4 t-blue-4" data-bs-toggle="modal" data-bs-target="#createModal">
           <i class="bi bi-plus-circle-fill"></i>
         </a>
       </ul>    
@@ -146,8 +146,6 @@ export default {
     border-radius: 1.5rem!important;
   }
   .box-big {
-    /* width: 100%;
-    height: 100%; */
     border-radius: 1.5rem!important;
   }
   .rounded-btn {
@@ -160,8 +158,14 @@ export default {
     background-color: #FFEEAC!important;
   }
 
+  .post-input {
+    border: 0px!important;
+    background-color: rgba(251, 250, 250, 0.924)!important;
+  }
+
   .input-title {
     height: 2.5rem;
+    
   }
 
   .input-content {

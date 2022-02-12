@@ -2,13 +2,13 @@
   <div>
     <div class="modal fade" id="deleteModal" style="z-index: 1060;" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true">
       <div class="second-modal modal-dialog modal-dialog-centered">
-        <div class="modal-content ms-2" style="width:30rem; height:9rem">
-          <div class="modal-body">
-            <p>글을 삭제하시겠습니까?</p>
-            <p class="d-flex justify-content-end">
-              <button @click="deletePost" type="button" class="btn btn-primary" data-bs-dismiss="modal">삭제</button>
-              <button type="button" class="btn btn-secondary"  data-bs-dismiss="modal">취소</button>
-            </p>
+        <div class="modal-content bd-red-1 ms-3">
+          <div class="modal-body p-4">
+            <p class="fw-bold m-4" style="font-size: 1.1rem;">글을 <span class="t-red-1">삭제</span>하시겠습니까?</p>
+            <div class="d-flex justify-content-end pt-2 mt-4">
+              <button @click="deletePost" type="button" class="btn btn-outline-danger t-red-1 bd-red-1 rounded-btn" data-bs-dismiss="modal">삭제</button>
+              <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">취소</button>
+            </div>
           </div>
         </div>
       </div>
@@ -49,3 +49,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .modal-content{
+    border-width: 1.5px;
+    border-style: solid;
+    border-radius: 1rem;
+    width:29rem; 
+    height:10rem;
+  }
+</style>

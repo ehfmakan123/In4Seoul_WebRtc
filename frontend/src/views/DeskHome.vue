@@ -85,7 +85,7 @@ export default {
   }
 
   .desk-background {
-    background-image: url('../assets/seoul_place/경복궁낮_cut3.jpg');
+    background-image: url('../assets/seoul_place/gyengbokgung.jpg');
     background-repeat : no-repeat;
     background-size: cover;
     height: 100vh;
