@@ -1,9 +1,6 @@
 package com.ssafy.api.controller;
 
-import com.ssafy.api.dto.AreaDto;
-import com.ssafy.api.dto.DeskDto;
-import com.ssafy.api.dto.PostDto;
-import com.ssafy.api.dto.StaffDto;
+import com.ssafy.api.dto.*;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.AdminService;
@@ -270,10 +267,10 @@ public class AdminController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<ListResult<PostDto>> getPostList(@RequestParam(value = "page", required = false) Integer page) {
+    public ResponseEntity<ListResult<AdminPostDto>> getPostList(@RequestParam(value = "page", required = false) Integer page) {
 
 
-        ListResult<PostDto> postList = adminService.getPostList(page);
+        ListResult<AdminPostDto> postList = adminService.getPostList(page);
 
 
 
@@ -291,10 +288,10 @@ public class AdminController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<SingleResult<PostDto>> getPost(@PathVariable("id") long id) {
+    public ResponseEntity<SingleResult<AdminPostDto>> getPost(@PathVariable("id") long id) {
 
 
-        PostDto post = adminService.getPost(id);
+        AdminPostDto post = adminService.getPost(id);
 
 
 

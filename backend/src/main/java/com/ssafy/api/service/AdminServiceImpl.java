@@ -1,9 +1,6 @@
 package com.ssafy.api.service;
 
-import com.ssafy.api.dto.AreaDto;
-import com.ssafy.api.dto.StaffDto;
-import com.ssafy.api.dto.DeskDto;
-import com.ssafy.api.dto.PostDto;
+import com.ssafy.api.dto.*;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Areas;
 import com.ssafy.db.entity.Desks;
@@ -171,20 +168,20 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public ListResult<PostDto> getPostList(Integer page) {
+    public ListResult<AdminPostDto> getPostList(Integer page) {
 
         if(page==null) page=1;
 
 
-        ListResult<PostDto> result = adminRepositorySupport.getPostList(page);
+        ListResult<AdminPostDto> result = adminRepositorySupport.getPostList(page);
 
         return result;
     }
 
     @Override
-    public PostDto getPost(long id) {
+    public AdminPostDto getPost(long id) {
 
-        PostDto result = adminRepositorySupport.getPost(id);
+        AdminPostDto result = adminRepositorySupport.getPost(id);
 
         return result;
 

@@ -111,11 +111,15 @@ public class AdminRepositorySupport {
     {
 
 
+
+
+
         QueryResults<DeskDto> queryResults = jpaQueryFactory
                 .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
                         desk.createdAt, desk.updatedAt, desk.deleteYN))
                 .from(desk)
                 .join(desk.area, qareas)
+                .where(desk.deleteYN.eq("N"))   // 삭제 상태인 데스크는 목록에서 보이지 않는다
                 .orderBy(desk.id.desc())
                 .offset((page - 1) * 10)
                 .limit(10)
@@ -138,20 +142,22 @@ public class AdminRepositorySupport {
 
 
     // 게시글 목록 조회
-    public ListResult<PostDto> getPostList(Integer page)
+    public ListResult<AdminPostDto> getPostList(Integer page)
     {
-        QueryResults<PostDto> queryResults = jpaQueryFactory
-                .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+        QueryResults<AdminPostDto> queryResults = jpaQueryFactory
+                .select(new QAdminPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt, qareas.korName.as("areaName"),desk.korName.as("deskName") ))
                 .from(qpost)
+                .join(qpost.desk,desk)
+                .join(desk.area,qareas)
                 .orderBy(qpost.id.desc())
                 .offset((page - 1) * 10)
                 .limit(10)
                 .fetchResults();
 
 
-        List<PostDto> results = queryResults.getResults();
+         List<AdminPostDto> results = queryResults.getResults();
         long count = queryResults.getTotal();
-        ListResult<PostDto> result = new ListResult<>(200, "성공", results);
+        ListResult<AdminPostDto> result = new ListResult<>(200, "성공", results);
         result.setTotalCount(count);
 
         return result;
@@ -161,12 +167,14 @@ public class AdminRepositorySupport {
 
 
     //게시글 조회
-     public PostDto getPost(long id)
+     public AdminPostDto getPost(long id)
      {
 
-         PostDto result = jpaQueryFactory
-                 .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+         AdminPostDto result = jpaQueryFactory
+                 .select(new QAdminPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt, qareas.korName.as("areaName"),desk.korName.as("deskName") ))
                  .from(qpost)
+                 .join(qpost.desk,desk)
+                 .join(desk.area,qareas)
                  .where(qpost.id.eq(id))
                  .fetchOne();
 
