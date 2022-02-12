@@ -74,8 +74,8 @@ export default {
           const updateModal = document.querySelector('#updateModal')
           let modal = Modal.getOrCreateInstance(updateModal)
           modal.hide()
-        // })
-        // .catch(err => console.error(err))
+        })
+        .catch(err => console.error(err))
 
     }
 

@@ -37,7 +37,7 @@ export default {
   components: {
   },
   props: ['postId'],
-  setup() {
+  setup(props) {
     
     const state = ref({
       passwordConfirm: ''
