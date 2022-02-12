@@ -106,6 +106,21 @@ export default {
 
     const clickAlarm = () => {
       console.log("알람버튼 클릭됨!")
+      const jwtToken = localStorage.getItem('token')
+      axios({
+        method: 'post',
+        url: `${SERVER_HOST}/staff/meeting`,
+        headers : {
+          Authorization: `Bearer ${jwtToken}` 
+        }
+      })
+        .then((res) => {
+          console.log('상담연결버튼 response: ',res.data)
+          localStorage.setItem('ovToken', res.data.data.token)
+          localStorage.setItem('ovSessionId', res.data.data.sessionId)
+          router.push({ name: 'Meeting'})
+        })
+        .catch((err) => console.log(err))
     }
 
     const moveToStaffProfile = () => {

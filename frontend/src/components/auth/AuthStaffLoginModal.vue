@@ -58,6 +58,7 @@ export default {
           localStorage.setItem('token', res.data.accessToken)
           const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")
+          console.log("상담사 로그인후 store 확인: ", store.state.isStaff)
 
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')

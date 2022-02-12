@@ -1,6 +1,6 @@
 <template>
 	<div id="main-container" class="container">
-		<div id="join" v-if="!session">
+		<!-- <div id="join" v-if="!session">
 			<div id="img-div"><img src="resources/images/openvidu_grey_bg_transp_cropped.png" /></div>
 			<div id="join-dialog" class="jumbotron vertical-center">
 				<h1>Join a video session</h1>
@@ -18,7 +18,7 @@
 					</p>
 				</div>
 			</div>
-		</div>
+		</div> -->
 
 		<div id="session" v-if="session">
 			<div id="session-header">
@@ -78,6 +78,18 @@ export default {
 		this.mySessionId = localStorage.getItem('ovSessionId')
 		this.ovToken = localStorage.getItem('ovToken')
 		console.log('ovToken: ', this.ovToken)
+		
+		if (this.$store.state.isStaff) {
+			this.myUserName = '상담사'
+		}
+		
+		if (this.$store.state.isDesk) {
+			this.myUserName = '데스크'
+		}
+		
+
+
+		this.joinSession()
 	},
 
 	methods: {
@@ -112,68 +124,68 @@ export default {
 			// --- Connect to the session with a valid user token ---
 
 			// 내가 추가한 코드 -- getToken 제외하고 화상상담 연결
-			console.log('JoinSession에서 ovToken값: ', this.ovToken)
-			this.session.connect(this.ovToken, { clientData: this.myUserName })
-				.then(() => {
-					// --- Get your own camera stream with the desired properties ---
-					console.log("session connect: 들어오나!?")
+			// console.log('JoinSession에서 ovToken값: ', this.ovToken)
+			// this.session.connect(this.ovToken, { clientData: this.myUserName })
+			// 	.then(() => {
+			// 		// --- Get your own camera stream with the desired properties ---
+			// 		console.log("session connect: 들어오나!?")
 
-					let publisher = this.OV.initPublisher(undefined, {
-						audioSource: undefined, // The source of audio. If undefined default microphone
-						videoSource: undefined, // The source of video. If undefined default webcam
-						publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-						publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-						resolution: '640x480',  // The resolution of your video
-						frameRate: 30,			// The frame rate of your video
-						insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-						mirror: false       	// Whether to mirror your local video or not
-					});
+			// 		let publisher = this.OV.initPublisher(undefined, {
+			// 			audioSource: undefined, // The source of audio. If undefined default microphone
+			// 			videoSource: undefined, // The source of video. If undefined default webcam
+			// 			publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+			// 			publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+			// 			resolution: '640x480',  // The resolution of your video
+			// 			frameRate: 30,			// The frame rate of your video
+			// 			insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+			// 			mirror: false       	// Whether to mirror your local video or not
+			// 		});
 
-					console.log("session connect: mainStreamManager")
-					this.mainStreamManager = publisher;
-					console.log("session connect: publisher")
-					this.publisher = publisher;
+			// 		console.log("session connect: mainStreamManager")
+			// 		this.mainStreamManager = publisher;
+			// 		console.log("session connect: publisher")
+			// 		this.publisher = publisher;
 
-					// --- Publish your stream ---
+			// 		// --- Publish your stream ---
 
-					console.log("session connect: session publish")
-					this.session.publish(this.publisher);
-				})
-				.catch(error => {
-					console.log('There was an error connecting to the session:', error.code, error.message);
-				});		
+			// 		console.log("session connect: session publish")
+			// 		this.session.publish(this.publisher);
+			// 	})
+			// 	.catch(error => {
+			// 		console.log('There was an error connecting to the session:', error.code, error.message);
+			// 	});		
 
 			// 여기는 기존 코드
 			// 'getToken' method is simulating what your server-side should do.
 			// 'token' parameter should be retrieved and returned by your own backend
-			// this.getToken(this.mySessionId).then(token => {
-			// 	this.session.connect(token, { clientData: this.myUserName })
-			// 		.then(() => {
+			this.getToken(this.mySessionId).then(token => {
+				this.session.connect(token, { clientData: this.myUserName })
+					.then(() => {
 
-			// 			// --- Get your own camera stream with the desired properties ---
+						// --- Get your own camera stream with the desired properties ---
 
-			// 			let publisher = this.OV.initPublisher(undefined, {
-			// 				audioSource: undefined, // The source of audio. If undefined default microphone
-			// 				videoSource: undefined, // The source of video. If undefined default webcam
-			// 				publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-			// 				publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-			// 				resolution: '640x480',  // The resolution of your video
-			// 				frameRate: 30,			// The frame rate of your video
-			// 				insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-			// 				mirror: false       	// Whether to mirror your local video or not
-			// 			});
+						let publisher = this.OV.initPublisher(undefined, {
+							audioSource: undefined, // The source of audio. If undefined default microphone
+							videoSource: undefined, // The source of video. If undefined default webcam
+							publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+							publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+							resolution: '640x480',  // The resolution of your video
+							frameRate: 30,			// The frame rate of your video
+							insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+							mirror: false       	// Whether to mirror your local video or not
+						});
 
-			// 			this.mainStreamManager = publisher;
-			// 			this.publisher = publisher;
+						this.mainStreamManager = publisher;
+						this.publisher = publisher;
 
-			// 			// --- Publish your stream ---
+						// --- Publish your stream ---
 
-			// 			this.session.publish(this.publisher);
-			// 		})
-			// 		.catch(error => {
-			// 			console.log('There was an error connecting to the session:', error.code, error.message);
-			// 		});
-			// });
+						this.session.publish(this.publisher);
+					})
+					.catch(error => {
+						console.log('There was an error connecting to the session:', error.code, error.message);
+					});
+			});
 
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
@@ -189,6 +201,17 @@ export default {
 			this.OV = undefined;
 
 			window.removeEventListener('beforeunload', this.leaveSession);
+			console.log("Desk Meeting방 나가기 버튼 클릭됨!!")
+
+			console.log("Store isStaff 확인: ", this.$store.state.isStaff)
+			if (this.$store.state.isStaff) {
+				this.$router.push({ name: 'StaffHome' })
+			}
+			
+			if (this.$store.state.isDesk) {
+				this.$router.push({ name: 'DeskHome' })
+			}
+			
 		},
 
 		updateMainVideoStreamManager (stream) {
