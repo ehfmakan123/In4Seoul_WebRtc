@@ -1,10 +1,9 @@
 <template>
   <div class="col-3 p-4">
-    <div class="card shadow postit bg-yellow">
-      <div class="card-body" data-bs-toggle="modal" data-bs-target="#detailModal">
-        <p class="card-title"><strong>{{ post.title }}</strong></p>
+    <div class="card shadow box-small bg-yellow" data-bs-toggle="modal" data-bs-target="#detailModal">
+      <div class="card-body p-4">
+        <p class="card-title mb-3 fw-bold">{{ post.title }}</p>
         <p class="card-text">{{ post.content }}</p>
-        <!-- <a href="#" class="card-link">Card link</a> -->
       </div>
     </div>
 
@@ -12,7 +11,6 @@
 </template>
 
 <script>
-// @ is an alias to /src
 
 export default {
   name: 'PostListItem',
@@ -25,12 +23,5 @@ export default {
 }
 </script>
 <style scoped>
-  strong {
-    font-weight: bold;
-  }
 
-  .postit {
-    height: 20vw; 
-    border: 0rem
-  }
 </style>
