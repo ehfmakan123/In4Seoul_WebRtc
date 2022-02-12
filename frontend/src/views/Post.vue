@@ -21,6 +21,7 @@
       <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
       <post-filter></post-filter>
       
+      <!-- PostList -->
       <post-list :postList="state.postList"></post-list>
     </div>
     

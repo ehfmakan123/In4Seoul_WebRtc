@@ -10,13 +10,13 @@ export default createStore({
     isStaff: false,
     isAdmin: false,
     postList: [],
-    post: {
-      "id":"3",
-      "title":"뮤지컬 프랑켄슈타인",
-      "content":"블루스퀘어에서 하고있어요 괴물 너무 마음 아파 ㅠㅠ",
-      "createdAt":"2022-01-01 11:20:00",
-      "updatedAt":"2022-01-01 11:20:00"
-    }
+    // post: {
+    //   "id":"3",
+    //   "title":"뮤지컬 프랑켄슈타인",
+    //   "content":"블루스퀘어에서 하고있어요 괴물 너무 마음 아파 ㅠㅠ",
+    //   "createdAt":"2022-01-01 11:20:00",
+    //   "updatedAt":"2022-01-01 11:20:00"
+    // }
     // selectedPost: {},
   },
   mutations: {
@@ -75,9 +75,9 @@ export default createStore({
         })
         .catch(err => console.error(err))
     },
-    fetchPost({ commit }, post) {
-      commit('SET_POST', post)
-    }
+    // fetchPost({ commit }, post) {
+    //   commit('SET_POST', post)
+    // }
   },
   modules: {
   }
