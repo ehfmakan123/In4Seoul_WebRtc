@@ -64,7 +64,7 @@ public class OpenviduServiceImpl implements OpenviduService {
 
 
         // Build connectionProperties object with the serverData and the role
-        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(ConnectionType.WEBRTC).data(serverData).role(role).build();
+        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(ConnectionType.WEBRTC).role(role).build();
 
 
         try {
@@ -111,7 +111,7 @@ public class OpenviduServiceImpl implements OpenviduService {
         String serverData = "{\"serverData\": \"" + "data" + "\"}"; //요게 뭐람
 
         // Build connectionProperties object with the serverData and the role
-        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(ConnectionType.WEBRTC).data(serverData).role(role).build();
+        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(ConnectionType.WEBRTC).role(role).build();
 
 
 
