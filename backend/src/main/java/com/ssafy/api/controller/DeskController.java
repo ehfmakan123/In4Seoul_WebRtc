@@ -87,10 +87,17 @@ public class DeskController {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String userId = userDetails.getDeskId();  // 토큰으로부터 데스크 아이디를 얻어온다
 
+
+
+        postReq.setPassword(passwordEncoder.encode(postReq.getPassword()));
+
+
         deskService.registerPost(userId,postReq);
 
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(201,"성공"));
 
 
 
@@ -176,21 +183,54 @@ public class DeskController {
 
 
 
-////글 목록 조회  ( desk별로 조회 페이징 처리도 해야함)
-//    @GetMapping("/posts")
-//    public ResponseEntity <ListResult<SelectedDeskDto>> getPostList(@RequestParam("desk") int desk, @RequestParam("page") int page) {
-//
-//
-//        List<SelectedDeskDto> result = deskService.getDeskList(id);
-//
-//        return ResponseEntity.status(200).body(new ListResult<>(200,"성공",result));
-//    }
-//
+//글 목록 조회  ( desk별로 조회 페이징 처리도 해야함)
+    @GetMapping("/posts")
+    public ResponseEntity <ListResult<PostDto>> getPostList(@RequestParam(value = "desk" , required = false) Integer desk, @RequestParam(value = "page",required = false) Integer page,@ApiIgnore Authentication authentication) {
+
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        int userId = userDetails.getDestPK();
+
+
+        if(desk==null)
+            desk=userId;
+
+        if(page==null) page=1;
+
+        ListResult<PostDto> postList = deskService.getPostList(desk, page);
+
+
+        return ResponseEntity.status(200).body(postList);
+    }
 
 
 
 
 
+// 게시글 비밀번호 확인
+@PostMapping("/posts/{id}")
+public ResponseEntity <BaseResponseBody> passwordCheck(@PathVariable(value = "id") int id, @RequestBody Map<String, String> body) {
+
+
+    String password = body.get("password");
+
+
+    String postPassword = deskService.getPostPassword(id);
+
+
+    if (passwordEncoder.matches(password, postPassword)) {
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "비밀번호 일치"));
+
+
+    } else {
+        return ResponseEntity.status(401).body(BaseResponseBody.of(401, "유효하지 않은 비밀번호입니다"));
+
+    }
+
+
+}
 
 
 

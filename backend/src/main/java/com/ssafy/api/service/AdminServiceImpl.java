@@ -4,6 +4,7 @@ import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.dto.DeskDto;
 import com.ssafy.api.dto.PostDto;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Areas;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Staff;
@@ -45,8 +46,11 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<StaffDto> getConsultantList() {
-        return adminRepositorySupport.getConsultantList();
+    public ListResult<StaffDto> getConsultantList(Integer page) {
+
+        if(page==null) page=1;
+
+        return adminRepositorySupport.getConsultantList(page);
     }
 
     @Override
@@ -66,6 +70,12 @@ public class AdminServiceImpl implements AdminService {
         staff.setDeleteYN(dto.getDeleteYN());
         staff.setApproveYN(dto.getApproveYN());
         staff.setAreas(new Areas(dto.getAreaId(), null, null));
+
+        //추가된 부분
+        staff.setName(dto.getName());
+        staff.setPhone(dto.getPhone());
+        staff.setEmail(dto.getEmail());
+
 
         Staff save = staffRepository.save(staff);
 
@@ -104,8 +114,13 @@ public class AdminServiceImpl implements AdminService {
 
     //데스크 목록 조회
     @Override
-    public List<DeskDto> getDeskList() {
-        return adminRepositorySupport.getDeskList();
+    public ListResult<DeskDto> getDeskList(Integer page) {
+
+
+
+        if(page==null) page=1;
+
+        return adminRepositorySupport.getDeskList(page);
     }
 
 
@@ -156,10 +171,12 @@ public class AdminServiceImpl implements AdminService {
     }
 
     @Override
-    public List<PostDto> getPostList() {
+    public ListResult<PostDto> getPostList(Integer page) {
+
+        if(page==null) page=1;
 
 
-        List<PostDto> result = adminRepositorySupport.getPostList();
+        ListResult<PostDto> result = adminRepositorySupport.getPostList(page);
 
         return result;
     }

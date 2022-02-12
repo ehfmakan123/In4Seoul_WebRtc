@@ -96,4 +96,46 @@ public class OpenviduServiceImpl implements OpenviduService {
         }
 
     }
+
+    @Override
+    public String connectSession(String sessionId) {
+
+
+
+        // 방 이름
+        String sessionName=sessionId;
+
+        // Role associated to this user
+        OpenViduRole role = PUBLISHER; // 권한 부여
+
+        String serverData = "{\"serverData\": \"" + "data" + "\"}"; //요게 뭐람
+
+        // Build connectionProperties object with the serverData and the role
+        ConnectionProperties connectionProperties = new ConnectionProperties.Builder().type(ConnectionType.WEBRTC).data(serverData).role(role).build();
+
+
+
+        try{  //토큰 발급
+
+
+            String token = this.mapSessions.get(sessionName).createConnection(connectionProperties).getToken();
+
+            this.mapSessionNamesTokens.get(sessionName).put(token, role);
+
+
+            return token;
+
+        }
+
+
+        catch(Exception e)  //  토큰 발급 과정에서 실패
+        {
+
+            System.out.println("오픈비두 토큰 발급중 에러발생" +e);
+            return "";
+        }
+
+
+
+    }
 }

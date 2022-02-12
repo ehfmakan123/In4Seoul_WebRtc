@@ -4,7 +4,7 @@ public interface OpenviduService {
 
     String createSession(String deskId);
 
-
+   String connectSession(String sessionId);
 
 
 }
