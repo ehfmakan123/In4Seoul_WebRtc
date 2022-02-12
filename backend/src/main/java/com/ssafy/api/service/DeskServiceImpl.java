@@ -5,6 +5,7 @@ import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.PostDto;
 import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Posts;
 import com.ssafy.db.repository.AdminRepository;
@@ -120,6 +121,16 @@ public class DeskServiceImpl implements DeskService{
     }
 
     @Override
+    public String getPostPassword(long id) {
+        Optional<Posts> byId = postRepository.findById(id);
+
+        Posts posts = byId.get();
+
+
+        return posts.getPassword();
+    }
+
+    @Override
     public List<AreaDto> getAreas() {
 
         return deskRepositorySupport.getAreas();
@@ -127,9 +138,22 @@ public class DeskServiceImpl implements DeskService{
 
 
 
+
+
+
     //선택지역에 해당하는 데스크 목록 가져오기
     @Override
     public List<SelectedDeskDto> getDeskList(int id) {
         return deskRepositorySupport.getDeskList(id);
+    }
+
+
+
+    // 게시글 목록 가져오기
+    @Override
+    public ListResult<PostDto> getPostList(Integer desk, Integer page) {
+
+            return deskRepositorySupport.getPostList(desk,page);
+
     }
 }

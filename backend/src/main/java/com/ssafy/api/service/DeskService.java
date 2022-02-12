@@ -4,6 +4,7 @@ import com.ssafy.api.dto.AreaDto;
 import com.ssafy.api.dto.PostDto;
 import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Desks;
 
 import java.util.List;
@@ -36,6 +37,9 @@ public interface DeskService {
     boolean deletePost(long id);
 
 
+    String getPostPassword(long id);
+
+
 
     // 지역 목록 가져오기
 List<AreaDto> getAreas();
@@ -44,4 +48,10 @@ List<AreaDto> getAreas();
 
 //선택지역에 해당하는 데스크 목록 가져오기
 List<SelectedDeskDto> getDeskList(int id);
+
+
+
+// 게시글 목록 가져오기
+ListResult<PostDto> getPostList(Integer desk, Integer page);
+
 }
