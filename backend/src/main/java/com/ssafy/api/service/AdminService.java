@@ -1,10 +1,7 @@
 package com.ssafy.api.service;
 
 
-import com.ssafy.api.dto.AreaDto;
-import com.ssafy.api.dto.StaffDto;
-import com.ssafy.api.dto.DeskDto;
-import com.ssafy.api.dto.PostDto;
+import com.ssafy.api.dto.*;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Staff;
@@ -36,10 +33,10 @@ public interface AdminService {
 
 
     //게시글 목록 조회
-    ListResult<PostDto> getPostList(Integer page);
+    ListResult<AdminPostDto> getPostList(Integer page);
 
     //게시글 조회
-    PostDto getPost(long id);
+    AdminPostDto getPost(long id);
 
 
     //게시글 삭제

@@ -118,8 +118,9 @@ public class StaffController {
         }
 
         if (passwordEncoder.matches(password, result.getPassword())) {
-
-            return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff")));
+            UserLoginPostRes data = UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"));
+            data.setKorName(result.getName());
+            return ResponseEntity.status(200).body(data);
 
 
         } else {

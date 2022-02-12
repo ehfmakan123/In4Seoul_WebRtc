@@ -66,7 +66,11 @@ public class DeskController {
 
         if (passwordEncoder.matches(password, result.getPassword())) {
 
-            return ResponseEntity.status(200).body(UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "desk")));
+            UserLoginPostRes data = UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "desk"));
+            data.setKorName(result.getKorName());
+            data.setEngName(result.getEngName());
+
+            return ResponseEntity.status(200).body(data);
 
 
         } else {
