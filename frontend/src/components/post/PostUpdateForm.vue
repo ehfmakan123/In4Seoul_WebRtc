@@ -5,10 +5,10 @@
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content bg-yellow box-big p-3">
           <div class="d-flex align-items-center justify-content-between pt-3 px-3 pb-2">
-            <p class="w-100"><input class="w-100 post-input" style="height: 2.5rem;" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
+            <p class="w-100"><input id="update-title" class="w-100 post-input" style="height: 2.5rem;" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
           </div>
           <div class="modal-body" style="height: 24rem;">
-            <textarea v-model="state.myPost.content" type="text" class="form-control post-input" style="height: 88%; resize: none;"></textarea>
+            <textarea id="update-content" v-model="state.myPost.content" type="text" class="form-control post-input" style="height: 88%; resize: none;"></textarea>
             <p class="mt-3 text-small">※ 개인정보는 남기지 마세요.</p>
           </div>
           <div class="d-flex justify-content-end p-2 px-3">
@@ -23,11 +23,12 @@
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import { computed, ref } from 'vue'
 import { Modal } from 'bootstrap'
+// import { useStore } from 'vuex'
 
-const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+// const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'PostUpdateForm',
@@ -37,9 +38,12 @@ export default {
     post: Object,
   },
   setup(props) {
+    // const store = useStore()
+
     const state = ref({
       myPost: {
         title: computed(() => props.post.title),
+        // title: props.post.title,
         content: computed(() => props.post.content)
       }
     })
@@ -53,29 +57,37 @@ export default {
 
     const savePost = () => {
       console.log("저장 버튼 클릭됨!")
-      console.log(state.value.myPost)
+      console.log(document.querySelector('#update-title').value)
+      console.log(document.querySelector('#update-content').value)
 
-      const token = localStorage.getItem('token')
-      const config = {
-        Authorization: `Bearer ${token}`
-      }
+        // 모달창 끄기
+        const updateModal = document.querySelector('#updateModal')
+        let modal1 = Modal.getOrCreateInstance(updateModal)
+        modal1.hide()
+        
+      // const token = localStorage.getItem('token')
+      // const config = {
+      //   Authorization: `Bearer ${token}`
+      // }
 
-      axios({
-        method: 'put',
-        url: `${SERVER_HOST}/desk/posts/${props.post.id}`,
-        headers: config,
-        data: state.value.myPost
-      })
-        .then(() => {
-          console.log('업데이트 성공!')
-          // this.fetchReviewList(this.movieDetail.id)
-          // 모달창 끄기
-          console.log('업데이트 성공!')
-          const updateModal = document.querySelector('#updateModal')
-          let modal = Modal.getOrCreateInstance(updateModal)
-          modal.hide()
-        })
-        .catch(err => console.error(err))
+      // axios({
+      //   method: 'put',
+      //   url: `${SERVER_HOST}/desk/posts/${props.post.id}`,
+      //   headers: config,
+      //   data: {
+      //     title: document.querySelector('#update-title').value,
+      //     content: document.querySelector('#update-content').value
+      //   }
+      // })
+      //   .then((res) => {
+
+      //     console.log('업데이트 성공!')
+      //     console.log(res.data)
+      //     // fetchPostList
+      //     store.dispatch('fetchPostList', 3, 1)
+
+      //   })
+      //   .catch(err => console.error(err))
 
     }
 
