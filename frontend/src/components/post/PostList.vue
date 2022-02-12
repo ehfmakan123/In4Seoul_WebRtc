@@ -1,27 +1,19 @@
 <template>
-  <div>
-    <hr>
-    <!-- detail Modal -->
-    <post-detail :selectedPost="state.selectedPost"></post-detail>
-    <!-- password modal -->
-    <!-- <post-password-form :postId="state.selectedPost.postId"></post-password-form> -->
-    <!-- update modal -->
-    <!-- <post-update-form @try-delete="tryDelete" @try-unsave-close="tryUnsaveClose" :post="state.selectedPost"></post-update-form> -->
-    <!-- close modal -->
-    <!-- <post-close-form></post-close-form> -->
-    <!-- delete modal -->
-    <!-- <post-delete-form :postId="state.selectedPost.postId"></post-delete-form> -->
-
-
-    <div class="row p-5">
-      <post-list-item
-        
-        v-for="post in postList"
-        :key="post.id"
-        :post="post"
-        @click="selectPost(post)"
-      >
-      </post-list-item>
+  <div class="wall-background">
+    <div class="foggy-background">
+      <!-- detail Modal -->
+      <post-detail :selectedPost="state.selectedPost"></post-detail>
+      
+      <!-- Post List -->
+      <div class="row padding-postlist">
+        <post-list-item
+          v-for="post in postList"
+          :key="post.id"
+          :post="post"
+          @click="selectPost(post)"
+        >
+        </post-list-item>
+      </div>
     </div>
   </div>
 </template>
@@ -30,14 +22,10 @@
 import { ref } from 'vue'
 import PostListItem from '@/components/post/PostListItem'
 import PostDetail from '@/components/post/PostDetail'
-// import PostPasswordForm from '@/components/post/PostPasswordForm'
-// import PostUpdateForm from '@/components/post/PostUpdateForm'
-// import PostCloseForm from '@/components/post/PostCloseForm'
-// import PostDeleteForm from '@/components/post/PostDeleteForm'
 
 export default {
   name: 'PostList',
-  components: { PostListItem, PostDetail}, //, PostPasswordForm, PostUpdateForm, PostCloseForm, PostDeleteForm 
+  components: { PostListItem, PostDetail},
   props: ["postList"],
   setup() {
     const state = ref({
@@ -54,3 +42,23 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .wall-background {
+    background-image: url('../../assets/wall.jpg');
+    background-repeat : no-repeat;
+    background-size: cover;
+    height: auto;
+  }
+
+  .foggy-background {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+
+  .padding-postlist {
+    padding-left: 6%;
+    padding-right: 6%;
+    padding-top: 10%
+  }
+</style>

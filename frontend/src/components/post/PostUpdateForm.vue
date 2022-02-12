@@ -1,43 +1,31 @@
 <template>
   <div>
     <!-- 글 수정 Modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content postit">
-          <div class="modal-header">
-            <p class="w-100"><input class="w-100 input-title" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
+        <div class="modal-content bg-yellow box-big p-3">
+          <div class="d-flex align-items-center justify-content-between pt-3 px-3 pb-2">
+            <p class="w-100"><input class="w-100 post-input" style="height: 2.5rem;" type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
           </div>
-          <div class="modal-body" style="height: 27rem;">
-            <textarea rows="15" v-model="state.myPost.content" type="text" class="form-control"></textarea>
-            <!-- <p><input class="input-content" type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p> -->
-            <p class="mb-0" style="font-size:13px;">※ 개인정보는 남기지 마세요.</p>
+          <div class="modal-body" style="height: 24rem;">
+            <textarea v-model="state.myPost.content" type="text" class="form-control post-input" style="height: 88%; resize: none;"></textarea>
+            <p class="mt-3 text-small">※ 개인정보는 남기지 마세요.</p>
           </div>
-          <div class="modal-footer">
-            <button data-bs-toggle="modal" data-bs-target="#deleteModal" @click="tryDelete" type="submit" class="btn btn-secondary">삭제</button>
-            <button @click="savePost" type="submit" class="btn btn-primary">저장</button>
-            <button data-bs-toggle="modal" data-bs-target="#closeModal" @click="cancle" type="button" class="btn btn-secondary">닫기</button>
+          <div class="d-flex justify-content-end p-2 px-3">
+            <button @click="tryDelete" type="button" class="btn btn btn-outline-danger t-red-1 bd-red-1 rounded-btn me-auto">삭제</button>
+            <button @click="savePost" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">저장</button>
+            <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn">닫기</button>
           </div>
         </div>
       </div>
     </div>
-
-    <!-- <hr>
-    <h3>PostUpdateForm</h3>
-    <p><input type="text" v-model="state.myPost.title" placeholder="제목을 입력해주세요"></p>
-    <p><input type="text" v-model="state.myPost.content" placeholder="내용을 입력해주세요"></p>
-    <p>
-      <button @click="deletePost">삭제</button>
-      <button @click="savePost">저장</button>
-      <button @click="cancle">닫기</button>
-    </p> -->
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import { computed, ref } from 'vue'
-import { useRouter} from 'vue-router'
-// import { mapState } from 'vuex'
+import { Modal } from 'bootstrap'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -48,19 +36,7 @@ export default {
   props:{
     post: Object,
   },
-  // computed: {
-  //   ...mapState(['post'])
-  // },
-  // data() {
-  //   return {
-  //     postData: this.post
-  //   }
-  // },
-
-  setup(props, { emit }) {
-    // console.log('update form 생성됨')
-    const router = useRouter()
-
+  setup(props) {
     const state = ref({
       myPost: {
         title: computed(() => props.post.title),
@@ -70,7 +46,9 @@ export default {
 
     const tryDelete = () => {
       console.log("삭제 버튼 클릭됨!")
-      // emit('try-delete')
+      const deleteModal = document.querySelector('#deleteModal')
+      let modal = Modal.getOrCreateInstance(deleteModal)
+      modal.show()
     }
 
     const savePost = () => {
@@ -94,18 +72,18 @@ export default {
           // 모달창 끄기
           console.log('업데이트 성공!')
           const updateModal = document.querySelector('#updateModal')
-          updateModal.classList.remove("in")
-          document.querySelector(".modal-backdrop").remove()
-          updateModal.style.display = "none"
-          router.go()
-        })
-        .catch(err => console.error(err))
+          let modal = Modal.getOrCreateInstance(updateModal)
+          modal.hide()
+        // })
+        // .catch(err => console.error(err))
 
     }
 
     const cancle = () => {
       console.log("닫기 버튼 클릭됨!")
-      emit('try-unsave-close')
+      const closeModal = document.querySelector('#closeModal')
+      let modal = Modal.getOrCreateInstance(closeModal)
+      modal.show()
     }
 
     return {state, tryDelete, savePost, cancle}

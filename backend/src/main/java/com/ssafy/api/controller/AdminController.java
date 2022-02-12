@@ -82,12 +82,12 @@ public class AdminController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<ListResult<StaffDto>> staffList() {
+    public ResponseEntity<ListResult<StaffDto>> staffList(@RequestParam(value = "page", required = false) Integer page) {
 
-        List<StaffDto> list = adminService.getConsultantList();
+        ListResult<StaffDto> result = adminService.getConsultantList(page);
 
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-        return ResponseEntity.status(200).body(new ListResult<>(200,"성공",list));
+        return ResponseEntity.status(200).body(result);
     }
 
 
@@ -247,13 +247,13 @@ public class AdminController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<ListResult<DeskDto>> getDeskList() {
+    public ResponseEntity<ListResult<DeskDto>> getDeskList(@RequestParam(value = "page", required = false) Integer page) {
 
-        List<DeskDto> result = adminService.getDeskList();
+        ListResult<DeskDto> result = adminService.getDeskList(page);
 
 
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-        return ResponseEntity.status(200).body(new ListResult<>(200,"성공",result));
+        return ResponseEntity.status(200).body(result);
     }
 
 
@@ -270,15 +270,15 @@ public class AdminController {
             @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<ListResult<PostDto>> getPostList() {
+    public ResponseEntity<ListResult<PostDto>> getPostList(@RequestParam(value = "page", required = false) Integer page) {
 
 
-        List<PostDto> result = adminService.getPostList();
+        ListResult<PostDto> postList = adminService.getPostList(page);
 
-        System.out.println(result.size());
+
 
         // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-        return ResponseEntity.status(200).body(new ListResult<>(200,"성공",result));
+        return ResponseEntity.status(200).body(postList);
     }
 
 

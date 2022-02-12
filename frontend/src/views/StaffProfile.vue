@@ -53,7 +53,6 @@ import { useRouter} from 'vue-router'
 import { ref } from 'vue'
 import axios from 'axios'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
-// import axios from 'axios'
 
 export default {
   name: 'StaffProfile',

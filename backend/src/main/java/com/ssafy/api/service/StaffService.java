@@ -3,6 +3,7 @@ package com.ssafy.api.service;
 import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.request.StaffRequest;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Staff;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface StaffService {
     boolean updateStaff(StaffDto dto); // 내 정보 수정
 
 
-    List<MeetingLogDto> getMeetingLogList(int id);  //내 상담목록 가져오기
+    ListResult<MeetingLogDto> getMeetingLogList(int id, Integer page);  //내 상담목록 가져오기
 
 
 

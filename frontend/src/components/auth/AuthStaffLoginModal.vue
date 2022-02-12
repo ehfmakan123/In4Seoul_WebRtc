@@ -30,11 +30,16 @@ import { useRouter} from 'vue-router'
 import { useStore } from 'vuex';
 import axios from 'axios'
 
+import firebase from 'firebase/app'
+import 'firebase/messaging'
+
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'AuthStaffLoginModal',
+
   setup() {
+    const messaging = firebase.messaging()
     const staffLoginCredentials = ref({ userId: "", password: "" })
     const router = useRouter()
     const store = useStore()
@@ -48,16 +53,46 @@ export default {
         data: staffLoginCredentials.value
       })      
         .then(res => {
-          console.log(res)
+          // console.log(res)
+          // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
+          const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")
+          console.log("상담사 로그인후 store 확인: ", store.state.isStaff)
 
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')
           staffLoginModal.classList.remove("in")
           document.querySelector(".modal-backdrop").remove()
           staffLoginModal.style.display = "none"
-          
+
+          // fcm 토큰 가져오기 -------------- 시작
+          messaging.getToken({vapidKey: "BK_qGmvUaOH-PiEnOcd5Or0eLaUIcLsucSVPOC8mySPxp1MEAroR9K6btphRoGo3Q7OLYd9iFT_O0u-8OdSSxAU"})
+            .then((res) => {
+              // console.log(res)
+              localStorage.setItem('fcmtoken', res)
+              const fcmToken = localStorage.getItem('fcmtoken')
+              console.log('fcmToken: ',fcmToken)
+
+              // 토큰을 받아오면 토큰값 서버에 보내기
+              axios({
+                method: 'post',
+                url: `${SERVER_HOST}/staff/fcmtoken` ,
+                headers: {
+                  Authorization: `Bearer ${jwtToken}`
+                },
+                data: {
+                  token: fcmToken
+                }
+              })
+                .then((res) => {
+                  console.log('fcm토큰 저장 res: ',res)
+                })
+                .catch((err) => console.log(err) )
+            })
+            .catch((err) => console.log(err))
+            // fcm 토큰 가져오기 -------------- 끝
+
           router.push({ name: 'StaffHome' })
         })
         .catch(err => {

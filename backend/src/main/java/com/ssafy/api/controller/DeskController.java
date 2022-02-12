@@ -9,6 +9,7 @@ import com.ssafy.api.request.StaffRequest;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.DeskService;
 import com.ssafy.api.service.FirebaseService;
+import com.ssafy.api.service.OpenviduService;
 import com.ssafy.common.auth.SsafyUserDetails;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.ListResult;
@@ -24,10 +25,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
-@RequestMapping("api/desk")
+@RequestMapping("/api/desk")
 public class DeskController {
 
 
@@ -41,6 +44,8 @@ public class DeskController {
     @Autowired
     FirebaseService firebaseService;
 
+    @Autowired
+    OpenviduService openviduService;
 
 
     // 데스크 계정 로그인
@@ -82,10 +87,17 @@ public class DeskController {
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String userId = userDetails.getDeskId();  // 토큰으로부터 데스크 아이디를 얻어온다
 
+
+
+        postReq.setPassword(passwordEncoder.encode(postReq.getPassword()));
+
+
         deskService.registerPost(userId,postReq);
 
 
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(201,"성공"));
 
 
 
@@ -171,23 +183,84 @@ public class DeskController {
 
 
 
+//글 목록 조회  ( desk별로 조회 페이징 처리도 해야함)
+    @GetMapping("/posts")
+    public ResponseEntity <ListResult<PostDto>> getPostList(@RequestParam(value = "desk" , required = false) Integer desk, @RequestParam(value = "page",required = false) Integer page,@ApiIgnore Authentication authentication) {
+
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        int userId = userDetails.getDestPK();
+
+
+        if(desk==null)
+            desk=userId;
+
+        if(page==null) page=1;
+
+        ListResult<PostDto> postList = deskService.getPostList(desk, page);
+
+
+        return ResponseEntity.status(200).body(postList);
+    }
+
+
+
+
+
+// 게시글 비밀번호 확인
+@PostMapping("/posts/{id}")
+public ResponseEntity <BaseResponseBody> passwordCheck(@PathVariable(value = "id") int id, @RequestBody Map<String, String> body) {
+
+
+    String password = body.get("password");
+
+
+    String postPassword = deskService.getPostPassword(id);
+
+
+    if (passwordEncoder.matches(password, postPassword)) {
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200, "비밀번호 일치"));
+
+
+    } else {
+        return ResponseEntity.status(401).body(BaseResponseBody.of(401, "유효하지 않은 비밀번호입니다"));
+
+    }
+
+
+}
+
+
+
+
+
     //화상 상담 관련
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 
-    //상담 신청
+    //상담 신청   발급받은 openvidu 토큰과 session아이디
     @PostMapping("/meeting")        //url 이 이게 맞을까..
-    public ResponseEntity <BaseResponseBody> Meeting(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<SingleResult<Map<String,String>>> Meeting(@ApiIgnore Authentication authentication) {
 
 
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
-        String DeskId = userDetails.getDeskId();
+        String deskId = userDetails.getDeskId();
         int areaId=userDetails.getDeskAreaId();
 
+        String token = openviduService.createSession(deskId);//  데스크 아이디 넘겨주면서 방 만들기
 
-        firebaseService.sendMessage(DeskId,areaId);
-        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        System.out.println("token="+token);
+
+        Map<String,String> map=new HashMap<>();
+
+        map.put("token",token);
+        map.put("sessionId",deskId);
+
+        firebaseService.sendMessage(deskId,areaId);
+        return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
     }
 
 
