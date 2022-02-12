@@ -23,12 +23,12 @@
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import { computed, ref } from 'vue'
 import { Modal } from 'bootstrap'
-// import { useStore } from 'vuex'
+import { useStore } from 'vuex'
 
-// const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'PostUpdateForm',
@@ -38,12 +38,11 @@ export default {
     post: Object,
   },
   setup(props) {
-    // const store = useStore()
+    const store = useStore()
 
     const state = ref({
       myPost: {
         title: computed(() => props.post.title),
-        // title: props.post.title,
         content: computed(() => props.post.content)
       }
     })
@@ -60,34 +59,33 @@ export default {
       console.log(document.querySelector('#update-title').value)
       console.log(document.querySelector('#update-content').value)
 
-        // 모달창 끄기
-        const updateModal = document.querySelector('#updateModal')
-        let modal1 = Modal.getOrCreateInstance(updateModal)
-        modal1.hide()
         
-      // const token = localStorage.getItem('token')
-      // const config = {
-      //   Authorization: `Bearer ${token}`
-      // }
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
 
-      // axios({
-      //   method: 'put',
-      //   url: `${SERVER_HOST}/desk/posts/${props.post.id}`,
-      //   headers: config,
-      //   data: {
-      //     title: document.querySelector('#update-title').value,
-      //     content: document.querySelector('#update-content').value
-      //   }
-      // })
-      //   .then((res) => {
+      axios({
+        method: 'put',
+        url: `${SERVER_HOST}/desk/posts/${props.post.id}`,
+        headers: config,
+        data: {
+          title: document.querySelector('#update-title').value,
+          content: document.querySelector('#update-content').value
+        }
+      })
+        .then((res) => {
+          console.log('업데이트 성공!')
+          console.log(res.data)
+          // fetchPostList
+          store.dispatch('fetchPostList', 3)
 
-      //     console.log('업데이트 성공!')
-      //     console.log(res.data)
-      //     // fetchPostList
-      //     store.dispatch('fetchPostList', 3, 1)
-
-      //   })
-      //   .catch(err => console.error(err))
+          // 모달창 끄기
+          const updateModal = document.querySelector('#updateModal')
+          let modal1 = Modal.getOrCreateInstance(updateModal)
+          modal1.hide()
+        })
+        .catch(err => console.error(err))
 
     }
 

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- 모달들 먼저 선언 -->
-    <post-password-form></post-password-form>
+    <post-password-form :postId="selectedPost.id"></post-password-form>
     <post-update-form :post="selectedPost"></post-update-form>
     <post-delete-form></post-delete-form>
     <post-close-form></post-close-form>
