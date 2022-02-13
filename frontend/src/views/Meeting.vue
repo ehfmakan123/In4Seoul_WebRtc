@@ -37,6 +37,8 @@
 			</div>
 			<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
 			<button class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+			<button class="btn btn-lg btn-danger" @click="muteMyVideo()">내화면끄기</button>
+			<button class="btn btn-lg btn-primary" @click="unmuteMyVideo()">내화면켜기</button>
 		</div>
 	</div>
 </template>
@@ -71,6 +73,12 @@ export default {
 			mySessionId: 'SessionA',
 			myUserName: 'Participant' + Math.floor(Math.random() * 100),
 
+			// Screen Sharing
+			OVScreen: undefined,
+			sessionScreen: undefined,
+			screensharing: false,
+			// publisherScreen: undefined
+
 			// ovToken 추가
 			ovToken: undefined,
 
@@ -100,56 +108,40 @@ export default {
 	},
 
 	methods: {
+		muteMyVideo () {
+			this.publisher.publishVideo(false)
+		},
+		unmuteMyVideo () {
+			this.publisher.publishVideo(true)
+		},
 		shareScreen () {
-			// this.session.connect(this.ovToken).then(() => {
-			// 		let publisher = this.OV.initPublisher("html-element-id", { videoSource: "screen" });
+			// --- 나만 화면공유 되는 코드 ---
+			// this.getToken(localStorage.getItem('ovSessionId')).then((token) => {
+			// 		// console.log("테스트", token)
+			// 		// console.log("테스트", this.ovToken)
+			// 		this.session.connect(token).then(() => {
+			// 			console.log("테스트1", )
+			// 				let publisher = this.OV.initPublisher("screen-container", { videoSource: "screen" });
 
-			// 		publisher.once('accessAllowed', (event) => {
-			// 				console.log(event)
-			// 				publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
-			// 						console.log('User pressed the "Stop sharing" button');
+			// 				publisher.once('accessAllowed', (event) => {
+			// 					console.log(event)
+			// 						publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+			// 								console.log('User pressed the "Stop sharing" button');
+			// 						});
+			// 						this.session.publish(publisher);
+
 			// 				});
-			// 				this.publish(publisher);
 
-			// 		});
+			// 				publisher.once('accessDenied', (event) => {
+			// 					console.log(event)
+			// 						console.warn('ScreenShare: Access Denied');
+			// 				});
 
-			// 		publisher.once('accessDenied', (event) => {
-			// 				console.log(event)
-			// 				console.warn('ScreenShare: Access Denied');
-			// 		});
+			// 		}).catch((error => {
+			// 				console.warn('There was an error connecting to the session:', error.code, error.message);
 
-			// }).catch((error => {
-			// 		console.warn('There was an error connecting to the session:', error.code, error.message);
-
-			// }));
-
-			this.getToken(localStorage.getItem('ovSessionId')).then((token) => {
-					// console.log("테스트", token)
-					// console.log("테스트", this.ovToken)
-					this.session.connect(token).then(() => {
-						console.log("테스트1", )
-							let publisher = this.OV.initPublisher("screen-container", { videoSource: "screen" });
-
-							publisher.once('accessAllowed', (event) => {
-								console.log(event)
-									publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
-											console.log('User pressed the "Stop sharing" button');
-									});
-									this.session.publish(publisher);
-
-							});
-
-							publisher.once('accessDenied', (event) => {
-								console.log(event)
-									console.warn('ScreenShare: Access Denied');
-							});
-
-					}).catch((error => {
-							console.warn('There was an error connecting to the session:', error.code, error.message);
-
-					}));
-			});
-
+			// 		}));
+			// });
 		
 		},
 		enterChat (message) {
@@ -195,16 +187,41 @@ export default {
 		joinSession () {
 			// --- Get an OpenVidu object ---
 			this.OV = new OpenVidu();
+			this.OVScreen = new OpenVidu();
 
 			// --- Init a session ---
 			this.session = this.OV.initSession();
+			this.sessionScreen = this.OVScreen.initSession();
+
 
 			// --- Specify the actions when events take place in the session ---
 
 			// On every new Stream received...
 			this.session.on('streamCreated', ({ stream }) => {
-				const subscriber = this.session.subscribe(stream);
-				this.subscribers.push(subscriber);
+				if (stream.typeOfVideo == "CAMERA") {
+					const subscriber = this.session.subscribe(stream);
+					this.subscribers.push(subscriber);
+					console.log('[subscribers][웹캠공유]', this.subscribers)
+				}
+			});
+
+			this.sessionScreen.on('streamCreated', ({ stream }) => {
+				if (stream.typeOfVideo == "SCREEN") {
+					console.log('[화면공유] 남한테 가나?')
+
+					// 웹캠 공유와 비슷하게 짠 코드
+					// const subscriberScreen = this.sessionScreen.subscribe(stream);
+					// this.subscribers.push(subscriberScreen);
+					console.log('[subscribers][화면공유]', this.subscribers)
+
+					// screen-share 튜토리얼과 비슷하게 짠 코드
+					const subscriberScreen = this.sessionScreen.subscribe(stream, 'screen-container');
+					console.log(subscriberScreen)
+					// subscriberScreen.on('videoElementCreated', event => {
+					// Add a new <p> element for the user's nickname just below its video
+					// this.appendUserData(event.element, subscriberScreen.stream.connection);
+					// });
+				}
 			});
 
 			// On every Stream destroyed...
@@ -278,39 +295,34 @@ export default {
 					console.log('There was an error connecting to the session:', error.code, error.message);
 				});		
 
-			// 여기는 기존 코드
-			// 'getToken' method is simulating what your server-side should do.
-			// 'token' parameter should be retrieved and returned by your own backend
-			// this.getToken(this.mySessionId).then(token => {
-			// 	console.log('Vue에서 생성한 토큰: ', token)
-			// 	console.log('Spring에서 생성한 토큰: ', this.ovToken)
-			// 	this.session.connect(token, { clientData: this.myUserName })
-			// 		.then(() => {
 
-			// 			// --- Get your own camera stream with the desired properties ---
+			// Screen-Share 토큰 받아서 연결
+			this.getToken(this.mySessionId).then((token) => {
+					// console.log("테스트", token)
+					// console.log("테스트", this.ovToken)
+					this.sessionScreen.connect(token).then(() => {
+						console.log("테스트1", )
+							let publisher = this.OVScreen.initPublisher("screen-container", { videoSource: "screen" });
 
-			// 			let publisher = this.OV.initPublisher(undefined, {
-			// 				audioSource: undefined, // The source of audio. If undefined default microphone
-			// 				videoSource: undefined, // The source of video. If undefined default webcam
-			// 				publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-			// 				publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-			// 				resolution: '640x480',  // The resolution of your video
-			// 				frameRate: 30,			// The frame rate of your video
-			// 				insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-			// 				mirror: false       	// Whether to mirror your local video or not
-			// 			});
+							publisher.once('accessAllowed', (event) => {
+								console.log(event)
+									publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+											console.log('User pressed the "Stop sharing" button');
+									});
+									this.sessionScreen.publish(publisher);
 
-			// 			this.mainStreamManager = publisher;
-			// 			this.publisher = publisher;
+							});
 
-			// 			// --- Publish your stream ---
+							publisher.once('accessDenied', (event) => {
+									console.log(event)
+									console.warn('ScreenShare: Access Denied');
+							});
 
-			// 			this.session.publish(this.publisher);
-			// 		})
-			// 		.catch(error => {
-			// 			console.log('There was an error connecting to the session:', error.code, error.message);
-			// 		});
-			// });
+					}).catch((error => {
+							console.warn('There was an error connecting to the session:', error.code, error.message);
+
+					}));
+			});	
 
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
@@ -318,6 +330,7 @@ export default {
 		leaveSession () {
 			// --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (this.session) this.session.disconnect();
+			if (this.sessionScreen) this.sessionScreen.disconnect();
 
 			this.session = undefined;
 			this.mainStreamManager = undefined;
@@ -343,6 +356,24 @@ export default {
 			if (this.mainStreamManager === stream) return;
 			this.mainStreamManager = stream;
 		},
+
+		// Screen-share 관련 메소드
+		// appendUserData(videoElement, connection) {
+		// 	var userData;
+		// 	var nodeId;
+		// 	if (typeof connection === "string") {
+		// 		userData = connection;
+		// 		nodeId = connection;
+		// 	} else {
+		// 		userData = JSON.parse(connection.data).clientData;
+		// 		nodeId = connection.connectionId;
+		// 	}
+		// 	var dataNode = document.createElement('div');
+		// 	dataNode.className = "data-node";
+		// 	dataNode.id = "data-" + nodeId;
+		// 	dataNode.innerHTML = "<p>" + userData + "</p>";
+		// 	videoElement.parentNode.insertBefore(dataNode, videoElement.nextSibling);
+		// },
 
 		/**
 		 * --------------------------
