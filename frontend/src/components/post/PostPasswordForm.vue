@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal fade" id="passwordModal" style="z-index: 1060;" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
-      <div class="second-modal modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bd-blue-4 ms-3">
           <div class="modal-body p-4">
             <div class="input-group pt-1">
@@ -10,7 +10,7 @@
             </div>
             
             <div class="d-flex justify-content-end pt-4">
-              <span id="password-error" v-show="state.showPasswordError" class="t-red-2 text-small my-3 me-auto ms-3">비밀번호가 일치하지 않습니다.</span>
+              <span id="password-error" v-show="state.showPasswordError" class="t-red-2 text-small my-3 me-auto ms-3">비밀번호가 일치하지 않습니다</span>
               <button @click="confirm" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">확인</button>
               <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">닫기</button>
             </div>

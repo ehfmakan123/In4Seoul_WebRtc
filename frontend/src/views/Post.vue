@@ -193,10 +193,6 @@ export default {
     height: 15rem;
   }
 
-  .second-modal {
-    width: 10rem;
-    height: 5rem;
-  }
 </style>
 <style scoped>
   h1 {

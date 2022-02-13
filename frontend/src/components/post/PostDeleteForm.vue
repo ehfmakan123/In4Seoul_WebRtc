@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal fade" id="deleteModal" style="z-index: 1060;" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true">
-      <div class="second-modal modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bd-red-1 ms-3">
           <div class="modal-body p-4">
             <p class="fw-bold m-4" style="font-size: 1.1rem;">글을 <span class="t-red-1">삭제</span>하시겠습니까?</p>

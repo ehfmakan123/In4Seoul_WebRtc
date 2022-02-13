@@ -1,5 +1,7 @@
 <template>
   <div class="desk-background">
+    <desk-logout-modal></desk-logout-modal>
+
     <div class="foggy-background">
       <div id="desk-content">
         <h1 class="heading text-white">서울시 여행 안내 데스크</h1>
@@ -13,7 +15,7 @@
       </div>
 
       
-      <p id="desk-logout" @click="logout" class="t-gray-2 mt-auto">logout</p>
+      <p id="desk-logout" @click="logout" class="t-gray-2 mt-auto" data-bs-toggle="modal" data-bs-target="#desk-logout-modal">logout</p>
 
       <div id="go-post">
         <p @click="moveToPost" class="text-white mb-3">담벼락 보러가기</p>
@@ -26,7 +28,7 @@
 </template>
 
 <script>
-// @ is an alias to /src
+import DeskLogoutModal from '@/components/desk/DeskLogoutModal.vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -34,8 +36,7 @@ const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'DeskHome',
-  components: {
-  },
+  components: { DeskLogoutModal },
   setup() {
     const router = useRouter()
 
@@ -72,7 +73,7 @@ export default {
 
     const logout = () => {
       console.log("로그아웃 버튼 클릭됨!")
-      router.push({ name: 'Auth' })
+      // router.push({ name: 'Auth' })
     }
 
     return {
