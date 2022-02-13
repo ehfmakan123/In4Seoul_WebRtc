@@ -1,6 +1,28 @@
 <template>
-	<div id="main-container" class="container">
-		<!-- <div id="join" v-if="!session">
+	<div id="meeting-container" class="px-4 py-2 bg-gray-2">
+		<div id="meeting-inner-container" class="container mw-100 bg-white p-3">
+			<div id="session" v-if="session" class="col-8">
+				<div id="session-header">
+					<h1 id="session-title" class="fs-2 fw-bold">궁금한 것을 물어보세요</h1>
+				</div>
+				<!-- <div id="main-video" class="col-6">
+					<user-video :stream-manager="mainStreamManager"/>
+				</div> -->
+				<div id="video-container" class="col-6 mt-2">
+					<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
+					<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
+				</div>
+				<div id="screen-container">
+				</div>
+				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
+				<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
+				<button class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+				<button class="btn btn-lg btn-danger" @click="muteMyVideo()">내화면끄기</button>
+				<button class="btn btn-lg btn-primary" @click="unmuteMyVideo()">내화면켜기</button>
+			</div>
+		</div>
+	</div>
+		<!-- <div id="join">
 			<div id="img-div"><img src="resources/images/openvidu_grey_bg_transp_cropped.png" /></div>
 			<div id="join-dialog" class="jumbotron vertical-center">
 				<h1>Join a video session</h1>
@@ -19,28 +41,6 @@
 				</div>
 			</div>
 		</div> -->
-
-		<div id="session" v-if="session">
-			<div id="session-header">
-				<h1 id="session-title">{{ mySessionId }}</h1>
-				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
-			</div>
-			<div id="main-video" class="col-md-6">
-				<user-video :stream-manager="mainStreamManager"/>
-			</div>
-			<div id="video-container" class="col-md-6">
-				<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
-				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
-			</div>
-			<div id="screen-container">
-
-			</div>
-			<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
-			<button class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
-			<button class="btn btn-lg btn-danger" @click="muteMyVideo()">내화면끄기</button>
-			<button class="btn btn-lg btn-primary" @click="unmuteMyVideo()">내화면켜기</button>
-		</div>
-	</div>
 </template>
 
 
@@ -302,14 +302,25 @@ export default {
 					// console.log("테스트", this.ovToken)
 					this.sessionScreen.connect(token).then(() => {
 						console.log("테스트1", )
-							let publisher = this.OVScreen.initPublisher("screen-container", { videoSource: "screen" });
+							let publisher = this.OVScreen.initPublisher("screen-container", {
+								videoSource: "screen", 
+								resolution: "1280x780"
+								});
 
 							publisher.once('accessAllowed', (event) => {
 								console.log(event)
 									publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
 											console.log('User pressed the "Stop sharing" button');
 									});
-									this.sessionScreen.publish(publisher);
+									try {
+											publisher.stream.getMediaStream().getVideoTracks()[0].applyConstraints({
+													width: 1280,
+													height: 780
+											});
+									} catch (error) {
+											console.error('Error applying constraints: ', error);
+									}								
+								this.sessionScreen.publish(publisher);
 
 							});
 
@@ -447,17 +458,26 @@ export default {
 }
 </script>
 <style>
-h1 {
+#session-title {
 	font-size: 3rem;
-	font-weight: 600;
-	margin-top: 2rem;
-	margin-left: 2rem;
+}
+
+#meeting-container {
+	height: 100vh;
+}
+
+#meeting-inner-container {
+	height: 100%;
+	width: 100%;
+	border-radius: 20px;
+	/* max-width: 100% !important; */
+	margin: 0%;
 }
 
 #video-container video {
 	position: relative;
 	float: left;
-	width: 50%;
+	width: 60%;
 	cursor: pointer;
 }
 
