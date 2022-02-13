@@ -39,6 +39,7 @@ export default {
   },
   setup(props) {
     const store = useStore()
+    const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const state = ref({
       myPost: {
@@ -78,7 +79,7 @@ export default {
           console.log('업데이트 성공!')
           console.log(res.data)
           // fetchPostList
-          store.dispatch('fetchPostList', 3)
+          store.dispatch('fetchPostList', deskData.deskPk)
 
           // 모달창 끄기
           const updateModal = document.querySelector('#updateModal')
