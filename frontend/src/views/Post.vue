@@ -74,11 +74,13 @@ export default {
   },
   setup() {
     const store = useStore()
+    const deskData = JSON.parse(localStorage.getItem('deskData'))
+    console.log('LocalStorage deskData: ', deskData)
 
     const state = ref({
       postList: computed(() => store.state.postList),
-      nowAreaName: '',
-      nowDeskName: '',
+      nowAreaName: deskData.areaKorName,
+      nowDeskName: deskData.deskKorName,
       areaList: [],
       deskList: []
     })
@@ -101,7 +103,7 @@ export default {
       })
         .then((res) => {
           console.log('지역 목록 가져오기 성공')
-          console.log(res.data.data)
+          // console.log(res.data.data)
           state.value.areaList = res.data.data
         })
         .catch(err => {
@@ -122,7 +124,7 @@ export default {
       })
         .then((res) => {
           console.log('데스크 목록 가져오기 성공')
-          console.log(res.data.data)
+          // console.log(res.data.data)
           state.value.deskList = res.data.data
         })
         .catch(err => {
@@ -132,6 +134,7 @@ export default {
 
     const selectArea = (areaId, areaName) => {
       state.value.nowAreaName = areaName
+      state.value.nowDeskName = '선택'
       getDeskList(areaId)
     }
 
@@ -141,9 +144,9 @@ export default {
     }
     
     // created
-    store.dispatch('fetchPostList', 3)  // deskId 수정해야함
+    store.dispatch('fetchPostList', deskData.deskPk)
     getAreaList()
-    getDeskList(14) // 매개변수 수정해야함
+    getDeskList(deskData.areaPk)
     
     return {state, createPost, selectArea, selectDesk}
   }

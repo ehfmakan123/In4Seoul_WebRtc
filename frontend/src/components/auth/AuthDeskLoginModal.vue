@@ -50,9 +50,10 @@ export default {
         data: deskLoginCredentials.value
       })      
         .then(res => {
-          // console.log(res)
+          console.log(res)
           // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
+          localStorage.setItem('deskData', JSON.stringify(res.data))
           store.dispatch("desk_login")
 
           // modal 닫는 부분
