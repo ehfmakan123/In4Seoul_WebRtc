@@ -12,27 +12,23 @@
               </thead>        
               <tr class="tr-info" data-bs-placement="top" >
                 <td>유저 아이디 </td>
-                <td><input class="form-control form-25" v-model="testObj.staffId"></td>
+                <td>{{staffedits.userId}}</td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>이름 </td>
-                <td><input class="form-control form-25" v-model="testObj.userName"></td>
+                <td><input class="form-control form-25" v-model="staffedits.name"></td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>휴대폰번호 </td>
-                <td><input class="form-control form-25" v-model="testObj.phone"> </td>
+                <td><input class="form-control form-25" v-model="staffedits.phone"> </td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>이메일 </td>
-                <td><input class="form-control form-25" v-model="testObj.email"></td>
+                <td><input class="form-control form-25" v-model="staffedits.email"></td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>지역코드 </td>
-                <td><select class="form-select form-25" aria-label="Default select example" name="assign" id="assign">
-                      <option value="1">{{ testObj.areaId }} {{ testObj.areaName }}</option>
-                      <option value="2">{{ testObj.areaId }} {{ testObj.areaName }}</option>
-                    </select></td>
-                <td></td>
+                <td>{{staffedits.areaId}} {{staffedits.areaName}}</td>
               </tr>
             </tbody>
           </table>
@@ -88,26 +84,36 @@
 <script>
 // @ is an alias to /src
 import { useRouter} from 'vue-router'
-import { ref } from 'vue'
+//import { ref } from 'vue'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
+import axios from 'axios'
+
+// @ is an alias to /src
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 
 export default {
   name: 'StaffProfileEdit',
   components: {
     StaffSidebar
   },
+  data () {
+    return {
+      staffedits: [],
+    }
+  },
   setup() {
     const router = useRouter()
-    let testObj = ref({
-      "statusCode":"200",
-      "message":"로그인 성공",
-      "staffId": "hongildong",
-      "userName":"홍길동",
-      "phone":"010-1234-1234",
-      "email":"h1@example.com",
-      "areaId":"01",
-      "areaName":"강남구"
-    })
+    // let testObj = ref({
+    //   "statusCode":"200",
+    //   "message":"로그인 성공",
+    //   "staffId": "hongildong",
+    //   "userName":"홍길동",
+    //   "phone":"010-1234-1234",
+    //   "email":"h1@example.com",
+    //   "areaId":"01",
+    //   "areaName":"강남구"
+    // })
 
     const moveToStaffHome = () => {
       console.log("상담기록으로 이동 버튼 클릭됨!")
@@ -130,7 +136,7 @@ export default {
 
     const staffProfileEditCancle = () => {
       console.log("스태프 프로필수정 취소 버튼 클릭됨!")
-      router.push({ name: 'StaffHome' })
+      router.push({ name: 'StaffProfile' })
     }
 
     const staffProfileEditConfirm = () => {
@@ -139,7 +145,7 @@ export default {
     }
 
     return {
-      testObj,
+      //testObj,
       moveToStaffHome,
       clickAlarm,
       moveToStaffProfile,
@@ -147,6 +153,62 @@ export default {
       staffProfileEditCancle,
       staffProfileEditConfirm,
     }
-  }
+  },
+  created () {
+ 
+    const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+
+    axios.get(`${SERVER_HOST}/staff/me`, {headers: config})
+    .then(response => {
+      console.log(response.data);
+      this.staffedits = response.data.data;
+      // console.log("staffedits: ")
+      // console.log(this.staffedits)
+      // console.log("staffedits.data: ")
+      // console.log(this.staffedits.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  },
+  methods: {
+
+      AdminStaffEidtUpdate(){
+        
+        const token = localStorage.getItem('token')
+        const config = {
+          Authorization: `Bearer ${token}`
+        }
+
+      
+        axios({
+          method: 'put',
+          url: `${SERVER_HOST}/staff/me/`,
+          headers: config,
+          data: {
+              password: this.staffedits.password,
+              phone: this.staffedits.phone,
+              email: this.staffedits.email,
+
+          }
+        })
+          .then((response) => {
+            console.log("put성공!")
+            console.log(response)
+            this.$router.push({ name: 'AdminStaff' })
+            
+          })
+          .catch((err) => {
+            console.log("put실패!")
+            console.error(err)
+            }
+          )   
+
+      },
+
+    }
 }
 </script>

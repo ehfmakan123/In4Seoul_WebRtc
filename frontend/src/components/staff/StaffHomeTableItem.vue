@@ -13,13 +13,31 @@
 export default {
   name: 'StaffHometableItem',
   props: {
-    index: { type: String },
-    tableItem: { type: Object },
+    // index: { type: String },
+    // tableItem: { type: Object },
+    tableItem: Object,
   },
-  setup(props) {
-    console.log(`${props.index}번째 StaffHomeTableItem `,props.key,props.tableItem) // key가 안나옴
+  methods:{
+    staffEdit(){
+      this.$router.push({ name: 'AdminStaffEdit',
+        params:
+          {
+            id: this.tableItem.id,
+            deskName: this.tableItem.deskName,
+            startTime: this.tableItem.startTime,
+            endTime: this.tableItem.endTime,
+            content: this.tableItem.content,
+          }
+          
+        
+      })
+      console.log(this.tableItem.userId);
+    },
+	},
+  // setup(props) {
+  //   console.log(`${props.index}번째 StaffHomeTableItem `,props.key,props.tableItem) // key가 안나옴
 
-  }
+  // }
 }
 </script>
 

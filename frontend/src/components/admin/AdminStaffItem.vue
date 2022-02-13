@@ -1,20 +1,17 @@
 <template>
     <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="staffEdit()">
-        <!-- <router-link
-        :to="{ name: 'BoardView', params: { articleno: articleno } }"
-        >{{ subject }}</router-link
-      > -->
-              <td>{{adminstaff.articleno}}</td>
-              <td>{{adminstaff.userid}}</td>
-              <td>{{adminstaff.username}}</td>
+              <td>{{adminstaff.id}}</td>
+              <td>{{adminstaff.userId}}</td>
+              <td>{{adminstaff.name}}</td>
               <td>{{adminstaff.email}}</td>
               <td>{{adminstaff.phone}}</td>
-              <td>{{adminstaff.areaid}}</td>
-              <td>{{adminstaff.areaname}}</td>
-              <td class="table-yes">{{adminstaff.approveYN}}</td>
+              <td>{{adminstaff.areaId}}</td>
+              <td>{{adminstaff.areaName}}</td>
+              <td v-if="adminstaff.approveYN == 'Y'" class="table-yes">Y</td>
+              <td v-else class="t-red-2">N</td>
               <td>{{adminstaff.createdAt}}</td>
               <td>{{adminstaff.updatedAt}}</td>
-            </tr>
+     </tr>
 </template>
 
 
@@ -23,58 +20,46 @@
 
 export default {
   name: "AdminStaffItem",
-  data () {
-    return {
-      pageNum: 0
-    }
+  props:{
+    adminstaff: Object,
   },
-  props: {
-    adminstaff:{
-      type: Array,
-      requeired: true
-      // articleno: Number,
-      // userid: String,
-      // username: String, //name
-      // email: String,
-      // phone: String,
-      // areaid: Number,
-      // areaname: String,
-      // approveYN: String,
-      // createdAt: String,
-      // updatedAt: String,
-    },
-    pageSize: {
-      type: Number,
-      required: false,
-      default: 10
-    },
-  },
+  // props: {
+  //   articleno: Number,
+  //     userid: String,
+  //     username: String, //name
+  //     email: String,
+  //     phone: String,
+  //     areaid: Number,
+  //     areaname: String,
+  //     approveYN: String,
+  //     createdAt: String,
+  //     updatedAt: String,
+  // },
   methods:{
-		nextPage () {
-      this.pageNum +=1;
+    staffEdit(){
+      this.$router.push({ name: 'AdminStaffEdit',
+        params:
+          {
+            id: this.adminstaff.id,
+            userId: this.adminstaff.userId,
+            name: this.adminstaff.name,
+            email: this.adminstaff.email,
+            phone: this.adminstaff.phone,
+            areaId: this.adminstaff.areaId,
+            areaName: this.adminstaff.areaName,
+            approveYN: this.adminstaff.approveYN,
+            createdAt: this.adminstaff.createdAt,
+            updatedAt: this.adminstaff.updatedAt,
+          }
+          
+        
+      })
+      console.log(this.adminstaff.userId);
     },
-    prevPage () {
-      this.pageNum -=1;
-    }
 	},
   computed: {
-    pageCount () {
-      let listLeng = this.listArray.length,
-          listSize = this.pageSize,
-          page = Math.floor(listLeng / listSize);
-      if (listLeng % listSize > 0) page += 1;
-      
-      /*
-      아니면 page = Math.floor((listLeng - 1) / listSize) + 1;
-      이런식으로 if 문 없이 고칠 수도 있다!
-      */
-      return page;
-    },
-    paginatedData () {
-      const start = this.pageNum * this.pageSize,
-            end = start + this.pageSize;
-      return this.listArray.slice(start, end);
-    }
+    
+
   },
   
   

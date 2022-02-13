@@ -13,23 +13,27 @@
             </thead>        
             <tr class="tr-info" data-bs-placement="top" >
               <td>지역정보: </td>
-              <td><input class="form-control form-25" value=""></td>
+              <td>(api수정후 적용)</td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>데스크이름: </td>
-              <td><input class="form-control form-25 "></td>
+              <td>(api수정후 적용)</td>
+            </tr>
+            <tr class="tr-info" data-bs-placement="top">
+              <td>제목: </td>
+              <td>{{title}}</td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>내용 </td>
-              <td> <textarea class="form-control form-25" id="exampleFormControlTextarea1" rows="3"></textarea></td>
+              <td> <textarea class="form-control form-25" id="exampleFormControlTextarea1" rows="3" disabled v-model="content" ></textarea></td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>생성일 </td>
-              <td>2022-01-01 11:20</td>
+              <td>{{createdAt}}</td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>수정일 </td>
-              <td>2022-01-01 11:20</td>
+              <td>{{updatedAt}}</td>
             </tr>
           </tbody>
         </table>
@@ -49,12 +53,12 @@
     <div class="modal fade" id="adminpost_deleteModal" tabindex="-1" aria-labelledby="adminpost_deleteModalLabel" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered">
           <div class="modal-content modal-rounded bd-red-2 px-4 pt-3 pb-4">
-            <div id="staff-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
+            <div id="psot-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
               <h5 class="modal-title ms-3 fs-5" >계정을 <strong class="t-red-2">삭제</strong>하시겠습니까?</h5>
             </div>
             <div class="modal-body">
               <div class="d-flex justify-content-center mt-4">
-                <button type="button" class="btn btn-outline-danger bd-red-2 btn-yes-no " data-bs-dismiss="modal" @click="postDelete()">네</button>
+                <button type="button" class="btn btn-outline-danger bd-red-2 btn-yes-no " data-bs-dismiss="modal" @click="AdminPostEditDelete()">네</button>
                 <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
               </div>          
             </div>
@@ -66,7 +70,7 @@
         <div class="modal-dialog  modal-dialog-centered">
           <div class="modal-content modal-rounded bd-blue-4 px-4 pt-3 pb-4">
             <div class="d-flex justify-content-center align-items-center mt-3">
-              <h5 class="modal-title ms-3 fs-5" id="staff-login-modal-label">수정을<strong class="t-blue-3">취소</strong>하시겠습니까?</h5>
+              <h5 class="modal-title ms-3 fs-5" id="post-login-modal-label">수정을<strong class="t-blue-3">취소</strong>하시겠습니까?</h5>
             </div>
             <div class="modal-body">
               <div class="d-flex justify-content-center mt-4">
@@ -81,19 +85,59 @@
 
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
+import axios from 'axios'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+//const id1 = this.id
 
 export default({
     name: 'AdminPostEdit',
+    data(){
+      return {
+          id: this.$route.params.id,
+          title: this.$route.params.title,
+          content: this.$route.params.content,
+          createdAt: this.$route.params.createdAt,
+          updatedAt: this.$route.params.updatedAt,
+      }
+    },
     components: {
         AdminSidebar,
     },
+    
+    created(){
+       console.log(this.$route.params.id)
+       //const test123 = this.$route.params.id
+    },
     methods: {
-        postDelete(){
-            this.$router.push({ name: 'AdminPost' })
-        },
+        // postDelete(){
+        //   //AdminPostEditDelete();
+        //    // this.$router.push({ name: 'AdminPost' })
+        // },
         postCancel(){
             this.$router.push({ name: 'AdminPost' })
         },
+        AdminPostEditDelete(){
+        
+          const token = localStorage.getItem('token')
+          const config = {
+            Authorization: `Bearer ${token}`
+          }
+
+          axios.delete(`${SERVER_HOST}/admin/board/posts/`+this.id, {headers: config})
+            .then(response => {
+              console.log(response.data);
+              this.$router.push({ name: 'AdminPost' })
+              // console.log("articles: ")
+              // console.log(this.articles)
+              // console.log("articles.data: ")
+              // console.log(this.articles.data)
+            })
+            .catch(err => {
+              console.log(err);
+            }); 
+
+      }
     }
 })
 </script>

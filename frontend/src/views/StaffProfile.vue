@@ -12,23 +12,23 @@
               </thead>        
               <tr class="tr-info" data-bs-placement="top" >
                 <td>유저 아이디 </td>
-                <td>{{ testObj.staffId }}</td>
+                <td>{{ staffprofiles.userId }}</td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>이름 </td>
-                <td> {{ testObj.userName }}</td>
+                <td> {{ staffprofiles.name }}</td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>휴대폰번호 </td>
-                <td>{{ testObj.phone }}</td>
+                <td>{{ staffprofiles.phone }}</td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>이메일 </td>
-                <td>{{ testObj.email }}</td>
+                <td>{{ staffprofiles.email }}</td>
               </tr>
               <tr class="tr-info" data-bs-placement="top">
                 <td>지역코드 </td>
-                <td>{{ testObj.areaId }} {{ testObj.areaName }}</td>
+                <td>{{ staffprofiles.areaId }} {{ staffprofiles.areaName }}</td>
               </tr>
             </tbody>
           </table>
@@ -50,30 +50,38 @@
 <script>
 // @ is an alias to /src
 import { useRouter} from 'vue-router'
-import { ref } from 'vue'
+//import { ref } from 'vue'
 import axios from 'axios'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
-import axios from 'axios'
+//import axios from 'axios'
+
+// @ is an alias to /src
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'StaffProfile',
   components: {
     StaffSidebar
   },
+  data () {
+    return {
+      staffprofiles: [],
+    }
+  },
   setup() {
     const router = useRouter()
-    // const store = useStore()
+    // // const store = useStore()
 
-    let testObj = ref({
-      "statusCode":"200",
-      "message":"로그인 성공",
-      "staffId": "hongildong",
-      "userName":"홍길동",
-      "phone":"010-1234-1234",
-      "email":"h1@example.com",
-      "areaId":"01",
-      "areaName":"강남구"
-    })
+    // let testObj = ref({
+    //   "statusCode":"200",
+    //   "message":"로그인 성공",
+    //   "staffId": "hongildong",
+    //   "userName":"홍길동",
+    //   "phone":"010-1234-1234",
+    //   "email":"h1@example.com",
+    //   "areaId":"01",
+    //   "areaName":"강남구"
+    // })
 
     const moveToStaffHome = () => {
       console.log("상담기록으로 이동 버튼 클릭됨!")
@@ -104,39 +112,59 @@ export default {
       router.push({ name: 'StaffProfileEdit' })
     }
 
-    const axiosProfile = () => {
-      console.log("프로필 axios 버튼 클릭됨!")
+    // const axiosProfile = () => {
+    //   console.log("프로필 axios 버튼 클릭됨!")
 
-      const token = localStorage.getItem('token')
-      const config = {
-        Authorization: `Bearer ${token}`
-      }
+    //   const token = localStorage.getItem('token')
+    //   const config = {
+    //     Authorization: `Bearer ${token}`
+    //   }
 
-      axios({
-        method: 'get',
-        url: 'http://127.0.0.1:8080/staff/me',
-        headers: config
-      })      
-        .then(res => {
-          console.log(res)
+    //   axios({
+    //     method: 'get',
+    //     url: 'http://127.0.0.1:8080/staff/me',
+    //     headers: config
+    //   })      
+    //     .then(res => {
+    //       console.log(res)
           
-        })
-        .catch(err => {
-          console.log(err.response.data)
-        })
+    //     })
+    //     .catch(err => {
+    //       console.log(err.response.data)
+    //     })
 
-    }
+    // }
 
     return {
-      testObj,
+      //testObj,
       moveToStaffHome,
       clickAlarm,
       moveToStaffProfile,
       logout,
       staffProfileCancle,
       staffProfileEdit,
-      axiosProfile
+      //axiosProfile
     }
-  }
+  },
+  created () {
+ 
+    const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+    axios.get(`${SERVER_HOST}/staff/me`, {headers: config})
+    .then(response => {
+      console.log(response.data);
+      this.staffprofiles = response.data.data;
+      
+      // console.log("staffprofiles: ")
+      // console.log(this.staffprofiles)
+      // console.log("staffprofiles.data: ")
+      // console.log(this.staffprofiles.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  },
 }
 </script>

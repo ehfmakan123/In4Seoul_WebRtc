@@ -21,7 +21,9 @@
             </tr>
           </thead>
           <tbody>
-           <StaffHometableItem v-for="(tableItem, index) in testArray" :key="index" :index="(index+1).toString()" :tableItem="tableItem"/>
+           <StaffHometableItem v-for="(tableItem, index)
+            in articles" :key="index" 
+             :staffItem="staffItem"/>
           </tbody>
         </table>    
     </div>
@@ -53,9 +55,13 @@
 
 <script>
 // @ is an alias to /src
-import { ref } from 'vue'
+//import { ref } from 'vue'
 import StaffHometableItem from '@/components/staff/StaffHomeTableItem.vue'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
+import axios from 'axios'
+
+// @ is an alias to /src
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'StaffHome',
@@ -64,28 +70,48 @@ export default {
     StaffSidebar
   },
   setup() {
-    let testArray = ref([
-      {
-        "id": "1",
-        "deskName": "홍대1번",
-        "startTime": "2022-01-14 14:00",
-        "endTime": "2022-01-14 14:20",
-        "content": "홍대 명소 문의"
-      },
-      {
-        "id": "4",
-        "deskName": "홍대2번",
-        "startTime": "2022-01-15 14:00",
-        "endTime": "2022-01-15 14:20",
-        "content": "홍대 지하철역 위치 문의"
-      }       
-    ])
+    // let testArray = ref([
+    //   {
+    //     "id": "1",
+    //     "deskName": "홍대1번",
+    //     "startTime": "2022-01-14 14:00",
+    //     "endTime": "2022-01-14 14:20",
+    //     "content": "홍대 명소 문의"
+    //   },
+    //   {
+    //     "id": "4",
+    //     "deskName": "홍대2번",
+    //     "startTime": "2022-01-15 14:00",
+    //     "endTime": "2022-01-15 14:20",
+    //     "content": "홍대 지하철역 위치 문의"
+    //   }       
+    // ])
 
     
 
-    return {
-      testArray,
-    }
-  }
+    // return {
+    //   testArray,
+    // }
+    },
+    data () {
+      return {
+        articles: [],
+      }
+    },
+    created () {
+ 
+    const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      axios.get(`${SERVER_HOST}/staff/meeting-logs`, {headers: config})
+      .then(response => {
+        console.log(response.data);
+        this.articles = response.data.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
 }
 </script>
