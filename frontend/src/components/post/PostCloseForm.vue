@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal fade" id="closeModal" style="z-index: 1060;" tabindex="-1" aria-labelledby="closeModalLabel" aria-hidden="true">
-      <div class="second-modal modal-dialog modal-dialog-centered">
+      <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bd-blue-4 ms-3">
           <div class="modal-body p-4">
             <p class="fw-bold m-4" style="font-size: 1.1rem;">내용을 저장하지 않고 닫으시겠습니까?</p>
