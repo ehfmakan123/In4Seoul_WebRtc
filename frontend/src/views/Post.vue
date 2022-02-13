@@ -1,28 +1,52 @@
 <template>
   <div class="d-flex">
     <!-- 글 생성 Modal -->
-    <post-form @add-new-post="addPost"></post-form>
+    <post-form></post-form>
 
+    <!-- 왼쪽 사이드바 -->
     <div class="d-flex flex-column flex-shrink-0 shadow justify-content-center" style="width: 3.5rem;">
       <ul class="nav nav-pills nav-flush flex-column text-center" style="margin-bottom: 20rem;">
-        <!-- <li class="nav-item">
-          <a href="#" class="nav-link active py-3 border-bottom" aria-current="page" title="Home" data-bs-toggle="tooltip" data-bs-placement="right">
-            <svg class="bi" width="24" height="24" role="img" aria-label="Home"><use xlink:href="#home"/></svg>
-          </a>
-        </li> -->
         <a @click="createPost" class="mx-2 fs-4 t-blue-4" data-bs-toggle="modal" data-bs-target="#createModal">
           <i class="bi bi-plus-circle-fill"></i>
         </a>
       </ul>    
     </div>
 
+    <!-- 오른쪽 구역 -->
     <div class="vh-100">
       <div class="d-flex justify-content-between">
         <div>
           <h1 class="m-3">서울 여행자들의 담벼락</h1>
           <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
         </div>
-        <post-filter :areaList="state.areaList" :deskList="state.deskList"></post-filter>
+        <!-- 지역 선택 필터 -->
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ state.nowAreaName }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li
+              v-for="area in state.areaList"
+              :key="area.id"
+            >
+              <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}</a>
+            </li>
+          </ul>
+        </div>
+        <!-- 데스크 선택 필터 -->
+        <div class="dropdown">
+          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            {{ state.nowDeskName }}
+          </a>
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+            <li
+              v-for="desk in state.deskList"
+              :key="desk.id"
+            >
+              <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}</a>
+            </li>
+          </ul>
+        </div>
       </div>
       
       <!-- PostList -->
@@ -35,7 +59,7 @@
 <script>
 import { computed, ref } from 'vue'
 import PostForm from '@/components/post/PostForm'
-import PostFilter from '@/components/post/PostFilter'
+// import PostFilter from '@/components/post/PostFilter'
 import PostList from '@/components/post/PostList'
 import { useStore } from 'vuex'
 import axios from 'axios'
@@ -46,7 +70,6 @@ export default {
   name: 'Post',
   components: {
     PostForm,
-    PostFilter,
     PostList,
   },
   setup() {
@@ -54,6 +77,8 @@ export default {
 
     const state = ref({
       postList: computed(() => store.state.postList),
+      nowAreaName: '',
+      nowDeskName: '',
       areaList: [],
       deskList: []
     })
@@ -61,10 +86,6 @@ export default {
     const createPost = () => {
       console.log("포스트 작성하기 버튼 클릭됨!")
       console.log("모달창 열기")
-    }
-
-    const addPost = (newPost) => {
-      state.value.postList.push(newPost)
     }
 
     const getAreaList = () => {
@@ -108,13 +129,23 @@ export default {
           console.error(err)
         })
     }
+
+    const selectArea = (areaId, areaName) => {
+      state.value.nowAreaName = areaName
+      getDeskList(areaId)
+    }
+
+    const selectDesk = (deskId, deskName) => {
+      state.value.nowDeskName = deskName
+      store.dispatch('fetchPostList', deskId)
+    }
     
     // created
-    store.dispatch('fetchPostList', 3)
+    store.dispatch('fetchPostList', 3)  // deskId 수정해야함
     getAreaList()
     getDeskList(14) // 매개변수 수정해야함
     
-    return {state, createPost, addPost}
+    return {state, createPost, selectArea, selectDesk}
   }
 }
 </script>
