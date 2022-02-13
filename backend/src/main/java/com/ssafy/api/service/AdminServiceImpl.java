@@ -136,7 +136,10 @@ public class AdminServiceImpl implements AdminService {
         desk.setDeskId(dto.getDeskId());
         desk.setKorName(dto.getKorName());
         desk.setEngName(dto.getEngName());
-        desk.setPassword(dto.getPassword());
+
+        if(!(dto.getPassword()==null||dto.getPassword().equals(""))) {
+            desk.setPassword(dto.getPassword());
+        }
         desk.setLatitude(dto.getLatitude());
         desk.setAltitude(dto.getAltitude());
         desk.setDeleteYN(dto.getDeleteYN());

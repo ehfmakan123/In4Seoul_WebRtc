@@ -210,9 +210,16 @@ public class AdminController {
     public ResponseEntity<BaseResponseBody> deskUpdate(@RequestBody DeskDto deskDto, @PathVariable("id") int id) {
 
 
-        deskDto.setPassword(passwordEncoder.encode(deskDto.getPassword()));
-        adminService.deskUpdate(deskDto,id);
 
+        if(deskDto.getPassword()==null||deskDto.getPassword().equals(""))
+        {
+            adminService.deskUpdate(deskDto,id);
+        }
+
+        else {
+            deskDto.setPassword(passwordEncoder.encode(deskDto.getPassword()));
+            adminService.deskUpdate(deskDto,id);
+        }
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
     }
 
