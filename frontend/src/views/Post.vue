@@ -19,33 +19,37 @@
           <h1 class="m-3">서울 여행자들의 담벼락</h1>
           <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
         </div>
-        <!-- 지역 선택 필터 -->
-        <div class="dropdown">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ state.nowAreaName }}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li
-              v-for="area in state.areaList"
-              :key="area.id"
-            >
-              <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}</a>
-            </li>
-          </ul>
-        </div>
-        <!-- 데스크 선택 필터 -->
-        <div class="dropdown">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ state.nowDeskName }}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li
-              v-for="desk in state.deskList"
-              :key="desk.id"
-            >
-              <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}</a>
-            </li>
-          </ul>
+
+        <!-- 필터들 -->
+        <div class="d-flex align-items-center me-4">
+          <!-- 지역 선택 필터 -->
+          <div class="dropdown me-3">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowAreaName }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li
+                v-for="area in state.areaList"
+                :key="area.id"
+              >
+                <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}</a>
+              </li>
+            </ul>
+          </div>
+          <!-- 데스크 선택 필터 -->
+          <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowDeskName }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li
+                v-for="desk in state.deskList"
+                :key="desk.id"
+              >
+                <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       
