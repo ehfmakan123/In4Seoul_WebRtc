@@ -13,7 +13,7 @@
     </div>
 
     <!-- 오른쪽 구역 -->
-    <div class="vh-100">
+    <div class="min-vh-100 w-100">
       <div class="d-flex justify-content-between">
         <div>
           <h1 class="m-3">서울 여행자들의 담벼락</h1>
