@@ -32,6 +32,13 @@
 				<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
 				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
 			</div>
+			<div id="screen-container">
+
+			</div>
+			<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
+			<button class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+			<button class="btn btn-lg btn-danger" @click="muteMyVideo()">내화면끄기</button>
+			<button class="btn btn-lg btn-primary" @click="unmuteMyVideo()">내화면켜기</button>
 		</div>
 	</div>
 </template>
@@ -66,8 +73,18 @@ export default {
 			mySessionId: 'SessionA',
 			myUserName: 'Participant' + Math.floor(Math.random() * 100),
 
+			// Screen Sharing
+			OVScreen: undefined,
+			sessionScreen: undefined,
+			screensharing: false,
+			// publisherScreen: undefined
+
 			// ovToken 추가
 			ovToken: undefined,
+
+			// chating 
+			myChat: '',
+			totalChats: [],
 		}
 	},
 
@@ -87,25 +104,124 @@ export default {
 			this.myUserName = '데스크'
 		}
 		
-
-
 		this.joinSession()
 	},
 
 	methods: {
+		muteMyVideo () {
+			this.publisher.publishVideo(false)
+		},
+		unmuteMyVideo () {
+			this.publisher.publishVideo(true)
+		},
+		shareScreen () {
+			// --- 나만 화면공유 되는 코드 ---
+			// this.getToken(localStorage.getItem('ovSessionId')).then((token) => {
+			// 		// console.log("테스트", token)
+			// 		// console.log("테스트", this.ovToken)
+			// 		this.session.connect(token).then(() => {
+			// 			console.log("테스트1", )
+			// 				let publisher = this.OV.initPublisher("screen-container", { videoSource: "screen" });
+
+			// 				publisher.once('accessAllowed', (event) => {
+			// 					console.log(event)
+			// 						publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+			// 								console.log('User pressed the "Stop sharing" button');
+			// 						});
+			// 						this.session.publish(publisher);
+
+			// 				});
+
+			// 				publisher.once('accessDenied', (event) => {
+			// 					console.log(event)
+			// 						console.warn('ScreenShare: Access Denied');
+			// 				});
+
+			// 		}).catch((error => {
+			// 				console.warn('There was an error connecting to the session:', error.code, error.message);
+
+			// 		}));
+			// });
+		
+		},
+		enterChat (message) {
+			console.log("채팅테스트: ", message)
+			
+			const data = { message: message, nickname: this.myUserName } 
+
+			if (this.$store.state.isDesk) {
+				// console.log('[채팅] 데스크가 보내기 시작')
+				this.session.signal({
+									data: JSON.stringify(data),  // Any string (optional)
+									to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+									type: 'desk-chat'             // The type of message (optional)
+								})
+								.then(() => {
+										console.log('Message successfully sent');
+								})
+								.catch(error => {
+										console.error(error);
+								});	
+	
+				this.myChat = ''
+			}
+
+			if (this.$store.state.isStaff) {
+				// console.log('[채팅] 스태프가 보내기 시작')
+				this.session.signal({
+									data: JSON.stringify(data),  // Any string (optional)
+									to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+									type: 'staff-chat'             // The type of message (optional)
+								})
+								.then(() => {
+										console.log('Message successfully sent');
+								})
+								.catch(error => {
+										console.error(error);
+								});	
+	
+				this.myChat = ''
+			}
+
+		},
 		joinSession () {
 			// --- Get an OpenVidu object ---
 			this.OV = new OpenVidu();
+			this.OVScreen = new OpenVidu();
 
 			// --- Init a session ---
 			this.session = this.OV.initSession();
+			this.sessionScreen = this.OVScreen.initSession();
+
 
 			// --- Specify the actions when events take place in the session ---
 
 			// On every new Stream received...
 			this.session.on('streamCreated', ({ stream }) => {
-				const subscriber = this.session.subscribe(stream);
-				this.subscribers.push(subscriber);
+				if (stream.typeOfVideo == "CAMERA") {
+					const subscriber = this.session.subscribe(stream);
+					this.subscribers.push(subscriber);
+					console.log('[subscribers][웹캠공유]', this.subscribers)
+				}
+			});
+
+			this.sessionScreen.on('streamCreated', ({ stream }) => {
+				if (stream.typeOfVideo == "SCREEN") {
+					console.log('[화면공유] 남한테 가나?')
+
+					// 웹캠 공유와 비슷하게 짠 코드
+					// const subscriberScreen = this.sessionScreen.subscribe(stream);
+					// this.subscribers.push(subscriberScreen);
+					console.log('[subscribers][화면공유]', this.subscribers)
+
+					// screen-share 튜토리얼과 비슷하게 짠 코드
+					const subscriberScreen = this.sessionScreen.subscribe(stream, 'screen-container');
+					console.log(subscriberScreen)
+					// subscriberScreen.on('videoElementCreated', event => {
+					// Add a new <p> element for the user's nickname just below its video
+					// this.appendUserData(event.element, subscriberScreen.stream.connection);
+					// });
+				}
 			});
 
 			// On every Stream destroyed...
@@ -121,71 +237,92 @@ export default {
 				console.warn(exception);
 			});
 
+			// Receiver of the message (usually before calling 'session.connect')
+			this.session.on('signal', (event) => {
+							const data = JSON.parse(event.data)
+							console.log('[채팅]', data); // Message
+							// console.log('[채팅][보낸사람]', event.from); // Connection object of the sender
+							// console.log('[채팅][타입]', event.type); // The type of message ("my-chat")
+					});
+
+
 			// --- Connect to the session with a valid user token ---
 
 			// 내가 추가한 코드 -- getToken 제외하고 화상상담 연결
-			// console.log('JoinSession에서 ovToken값: ', this.ovToken)
-			// this.session.connect(this.ovToken, { clientData: this.myUserName })
-			// 	.then(() => {
-			// 		// --- Get your own camera stream with the desired properties ---
-			// 		console.log("session connect: 들어오나!?")
+			console.log('JoinSession에서 ovToken값: ', this.ovToken)
+			this.session.connect(this.ovToken, { clientData: this.myUserName })
+				.then(() => {
+					// --- Get your own camera stream with the desired properties ---
+					console.log("session connect: 들어오나!?")
+					console.log('Spring에서 생성한 토큰: ', this.ovToken)
 
-			// 		let publisher = this.OV.initPublisher(undefined, {
-			// 			audioSource: undefined, // The source of audio. If undefined default microphone
-			// 			videoSource: undefined, // The source of video. If undefined default webcam
-			// 			publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-			// 			publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-			// 			resolution: '640x480',  // The resolution of your video
-			// 			frameRate: 30,			// The frame rate of your video
-			// 			insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-			// 			mirror: false       	// Whether to mirror your local video or not
-			// 		});
-
-			// 		console.log("session connect: mainStreamManager")
-			// 		this.mainStreamManager = publisher;
-			// 		console.log("session connect: publisher")
-			// 		this.publisher = publisher;
-
-			// 		// --- Publish your stream ---
-
-			// 		console.log("session connect: session publish")
-			// 		this.session.publish(this.publisher);
-			// 	})
-			// 	.catch(error => {
-			// 		console.log('There was an error connecting to the session:', error.code, error.message);
-			// 	});		
-
-			// 여기는 기존 코드
-			// 'getToken' method is simulating what your server-side should do.
-			// 'token' parameter should be retrieved and returned by your own backend
-			this.getToken(this.mySessionId).then(token => {
-				this.session.connect(token, { clientData: this.myUserName })
-					.then(() => {
-
-						// --- Get your own camera stream with the desired properties ---
-
-						let publisher = this.OV.initPublisher(undefined, {
-							audioSource: undefined, // The source of audio. If undefined default microphone
-							videoSource: undefined, // The source of video. If undefined default webcam
-							publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
-							publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
-							resolution: '640x480',  // The resolution of your video
-							frameRate: 30,			// The frame rate of your video
-							insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
-							mirror: false       	// Whether to mirror your local video or not
-						});
-
-						this.mainStreamManager = publisher;
-						this.publisher = publisher;
-
-						// --- Publish your stream ---
-
-						this.session.publish(this.publisher);
-					})
-					.catch(error => {
-						console.log('There was an error connecting to the session:', error.code, error.message);
+					let publisher = this.OV.initPublisher(undefined, {
+						audioSource: undefined, // The source of audio. If undefined default microphone
+						videoSource: undefined, // The source of video. If undefined default webcam
+						publishAudio: true,  	// Whether you want to start publishing with your audio unmuted or not
+						publishVideo: true,  	// Whether you want to start publishing with your video enabled or not
+						resolution: '640x480',  // The resolution of your video
+						frameRate: 30,			// The frame rate of your video
+						insertMode: 'APPEND',	// How the video is inserted in the target element 'video-container'
+						mirror: false       	// Whether to mirror your local video or not
 					});
-			});
+
+					console.log("session connect: mainStreamManager")
+					this.mainStreamManager = publisher;
+					console.log("session connect: publisher")
+					this.publisher = publisher;
+
+					// --- Publish your stream ---
+
+					console.log("session connect: session publish")
+					this.session.publish(this.publisher);
+
+					// Sender of the message (after 'session.connect')
+					// this.session.signal({
+					// 					data: `My custom message ${this.myUserName}`,  // Any string (optional)
+					// 					to: [],                     // Array of Connection objects (optional. Broadcast to everyone if empty)
+					// 					type: 'my-chat'             // The type of message (optional)
+					// 				})
+					// 				.then(() => {
+					// 						console.log('Message successfully sent');
+					// 				})
+					// 				.catch(error => {
+					// 						console.error(error);
+					// 				});
+
+				})
+				.catch(error => {
+					console.log('There was an error connecting to the session:', error.code, error.message);
+				});		
+
+
+			// Screen-Share 토큰 받아서 연결
+			this.getToken(this.mySessionId).then((token) => {
+					// console.log("테스트", token)
+					// console.log("테스트", this.ovToken)
+					this.sessionScreen.connect(token).then(() => {
+						console.log("테스트1", )
+							let publisher = this.OVScreen.initPublisher("screen-container", { videoSource: "screen" });
+
+							publisher.once('accessAllowed', (event) => {
+								console.log(event)
+									publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+											console.log('User pressed the "Stop sharing" button');
+									});
+									this.sessionScreen.publish(publisher);
+
+							});
+
+							publisher.once('accessDenied', (event) => {
+									console.log(event)
+									console.warn('ScreenShare: Access Denied');
+							});
+
+					}).catch((error => {
+							console.warn('There was an error connecting to the session:', error.code, error.message);
+
+					}));
+			});	
 
 			window.addEventListener('beforeunload', this.leaveSession)
 		},
@@ -193,6 +330,7 @@ export default {
 		leaveSession () {
 			// --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (this.session) this.session.disconnect();
+			if (this.sessionScreen) this.sessionScreen.disconnect();
 
 			this.session = undefined;
 			this.mainStreamManager = undefined;
@@ -218,6 +356,24 @@ export default {
 			if (this.mainStreamManager === stream) return;
 			this.mainStreamManager = stream;
 		},
+
+		// Screen-share 관련 메소드
+		// appendUserData(videoElement, connection) {
+		// 	var userData;
+		// 	var nodeId;
+		// 	if (typeof connection === "string") {
+		// 		userData = connection;
+		// 		nodeId = connection;
+		// 	} else {
+		// 		userData = JSON.parse(connection.data).clientData;
+		// 		nodeId = connection.connectionId;
+		// 	}
+		// 	var dataNode = document.createElement('div');
+		// 	dataNode.className = "data-node";
+		// 	dataNode.id = "data-" + nodeId;
+		// 	dataNode.innerHTML = "<p>" + userData + "</p>";
+		// 	videoElement.parentNode.insertBefore(dataNode, videoElement.nextSibling);
+		// },
 
 		/**
 		 * --------------------------
@@ -290,11 +446,52 @@ export default {
 	}
 }
 </script>
-<style scoped>
-    h1 {
-      font-size: 3rem;
-      font-weight: 600;
-      margin-top: 2rem;
-      margin-left: 2rem;
-    }
+<style>
+h1 {
+	font-size: 3rem;
+	font-weight: 600;
+	margin-top: 2rem;
+	margin-left: 2rem;
+}
+
+#video-container video {
+	position: relative;
+	float: left;
+	width: 50%;
+	cursor: pointer;
+}
+
+#video-container video + div {
+	float: left;
+	width: 50%;
+	position: relative;
+	margin-left: -50%;
+}
+
+#video-container p {
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
+
+video {
+	width: 100%;
+	height: auto;
+}
+
+#main-video p {
+	position: absolute;
+	display: inline-block;
+	background: #f8f8f8;
+	padding-left: 5px;
+	padding-right: 5px;
+	font-size: 22px;
+	color: #777777;
+	font-weight: bold;
+	border-bottom-right-radius: 4px;
+}
 </style>
