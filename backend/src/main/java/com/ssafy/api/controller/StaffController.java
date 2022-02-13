@@ -5,6 +5,7 @@ import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.api.response.UserLoginPostRes;
+import com.ssafy.api.response.staffLoginPostRes;
 import com.ssafy.api.service.FirebaseService;
 import com.ssafy.api.service.OpenviduService;
 import com.ssafy.api.service.StaffService;
@@ -104,7 +105,7 @@ public class StaffController {
             @ApiResponse(code = 400, message = "비밀번호가 일치하지 않습니다", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<UserLoginPostRes> login(@RequestBody StaffRequest request) {
+    public ResponseEntity<staffLoginPostRes> login(@RequestBody StaffRequest request) {
 
         // db에 존재하는 계정인지 확인
         String userId = request.getUserId();
@@ -114,17 +115,17 @@ public class StaffController {
         Staff result = staffService.getStaffByStaffId(userId);
 
         if (result == null) {
-            return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
+            return ResponseEntity.status(404).body(staffLoginPostRes.of(404, "존재하지 않는 계정입니다", null,null));
         }
 
         if (passwordEncoder.matches(password, result.getPassword())) {
-            UserLoginPostRes data = UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"));
-            data.setKorName(result.getName());
+            staffLoginPostRes data = staffLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"),result.getName());
+
             return ResponseEntity.status(200).body(data);
 
 
         } else {
-            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null));
+            return ResponseEntity.status(401).body(staffLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null,null));
 
         }
 

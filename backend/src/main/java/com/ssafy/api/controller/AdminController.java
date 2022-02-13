@@ -143,7 +143,7 @@ public class AdminController {
         StaffDto result = adminService.getConsultant(id);
 
         boolean b = adminService.updateConsultant(id, staffDto);
-        // 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
+
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
     }
 
@@ -210,6 +210,7 @@ public class AdminController {
     public ResponseEntity<BaseResponseBody> deskUpdate(@RequestBody DeskDto deskDto, @PathVariable("id") int id) {
 
 
+        deskDto.setPassword(passwordEncoder.encode(deskDto.getPassword()));
         adminService.deskUpdate(deskDto,id);
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));

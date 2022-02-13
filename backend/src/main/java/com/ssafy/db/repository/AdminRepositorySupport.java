@@ -94,7 +94,7 @@ public class AdminRepositorySupport {
 
 
         DeskDto result = jpaQueryFactory
-                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
+                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
                         desk.createdAt, desk.updatedAt, desk.deleteYN))
                 .from(desk)
                 .join(desk.area, qareas)
@@ -115,7 +115,7 @@ public class AdminRepositorySupport {
 
 
         QueryResults<DeskDto> queryResults = jpaQueryFactory
-                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
+                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
                         desk.createdAt, desk.updatedAt, desk.deleteYN))
                 .from(desk)
                 .join(desk.area, qareas)
