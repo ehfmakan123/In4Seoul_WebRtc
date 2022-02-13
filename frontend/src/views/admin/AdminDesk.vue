@@ -19,6 +19,8 @@
               <th>No.</th>
               <th>아이디</th>
               <th>이름</th>
+              <th>영어이름</th>
+              <th>비밀번호</th>
               <th>위도</th>
               <th>경도</th>
               <th>지역코드</th>
@@ -28,35 +30,36 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="deskEdit()">
-              <td>1</td>
-              <td>hongdong</td>
-              <td>홍대1</td>
-              <td>37.55486722863767</td>
-              <td>126.9226391549618</td>
-              <td>01</td>
-              <td>강남구</td>
-              <td>2022-01-01 11:20</td>
-              <td>2022-01-01 11:20</td>
-            </tr>
-            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="deskEdit()">
-              <td>1</td>
-              <td>hongdong</td>
-              <td>홍대1</td>
-              <td>37.55486722863767</td>
-              <td>126.9226391549618</td>
-              <td>01</td>
-              <td>강남구</td>
-              <td>2022-01-01 11:20</td>
-              <td>2022-01-01 11:20</td>
-            </tr>
-            <!-- <admin-staff-item
-              v-for="(article, index) in articles"
+            <admin-desk-item
+              v-for="(admindesk, index) in articles"
               :key="index"
-              v-bind="article"
-            /> -->
+              :admindesk="admindesk"
+            />
           </tbody>
         </table>
+
+            <!-- <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="deskEdit()">
+              <td>1</td>
+              <td>hongdong</td>
+              <td>홍대1</td>
+              <td>37.55486722863767</td>
+              <td>126.9226391549618</td>
+              <td>01</td>
+              <td>강남구</td>
+              <td>2022-01-01 11:20</td>
+              <td>2022-01-01 11:20</td>
+            </tr>
+            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="deskEdit()">
+              <td>1</td>
+              <td>hongdong</td>
+              <td>홍대1</td>
+              <td>37.55486722863767</td>
+              <td>126.9226391549618</td>
+              <td>01</td>
+              <td>강남구</td>
+              <td>2022-01-01 11:20</td>
+              <td>2022-01-01 11:20</td>
+            </tr> -->
     
 
     
@@ -87,20 +90,59 @@
 
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
+import AdminDeskItem from '@/components/admin/AdminDeskItem.vue'
+import axios from 'axios'
+
 // @ is an alias to /src
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'AdminDesk',
   components: {
-    AdminSidebar
+    AdminSidebar,
+    AdminDeskItem,
+  },
+  data () {
+    return {
+      articles: [],
+    }
+  },
+  props: {
+
+  },
+  computed: {
+
+  },
+  setup(){
+
+  },
+  created () {
+ 
+    const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+    axios.get(`${SERVER_HOST}/admin/desks`, {headers: config})
+    .then(response => {
+      console.log(response.data);
+      this.articles = response.data.data;
+      this.pageArray = response.data.data.contacts;
+      // console.log("articles: ")
+      // console.log(this.articles)
+      // console.log("articles.data: ")
+      // console.log(this.articles.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });
   },
   methods: {
     deskCreate(){
       this.$router.push({ name: 'AdminDeskCreate' })
     },
-    deskEdit(){
-      this.$router.push({ name: 'AdminDeskEdit' })
-    },
+    // deskEdit(){
+    //   this.$router.push({ name: 'AdminDeskEdit' })
+    // },
   }
 }
 </script>

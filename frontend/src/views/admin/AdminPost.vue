@@ -18,13 +18,19 @@
               <th>데스크</th>
               <th>제목</th>
               <th>내용</th>
-              <th>비밀번호</th>
               <th>등록날짜</th>
               <th>수정날짜</th>
             </tr>
           </thead>
           <tbody>
-            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="postEdit()">
+            <admin-post-item
+                v-for="(adminpost, index) in articles"
+                :key="index"
+                :adminpost="adminpost"
+              />
+          </tbody>
+        </table>
+         <!-- <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="postEdit()">
               <td>1</td>
               <td>마포구</td>
               <td>홍대데스크</td>
@@ -43,15 +49,7 @@
               <td>*****</td>
               <td>2022-01-01 11:20</td>
               <td>2022-01-01 11:20</td>
-            </tr>
-            <!-- <admin-staff-item
-              v-for="(article, index) in articles"
-              :key="index"
-              v-bind="article"
-            /> -->
-          </tbody>
-        </table>
-    
+            </tr> -->
 
     
     
@@ -79,17 +77,57 @@
 
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
+import AdminPostItem from '@/components/admin/AdminPostItem.vue'
+import axios from 'axios'
 // @ is an alias to /src
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'AdminPost',
   components: {
     AdminSidebar,
+    AdminPostItem,
+  },
+    data () {
+    return {
+      articles: [],
+    }
+  },
+  props: {
+
+  },
+  computed: {
+
+
+
+  },
+  setup(){
+
+  },
+    created () {
+ 
+    const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+    axios.get(`${SERVER_HOST}/admin/board/posts`, {headers: config})
+    .then(response => {
+      console.log(response.data);
+      this.articles = response.data.data;
+      this.pageArray = response.data.data.contacts;
+      // console.log("articles: ")
+      // console.log(this.articles)
+      // console.log("articles.data: ")
+      // console.log(this.articles.data)
+    })
+    .catch(err => {
+      console.log(err);
+    });
   },
   methods: {
-    postEdit(){
-      this.$router.push({ name: 'AdminPostEdit' })
-    },
+    // postEdit(){
+    //   this.$router.push({ name: 'AdminPostEdit' })
+    // },
   }
   
 }
