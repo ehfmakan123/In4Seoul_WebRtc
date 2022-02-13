@@ -38,13 +38,11 @@ public class FirebaseServiceImpl implements FirebaseService{
         Optional<Staff> result = staffRepository.findByStaffId(userId);
 
         Staff staff = result.get();
-
-
-        staff.setMatchYN("Y");
+        staff.setMatchYN("N");
         staff.setFcmToken(token);
 
 
-         staffRepository.save(staff);
+        staffRepository.save(staff);
          return true;
 
     }
@@ -105,6 +103,60 @@ return true;
 
 
         return staffRepositorySupport.getMeeting(areaId);
+
+    }
+
+
+    // 상담사의 상담연결 수락
+    @Override
+    public String MeetingConnect(int areaId,String userId) {
+
+        Meeting meeting = staffRepositorySupport.MeetingConnect(areaId);
+        String sessionId=null;
+
+        if(meeting==null)   // 매칭할 상담이 없음
+       {
+            return null;
+        }
+
+        else
+        {
+              /*
+          삭제 후에 이미 삭제된 키값으로 또 삭제를 한 경우
+
+          삭제 전에 먼저 해당 키값(id)을 가진 객체가 존재하는 지 확인하고 없다면
+
+        IllegalArgumentException을 던진다
+
+
+         */
+
+
+            try {
+
+            sessionId=meeting.getDeskId(); // openvidu에 연결할 세션 아이디
+
+                meetingRepository.delete(meeting);
+
+
+                // 내 상태코드 변경 match_YN을 Y로
+
+                Optional<Staff> result = staffRepository.findByStaffId(userId);
+
+                Staff staff = result.get();
+
+
+                staff.setMatchYN("Y");  //상담중
+
+
+
+
+
+            } catch (Exception e) {
+                return null;
+            }
+            return sessionId;
+        }
 
     }
 }

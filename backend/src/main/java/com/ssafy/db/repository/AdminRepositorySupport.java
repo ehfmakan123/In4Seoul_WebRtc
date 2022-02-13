@@ -1,7 +1,9 @@
 package com.ssafy.db.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.*;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -40,19 +42,29 @@ public class AdminRepositorySupport {
 
 
     // 상담사 목록 가져오기
-    public List<StaffDto> getConsultantList()
+    public ListResult<StaffDto> getConsultantList(Integer page)
     {
 
-        List<StaffDto> result = jpaQueryFactory
+        QueryResults<StaffDto>  qureyResults = jpaQueryFactory
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
-                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
+                        qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"), qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
-                .join(qstaff.areas, qareas)
+                .leftJoin(qstaff.areas, qareas)
                 .where(qstaff.deleteYN.eq("N"))   // 삭제 상태인 상담원은 목록에 보이지 않는다
                 .orderBy(qstaff.id.desc())
-                .fetch();
+                .offset((page - 1) * 10)
+                .limit(10)
+                .fetchResults();
 
-return result;
+
+        long count = qureyResults.getTotal();
+        List<StaffDto> results = qureyResults.getResults();
+
+        ListResult<StaffDto> listResult = new ListResult<>(200, "성공", results);
+
+        listResult.setTotalCount(count);
+
+        return listResult;
 
     }
 
@@ -66,7 +78,7 @@ return result;
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
-                .join(qstaff.areas, qareas)
+                .leftJoin(qstaff.areas, qareas)
                 .where(qstaff.id.eq(id))
                 .fetchOne();
 
@@ -82,7 +94,7 @@ return result;
 
 
         DeskDto result = jpaQueryFactory
-                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
+                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
                         desk.createdAt, desk.updatedAt, desk.deleteYN))
                 .from(desk)
                 .join(desk.area, qareas)
@@ -95,18 +107,31 @@ return result;
 
 
 // 데스크 목록
-    public List<DeskDto> getDeskList()
+    public ListResult<DeskDto> getDeskList(Integer page)
     {
 
 
-        List<DeskDto> result = jpaQueryFactory
-                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.password, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
+
+
+
+        QueryResults<DeskDto> queryResults = jpaQueryFactory
+                .select(new QDeskDto(desk.id, desk.deskId, desk.korName, desk.engName, desk.latitude, desk.altitude, qareas.id.as("areaId"), qareas.korName.as("areaName"),
                         desk.createdAt, desk.updatedAt, desk.deleteYN))
                 .from(desk)
                 .join(desk.area, qareas)
+                .where(desk.deleteYN.eq("N"))   // 삭제 상태인 데스크는 목록에서 보이지 않는다
                 .orderBy(desk.id.desc())
-                .fetch();
+                .offset((page - 1) * 10)
+                .limit(10)
+                .fetchResults();
 
+
+        List<DeskDto> results = queryResults.getResults();
+        long count = queryResults.getTotal();
+
+        ListResult<DeskDto> result = new ListResult<>(200, "성공", results);
+
+        result.setTotalCount(count);
 
         return result;
 
@@ -117,15 +142,23 @@ return result;
 
 
     // 게시글 목록 조회
-    public List<PostDto> getPostList()
+    public ListResult<AdminPostDto> getPostList(Integer page)
     {
-        List<PostDto> result = jpaQueryFactory
-                .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+        QueryResults<AdminPostDto> queryResults = jpaQueryFactory
+                .select(new QAdminPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt, qareas.korName.as("areaName"),desk.korName.as("deskName") ))
                 .from(qpost)
+                .join(qpost.desk,desk)
+                .join(desk.area,qareas)
                 .orderBy(qpost.id.desc())
-                .fetch();
+                .offset((page - 1) * 10)
+                .limit(10)
+                .fetchResults();
 
 
+         List<AdminPostDto> results = queryResults.getResults();
+        long count = queryResults.getTotal();
+        ListResult<AdminPostDto> result = new ListResult<>(200, "성공", results);
+        result.setTotalCount(count);
 
         return result;
 
@@ -134,12 +167,14 @@ return result;
 
 
     //게시글 조회
-     public PostDto getPost(long id)
+     public AdminPostDto getPost(long id)
      {
 
-         PostDto result = jpaQueryFactory
-                 .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+         AdminPostDto result = jpaQueryFactory
+                 .select(new QAdminPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt, qareas.korName.as("areaName"),desk.korName.as("deskName") ))
                  .from(qpost)
+                 .join(qpost.desk,desk)
+                 .join(desk.area,qareas)
                  .where(qpost.id.eq(id))
                  .fetchOne();
 
@@ -148,6 +183,8 @@ return result;
      }
 
 
+
+     //지역목록 조회
         public List<AreaDto> getAreas()
         {
             List<AreaDto> result = jpaQueryFactory

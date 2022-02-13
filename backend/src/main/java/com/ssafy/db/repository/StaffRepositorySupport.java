@@ -1,10 +1,13 @@
 package com.ssafy.db.repository;
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.QMeetingLogDto;
 import com.ssafy.api.dto.QStaffDto;
 import com.ssafy.api.dto.StaffDto;
+import com.ssafy.common.model.response.ListResult;
+import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.db.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -46,19 +49,28 @@ public class StaffRepositorySupport {
 
     // 내 상당 목록 조회   가장 최신 상담목록이 상단에 가게끔
 
-    public List<MeetingLogDto> getMeetingLog(int id)
+    public ListResult<MeetingLogDto> getMeetingLog(int id, Integer page)
     {
 
-        List<MeetingLogDto> result = jpaQueryFactory
+        QueryResults<MeetingLogDto> result = jpaQueryFactory
                 .select(new QMeetingLogDto(qmeetingHistory.id, qdesk.korName.as("deskName"), qmeetingHistory.startedAt, qmeetingHistory.endedAt, qmeetingHistory.content))
                 .from(qmeetingHistory)
                 .join(qmeetingHistory.desks, qdesk)
                 .where(qmeetingHistory.staff.id.eq(id))
                 .orderBy(qmeetingHistory.id.desc())
-                .fetch();
+                .offset((page-1) * 10)
+                .limit(10)
+                .fetchResults();
 
 
-        return result;
+        long count = result.getTotal();
+        List<MeetingLogDto> results = result.getResults();
+        ListResult<MeetingLogDto> listResult = new ListResult<>(200, "성공", results);
+            listResult.setTotalCount(count);
+
+        return listResult;
+
+
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // 화상 상담 관련
@@ -71,7 +83,7 @@ public class StaffRepositorySupport {
         List<Staff> result = jpaQueryFactory
                 .select(qstaff)
                 .from(qstaff)
-                .where(qstaff.areas.id.eq(areaId).and(qstaff.matchYN.eq("Y")).and(qstaff.fcmToken.eq("0"
+                .where(qstaff.areas.id.eq(areaId).and(qstaff.matchYN.eq("N")).and(qstaff.fcmToken.eq("0"
                 ).not()))
                 .fetch();
 
@@ -91,6 +103,28 @@ public class StaffRepositorySupport {
                 .fetchCount();
 return count;
     }
+
+
+
+    public Meeting MeetingConnect(int areaId)
+    {
+
+        Meeting result = jpaQueryFactory
+                .select(qmeeting)
+                .from(qmeeting)
+                .where(qmeeting.areaId.eq(areaId))
+                .orderBy(qmeeting.id.asc())
+                .limit(1)
+                .fetchOne();
+
+        return result;
+
+
+
+
+
+    }
+
 
 
 

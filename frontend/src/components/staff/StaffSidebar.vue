@@ -20,6 +20,8 @@
                         <span class="ms-1 d-none d-sm-inline">
                           <i class="bi bi-bell-fill fs-0"></i>
                           <p>상담 알림</p>
+                          <p>{{ waitingMeetingCount }}</p>
+                          <!-- v-bind:value="waitingMeetingCount.value" -->
                         </span>
                       </div>
                     </li>
@@ -69,14 +71,33 @@
 <script>
 // @ is an alias to /src
 import { useRouter} from 'vue-router'
+import { ref } from 'vue'
+import axios from 'axios'
+// firebase
+import firebase from 'firebase/app'
+import 'firebase/messaging'
+
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
   name: 'StaffHome',
   components: {
   },
+
   setup() {
     const router = useRouter()
+    let waitingMeetingCount = ref(0)
+    const messaging = firebase.messaging()
 
+    // FCM 메시지 수신
+    messaging.onMessage(payload => {
+      console.log("StaffSidebar 메시지 수신!!")
+      console.log(payload)
+      getWaitingMeeting()
+      // console.log("제목: ", payload.notification.title)
+      // console.log("제목: ", payload.data.title)
+      // alert(payload.notification.title)
+    })
 
     const moveToStaffHome = () => {
       console.log("상담기록으로 이동 버튼 클릭됨!")
@@ -85,6 +106,21 @@ export default {
 
     const clickAlarm = () => {
       console.log("알람버튼 클릭됨!")
+      const jwtToken = localStorage.getItem('token')
+      axios({
+        method: 'post',
+        url: `${SERVER_HOST}/staff/meeting`,
+        headers : {
+          Authorization: `Bearer ${jwtToken}` 
+        }
+      })
+        .then((res) => {
+          console.log('상담연결버튼 response: ',res.data)
+          localStorage.setItem('ovToken', res.data.data.token)
+          localStorage.setItem('ovSessionId', res.data.data.sessionId)
+          router.push({ name: 'Meeting'})
+        })
+        .catch((err) => console.log(err))
     }
 
     const moveToStaffProfile = () => {
@@ -97,13 +133,36 @@ export default {
       router.push({ name: 'Auth' })
     }
 
+    const getWaitingMeeting = () => {
+      // 대기 알람개수 세는 axios 
+      const jwtToken = localStorage.getItem('token')
+      console.log('getWaitingMeeting jwtToken: ', jwtToken)
+      axios({
+        method: 'get',
+        url: `${SERVER_HOST}/staff/meeting`,
+        headers : {
+          Authorization: `Bearer ${jwtToken}` 
+        }
+      })
+        .then((res) => {
+          // console.log('알람개수 갱신:', res.data.data.count)
+          // console.log(typeof res.data.data.count)
+          waitingMeetingCount.value = res.data.data.count
+          console.log(`대기 상담수 갱신!!: ${waitingMeetingCount.value}`)
+        })
+        .catch((err) => console.log(err))
+    }
+
+    getWaitingMeeting()
+
     return {
+      waitingMeetingCount,
       moveToStaffHome,
       clickAlarm,
       moveToStaffProfile,
       logout,
     }
-  }
+  },
 }
 </script>
 

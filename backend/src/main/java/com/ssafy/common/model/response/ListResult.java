@@ -11,7 +11,13 @@ import java.util.List;
 @Setter
 public class ListResult<T>  extends BaseResponseBody{
 
+
+    private Long totalCount;
+
     private List<T> data;
+
+
+
 
     public ListResult(Integer statusCode, String message, List<T> data) {
         super(statusCode, message);

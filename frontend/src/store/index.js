@@ -10,14 +10,6 @@ export default createStore({
     isStaff: false,
     isAdmin: false,
     postList: [],
-    post: {
-      "id":"3",
-      "title":"뮤지컬 프랑켄슈타인",
-      "content":"블루스퀘어에서 하고있어요 괴물 너무 마음 아파 ㅠㅠ",
-      "createdAt":"2022-01-01 11:20:00",
-      "updatedAt":"2022-01-01 11:20:00"
-    }
-    // selectedPost: {},
   },
   mutations: {
     DESK_LOGIN(state) {
@@ -41,9 +33,6 @@ export default createStore({
     SET_POST_LIST(state, postList) {
       state.postList = postList
     },
-    SET_POST(state, post) {
-      state.post = post
-    }
   },
   actions: {
     desk_login({ commit }) {
@@ -61,23 +50,23 @@ export default createStore({
     logoutAction({ commit }) {
       commit('LOGOUT')
     },
-    fetchPostList({ commit }, deskId, areaId) {
+    fetchPostList({ commit }, deskId) {
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
       axios({
         method: 'get',
-        url: `${SERVER_HOST}/board/posts/`,
-        data: {
-          "deskId":`${deskId}`,
-          "areaId":`${areaId}`
-        }
+        url: `${SERVER_HOST}/desk/posts?desk=${deskId}&page=1`,
+        headers: config
       })
         .then(res => {
-          commit('SET_POST_LIST', res.data)
+          console.log('fetchPostList 실행됨')
+          console.log(res.data.data)
+          commit('SET_POST_LIST', res.data.data)
         })
         .catch(err => console.error(err))
     },
-    fetchPost({ commit }, post) {
-      commit('SET_POST', post)
-    }
   },
   modules: {
   }

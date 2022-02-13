@@ -16,6 +16,9 @@ import lombok.Setter;
 public class UserLoginPostRes extends BaseResponseBody{
 	@ApiModelProperty(name="JWT 인증 토큰", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZXN...")
 	String accessToken;
+
+
+
 	
 	public static UserLoginPostRes of(Integer statusCode, String message, String accessToken) {
 		UserLoginPostRes res = new UserLoginPostRes();

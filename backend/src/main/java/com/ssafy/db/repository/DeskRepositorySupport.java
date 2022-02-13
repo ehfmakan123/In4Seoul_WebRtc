@@ -1,8 +1,10 @@
 package com.ssafy.db.repository;
 
 
+import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.*;
+import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.QAreas;
 import com.ssafy.db.entity.QDesks;
 import com.ssafy.db.entity.QPosts;
@@ -62,6 +64,33 @@ public class DeskRepositorySupport {
                 .from(qdesk)
                 .where(qdesk.area.id.eq(id))
                 .fetch();
+
+
+        return result;
+    }
+
+
+    //게시글 목록 가져오기
+
+
+    public ListResult<PostDto> getPostList(Integer desk, Integer page)
+    {
+
+        QueryResults<PostDto> postDtoQueryResults = jpaQueryFactory
+                .select(new QPostDto(qpost.id, qpost.title, qpost.content, qpost.createdAt, qpost.updatedAt))
+                .from(qpost)
+                .where(qpost.desk.id.eq(desk))
+                .orderBy(qpost.id.desc())
+                .offset((page - 1) * 10)
+                .limit(10)
+                .fetchResults();
+
+
+        List<PostDto> results = postDtoQueryResults.getResults();
+        long count = postDtoQueryResults.getTotal();
+
+        ListResult<PostDto> result = new ListResult<>(200, "성공", results);
+        result.setTotalCount(count);
 
 
         return result;

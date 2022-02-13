@@ -53,9 +53,7 @@ import { useRouter} from 'vue-router'
 //import { ref } from 'vue'
 import axios from 'axios'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
-//import axios from 'axios'
 
-// @ is an alias to /src
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
