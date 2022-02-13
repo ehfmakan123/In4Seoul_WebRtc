@@ -59,7 +59,6 @@
 <script>
 import { computed, ref } from 'vue'
 import PostForm from '@/components/post/PostForm'
-// import PostFilter from '@/components/post/PostFilter'
 import PostList from '@/components/post/PostList'
 import { useStore } from 'vuex'
 import axios from 'axios'
