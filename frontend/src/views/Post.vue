@@ -13,39 +13,43 @@
     </div>
 
     <!-- 오른쪽 구역 -->
-    <div class="vh-100">
+    <div class="min-vh-100 w-100">
       <div class="d-flex justify-content-between">
         <div>
           <h1 class="m-3">서울 여행자들의 담벼락</h1>
           <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
         </div>
-        <!-- 지역 선택 필터 -->
-        <div class="dropdown">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ state.nowAreaName }}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li
-              v-for="area in state.areaList"
-              :key="area.id"
-            >
-              <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}</a>
-            </li>
-          </ul>
-        </div>
-        <!-- 데스크 선택 필터 -->
-        <div class="dropdown">
-          <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ state.nowDeskName }}
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-            <li
-              v-for="desk in state.deskList"
-              :key="desk.id"
-            >
-              <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}</a>
-            </li>
-          </ul>
+
+        <!-- 필터들 -->
+        <div class="d-flex align-items-center me-4">
+          <!-- 지역 선택 필터 -->
+          <div class="dropdown me-3">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowAreaName }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li
+                v-for="area in state.areaList"
+                :key="area.id"
+              >
+                <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}</a>
+              </li>
+            </ul>
+          </div>
+          <!-- 데스크 선택 필터 -->
+          <div class="dropdown">
+            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowDeskName }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <li
+                v-for="desk in state.deskList"
+                :key="desk.id"
+              >
+                <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}</a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
       
@@ -59,7 +63,6 @@
 <script>
 import { computed, ref } from 'vue'
 import PostForm from '@/components/post/PostForm'
-// import PostFilter from '@/components/post/PostFilter'
 import PostList from '@/components/post/PostList'
 import { useStore } from 'vuex'
 import axios from 'axios'
@@ -74,11 +77,13 @@ export default {
   },
   setup() {
     const store = useStore()
+    const deskData = JSON.parse(localStorage.getItem('deskData'))
+    console.log('LocalStorage deskData: ', deskData)
 
     const state = ref({
       postList: computed(() => store.state.postList),
-      nowAreaName: '',
-      nowDeskName: '',
+      nowAreaName: deskData.areaKorName,
+      nowDeskName: deskData.deskKorName,
       areaList: [],
       deskList: []
     })
@@ -101,7 +106,7 @@ export default {
       })
         .then((res) => {
           console.log('지역 목록 가져오기 성공')
-          console.log(res.data.data)
+          // console.log(res.data.data)
           state.value.areaList = res.data.data
         })
         .catch(err => {
@@ -122,7 +127,7 @@ export default {
       })
         .then((res) => {
           console.log('데스크 목록 가져오기 성공')
-          console.log(res.data.data)
+          // console.log(res.data.data)
           state.value.deskList = res.data.data
         })
         .catch(err => {
@@ -132,6 +137,7 @@ export default {
 
     const selectArea = (areaId, areaName) => {
       state.value.nowAreaName = areaName
+      state.value.nowDeskName = '선택'
       getDeskList(areaId)
     }
 
@@ -141,9 +147,9 @@ export default {
     }
     
     // created
-    store.dispatch('fetchPostList', 3)  // deskId 수정해야함
+    store.dispatch('fetchPostList', deskData.deskPk)
     getAreaList()
-    getDeskList(14) // 매개변수 수정해야함
+    getDeskList(deskData.areaPk)
     
     return {state, createPost, selectArea, selectDesk}
   }

@@ -47,6 +47,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const state = ref({
       myPost: {
@@ -82,7 +83,7 @@ export default {
           .then(res => {
             console.log(res)
             // fetchPostList
-            store.dispatch('fetchPostList', 3, 1)
+            store.dispatch('fetchPostList', deskData.deskPk)
             
             state.value.myPost = {
               title: '',

@@ -1,18 +1,32 @@
 <template>
-  <div class="wall-background">
+  <div class="wall-background" style="min-height: 88vh!important;">
     <div class="foggy-background">
       <!-- detail Modal -->
       <post-detail :selectedPost="state.selectedPost"></post-detail>
       
       <!-- Post List -->
-      <div class="row padding-postlist">
-        <post-list-item
-          v-for="post in postList"
-          :key="post.id"
-          :post="post"
-          @click="selectPost(post)"
-        >
-        </post-list-item>
+      <div class="padding-postlist">
+        <!-- <div class="row" v-for="(list, idx) in listTen" :key="idx" :list="list"></movie-list> -->
+
+        <div class="row">
+          <post-list-item
+            v-for="post in postList"
+            :key="post.id"
+            :post="post"
+            @click="selectPost(post)"
+          >
+          </post-list-item>
+        </div>
+        <!-- <div class="row">
+          <post-list-item
+            v-for="post in postList"
+            :key="post.id"
+            :post="post"
+            @click="selectPost(post)"
+          >
+          </post-list-item>
+        </div> -->
+
       </div>
     </div>
   </div>
@@ -59,6 +73,6 @@ export default {
   .padding-postlist {
     padding-left: 6%;
     padding-right: 6%;
-    padding-top: 10%
+    padding-top: 13%
   }
 </style>
