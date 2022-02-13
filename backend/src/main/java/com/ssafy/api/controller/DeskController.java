@@ -6,6 +6,7 @@ import com.ssafy.api.dto.PostDto;
 import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.api.request.StaffRequest;
+import com.ssafy.api.response.DeskLoginPostRes;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.DeskService;
 import com.ssafy.api.service.FirebaseService;
@@ -15,6 +16,7 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.common.util.JwtTokenUtil;
+import com.ssafy.db.entity.Areas;
 import com.ssafy.db.entity.BaseEntity;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Staff;
@@ -50,7 +52,7 @@ public class DeskController {
 
     // 데스크 계정 로그인
     @PostMapping("/login")
-    public ResponseEntity<UserLoginPostRes> login(@RequestBody StaffRequest request) {
+    public ResponseEntity<DeskLoginPostRes> login(@RequestBody StaffRequest request) {
 
         // db에 존재하는 계정인지 확인
         String userId = request.getUserId();
@@ -60,21 +62,27 @@ public class DeskController {
         Desks result = deskService.findByDeskId(userId);
 
         if (result == null) {
-            return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
+            return ResponseEntity.status(404).body(DeskLoginPostRes.of(404, "존재하지 않는 계정입니다", null, null, null, null, null, null, null));
         }
 
 
         if (passwordEncoder.matches(password, result.getPassword())) {
 
-            UserLoginPostRes data = UserLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "desk"));
-            data.setKorName(result.getKorName());
-            data.setEngName(result.getEngName());
+
+            Areas area = result.getArea();
+            area.getEngName();
+            area.getKorName();
+            area.getId();
+
+
+            DeskLoginPostRes data = DeskLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "desk"), result.getKorName(), result.getEngName(), result.getId(), area.getKorName(), area.getEngName(), area.getId());
+
 
             return ResponseEntity.status(200).body(data);
 
 
         } else {
-            return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null));
+            return ResponseEntity.status(401).body(DeskLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null,null, null, null, null, null, null));
 
         }
 

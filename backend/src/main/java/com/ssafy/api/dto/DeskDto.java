@@ -24,12 +24,11 @@ public class DeskDto {
     }
 
     @QueryProjection
-    public DeskDto(int id, String deskId, String korName, String engName, String password, String latitude, String altitude, int areaId, String areaName, String createdAt, String updatedAt, String deleteYN) {
+    public DeskDto(int id, String deskId, String korName, String engName, String latitude, String altitude, int areaId, String areaName, String createdAt, String updatedAt, String deleteYN) {
         this.id = id;
         this.deskId = deskId;
         this.korName = korName;
         this.engName = engName;
-        this.password = password;
         this.latitude = latitude;
         this.altitude = altitude;
         this.areaId = areaId;

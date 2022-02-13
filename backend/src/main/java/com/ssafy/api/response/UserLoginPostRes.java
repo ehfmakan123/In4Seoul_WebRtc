@@ -18,8 +18,7 @@ public class UserLoginPostRes extends BaseResponseBody{
 	String accessToken;
 
 
-	String korName;
-	String engName;
+
 	
 	public static UserLoginPostRes of(Integer statusCode, String message, String accessToken) {
 		UserLoginPostRes res = new UserLoginPostRes();
