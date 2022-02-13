@@ -1,6 +1,6 @@
 <template>
   <div class="wall-background" style="min-height: 88vh!important;">
-    <div class="foggy-background">
+    <div class="foggy-background" style="min-height: 88vh!important;">
       <!-- detail Modal -->
       <post-detail :selectedPost="state.selectedPost"></post-detail>
       
@@ -73,6 +73,6 @@ export default {
   .padding-postlist {
     padding-left: 6%;
     padding-right: 6%;
-    padding-top: 13%
+    padding-top: 8%
   }
 </style>

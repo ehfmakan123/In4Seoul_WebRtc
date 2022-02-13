@@ -4,13 +4,13 @@
     <post-form></post-form>
 
     <!-- 왼쪽 사이드바 -->
-    <div class="d-flex flex-column flex-shrink-0 shadow justify-content-center" style="width: 3.5rem;">
+    <!-- <div class="d-flex flex-column flex-shrink-0 shadow justify-content-center" style="width: 3.5rem;">
       <ul class="nav nav-pills nav-flush flex-column text-center" style="margin-bottom: 20rem;">
         <a @click="createPost" class="mx-2 fs-4 t-blue-4" data-bs-toggle="modal" data-bs-target="#createModal">
           <i class="bi bi-plus-circle-fill"></i>
         </a>
       </ul>    
-    </div>
+    </div> -->
 
     <!-- 오른쪽 구역 -->
     <div class="min-vh-100 w-100">
@@ -22,6 +22,10 @@
 
         <!-- 필터들 -->
         <div class="d-flex align-items-center me-4">
+          <span @click="createPost" class="t-blue-4 me-3 fw-bold" data-bs-toggle="modal" data-bs-target="#createModal">글 남기기</span>
+          <a @click="createPost" class="fs-1 t-blue-4 me-5" data-bs-toggle="modal" data-bs-target="#createModal">
+            <i class="bi bi-plus-circle-fill"></i>
+          </a>
           <!-- 지역 선택 필터 -->
           <div class="dropdown me-3">
             <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
@@ -196,7 +200,7 @@ export default {
 </style>
 <style scoped>
   h1 {
-    font-size: 3vh!important;
+    font-size: 3.5vh!important;
     font-weight: bold!important;
     /* font-weight: 500!important; */
   }
