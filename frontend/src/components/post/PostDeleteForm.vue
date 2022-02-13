@@ -30,6 +30,7 @@ export default {
   props: ['postId'],
   setup(props) {
     const store = useStore()
+    const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const deletePost = () => {
       console.log("글 삭제")
@@ -47,7 +48,7 @@ export default {
         .then(res => {
           console.log(res)
           // fetchPostList
-          store.dispatch('fetchPostList', 3)
+          store.dispatch('fetchPostList', deskData.deskPk)
         })
         .catch(err => console.error(err))
 
