@@ -8,7 +8,7 @@ import com.ssafy.api.request.PostReq;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Posts;
-import com.ssafy.db.repository.AdminRepository;
+import com.ssafy.db.repository.DeskRepository;
 import com.ssafy.db.repository.DeskRepositorySupport;
 import com.ssafy.db.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import java.util.Optional;
 public class DeskServiceImpl implements DeskService{
 
     @Autowired
-    AdminRepository adminRepository;
+    DeskRepository deskRepository;
 
     @Autowired
     PostRepository postRepository;
@@ -36,7 +36,7 @@ public class DeskServiceImpl implements DeskService{
     public Desks findByDeskId(String id) {
 
 
-        Optional<Desks> result = adminRepository.findByDeskId(id);
+        Optional<Desks> result = deskRepository.findByDeskId(id);
 
 
 
@@ -53,7 +53,7 @@ public class DeskServiceImpl implements DeskService{
     public boolean registerPost(String id, PostReq dto) {
 
 
-        Optional<Desks> result = adminRepository.findByDeskId(id);
+        Optional<Desks> result = deskRepository.findByDeskId(id);
 
 
         Posts posts = new Posts();

@@ -42,4 +42,12 @@ public class Desks extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "areas_id")
     Areas area;
+
+
+    public Desks() {
+    }
+
+    public Desks(int id) {
+        this.id = id;
+    }
 }

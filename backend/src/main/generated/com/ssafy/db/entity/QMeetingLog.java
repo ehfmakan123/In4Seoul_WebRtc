@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QMeetingHistory is a Querydsl query type for MeetingHistory
+ * QMeetingLog is a Querydsl query type for MeetingLog
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QMeetingHistory extends EntityPathBase<MeetingHistory> {
+public class QMeetingLog extends EntityPathBase<MeetingLog> {
 
-    private static final long serialVersionUID = 19499547L;
+    private static final long serialVersionUID = -550427573L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QMeetingHistory meetingHistory = new QMeetingHistory("meetingHistory");
+    public static final QMeetingLog meetingLog = new QMeetingLog("meetingLog");
 
     public final StringPath content = createString("content");
 
@@ -34,23 +34,23 @@ public class QMeetingHistory extends EntityPathBase<MeetingHistory> {
 
     public final StringPath startedAt = createString("startedAt");
 
-    public QMeetingHistory(String variable) {
-        this(MeetingHistory.class, forVariable(variable), INITS);
+    public QMeetingLog(String variable) {
+        this(MeetingLog.class, forVariable(variable), INITS);
     }
 
-    public QMeetingHistory(Path<? extends MeetingHistory> path) {
+    public QMeetingLog(Path<? extends MeetingLog> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QMeetingHistory(PathMetadata metadata) {
+    public QMeetingLog(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QMeetingHistory(PathMetadata metadata, PathInits inits) {
-        this(MeetingHistory.class, metadata, inits);
+    public QMeetingLog(PathMetadata metadata, PathInits inits) {
+        this(MeetingLog.class, metadata, inits);
     }
 
-    public QMeetingHistory(Class<? extends MeetingHistory> type, PathMetadata metadata, PathInits inits) {
+    public QMeetingLog(Class<? extends MeetingLog> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
         this.desks = inits.isInitialized("desks") ? new QDesks(forProperty("desks"), inits.get("desks")) : null;
         this.staff = inits.isInitialized("staff") ? new QStaff(forProperty("staff"), inits.get("staff")) : null;

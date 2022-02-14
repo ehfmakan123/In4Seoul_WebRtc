@@ -7,7 +7,6 @@ import com.ssafy.api.dto.QMeetingLogDto;
 import com.ssafy.api.dto.QStaffDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.db.entity.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -24,7 +23,7 @@ public class StaffRepositorySupport {
     QAreas qareas= QAreas.areas;
     QDesks qdesk=QDesks.desks;
     QPosts qpost=QPosts.posts;
-    QMeetingHistory qmeetingHistory =QMeetingHistory.meetingHistory;
+    QMeetingLog qmeetingLog =QMeetingLog.meetingLog;
     QMeeting qmeeting= QMeeting.meeting;
 
 
@@ -53,11 +52,11 @@ public class StaffRepositorySupport {
     {
 
         QueryResults<MeetingLogDto> result = jpaQueryFactory
-                .select(new QMeetingLogDto(qmeetingHistory.id, qdesk.korName.as("deskName"), qmeetingHistory.startedAt, qmeetingHistory.endedAt, qmeetingHistory.content))
-                .from(qmeetingHistory)
-                .join(qmeetingHistory.desks, qdesk)
-                .where(qmeetingHistory.staff.id.eq(id))
-                .orderBy(qmeetingHistory.id.desc())
+                .select(new QMeetingLogDto(qmeetingLog.id, qdesk.korName.as("deskName"), qmeetingLog.startedAt, qmeetingLog.endedAt, qmeetingLog.content))
+                .from(qmeetingLog)
+                .join(qmeetingLog.desks, qdesk)
+                .where(qmeetingLog.staff.id.eq(id))
+                .orderBy(qmeetingLog.id.desc())
                 .offset((page-1) * 10)
                 .limit(10)
                 .fetchResults();

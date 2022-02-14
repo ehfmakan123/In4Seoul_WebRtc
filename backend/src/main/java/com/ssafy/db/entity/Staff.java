@@ -40,4 +40,11 @@ public class Staff  extends BaseTimeEntity{
     @Column(name="match_yn")
     String matchYN;
 
+
+    public Staff() {
+    }
+
+    public Staff(int id) {
+        this.id = id;
+    }
 }

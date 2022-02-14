@@ -5,7 +5,11 @@ import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.common.model.response.ListResult;
+import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.MeetingLog;
 import com.ssafy.db.entity.Staff;
+import com.ssafy.db.repository.DeskRepository;
+import com.ssafy.db.repository.MeetingLogRepository;
 import com.ssafy.db.repository.StaffRepository;
 import com.ssafy.db.repository.StaffRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +27,12 @@ public class StaffServiceImpl implements StaffService{
     @Autowired
     StaffRepositorySupport staffRepositorySupport;
 
+    @Autowired
+    DeskRepository deskRepository;
+
+
+    @Autowired
+    MeetingLogRepository meetingLogRepository;
 
 
     @Override
@@ -119,5 +129,52 @@ public class StaffServiceImpl implements StaffService{
         }
 
         return staffRepositorySupport.getMeetingLog(id,page);
+    }
+
+
+
+
+
+    //상담 시작 시 미팅 로그에 등록
+    @Override
+    public int meetingLogStart(int staffPk, String sessionId) {
+
+
+        // sessionId를 통해 desk의 pk값을 가져온다
+        Optional<Desks> result = deskRepository.findByDeskId(sessionId);
+        Desks desk = result.get();
+
+
+        MeetingLog meetingLog = new MeetingLog();
+            meetingLog.setDesks(new Desks(desk.getId()));
+            meetingLog.setStaff(new Staff(staffPk));
+
+
+        MeetingLog meetingLog1 = meetingLogRepository.save(meetingLog);
+
+        return meetingLog1.getId();
+    }
+
+
+    // 상담종료 시   meetingLog 기록하고  상담사 상태를 상담 가능상태로 바꿔준다?
+
+    @Override
+    public void meetingLogEnd(int meetingLogId, String content, int staffId) {
+
+
+        // 저장된 meetingLog를 meetingLogId(pk)를 통해 찾는다
+
+
+        Optional<MeetingLog> optionalMeetingLog =  meetingLogRepository.findById(meetingLogId);
+        MeetingLog meetingLog = optionalMeetingLog.get();
+
+        meetingLog.setContent(content);
+        meetingLogRepository.save(meetingLog); //수정해서 저장
+        
+        //스태프 상태 수정
+        Optional<Staff> optionalStaff = staffRepository.findById(staffId);
+        Staff staff = optionalStaff.get();
+        staff.setMatchYN("N");
+
     }
 }

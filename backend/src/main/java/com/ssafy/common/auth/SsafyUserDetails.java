@@ -42,6 +42,8 @@ public class SsafyUserDetails implements UserDetails {
 		return this.staff.getStaffId();
 	}
 
+	public int getStaffPk() {return this.staff.getId(); }
+
 	public String getDeskId()
 	{
 		return  this.desk.getDeskId();
