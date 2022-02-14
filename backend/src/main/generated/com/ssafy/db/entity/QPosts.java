@@ -22,19 +22,23 @@ public class QPosts extends EntityPathBase<Posts> {
 
     public static final QPosts posts = new QPosts("posts");
 
+    public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
+
     public final StringPath content = createString("content");
 
-    public final StringPath createdAt = createString("createdAt");
+    //inherited
+    public final StringPath createdAt = _super.createdAt;
 
     public final QDesks desk;
 
-    public final NumberPath<Integer> id = createNumber("id", Integer.class);
+    public final NumberPath<Long> id = createNumber("id", Long.class);
 
     public final StringPath password = createString("password");
 
     public final StringPath title = createString("title");
 
-    public final StringPath updatedAt = createString("updatedAt");
+    //inherited
+    public final StringPath updatedAt = _super.updatedAt;
 
     public QPosts(String variable) {
         this(Posts.class, forVariable(variable), INITS);

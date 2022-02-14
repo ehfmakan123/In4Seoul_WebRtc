@@ -1,13 +1,16 @@
 <template>
-  <div>
-    <h3>PostListItem {{ post.id }}</h3>
-    <p><strong>{{ post.title }}</strong></p>
-    <p>{{ post.content }}</p>
+  <div class="col-3 p-4">
+    <div class="card shadow box-small bg-yellow" data-bs-toggle="modal" data-bs-target="#detailModal">
+      <div class="card-body p-4">
+        <p class="card-title mb-3 fw-bold">{{ post.title }}</p>
+        <p class="card-text">{{ post.content }}</p>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 
 export default {
   name: 'PostListItem',
@@ -19,3 +22,6 @@ export default {
   }
 }
 </script>
+<style scoped>
+
+</style>

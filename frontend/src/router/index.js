@@ -7,14 +7,13 @@ import StaffHome from '@/views/StaffHome.vue'
 import StaffProfile from '@/views/StaffProfile.vue'
 import StaffProfileEdit from '@/views/StaffProfileEdit.vue'
 import AdminAuth from '@/views/AdminAuth.vue'
-import AdminHome from '@/views/AdminHome.vue'
-import AdminStaff from '@/components/admin/AdminStaff.vue'
-import AdminDesk from '@/components/admin/AdminDesk.vue'
-import AdminPost from '@/components/admin/AdminPost.vue'
-import AdminStaffEdit from '@/components/admin/AdminStaffEdit.vue'
-import AdminDeskCreate from '@/components/admin/AdminDeskCreate.vue'
-import AdminDeskEdit from '@/components/admin/AdminDeskEdit.vue'
-import AdminPostEdit from '@/components/admin/AdminPostEdit.vue'
+import AdminStaff from '@/views/admin/AdminStaff.vue'
+import AdminDesk from '@/views/admin/AdminDesk.vue'
+import AdminPost from '@/views/admin/AdminPost.vue'
+import AdminStaffEdit from '@/views/admin/AdminStaffEdit.vue'
+import AdminDeskCreate from '@/views/admin/AdminDeskCreate.vue'
+import AdminDeskEdit from '@/views/admin/AdminDeskEdit.vue'
+import AdminPostEdit from '@/views/admin/AdminPostEdit.vue'
 
 
 
@@ -59,11 +58,11 @@ const routes = [
     name: 'AdminAuth',
     component: AdminAuth
   },
-  {
-    path: '/admin/',
-    name: 'AdminHome',
-    component: AdminHome
-  },
+  // {
+  //   path: '/admin/',
+  //   name: 'AdminStaff',
+  //   component: AdminStaff
+  // },
   {
     path: '/admin/staff',
     name: 'AdminStaff',

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,18 +18,48 @@ import com.ssafy.db.entity.User;
 public class SsafyUserDetails implements UserDetails {
 	@Autowired
 	User user;
+
+
+	Staff staff;
+	Desks desk;
+
 	boolean accountNonExpired;
     boolean accountNonLocked;
     boolean credentialNonExpired;
     boolean enabled = false;
     List<GrantedAuthority> roles = new ArrayList<>();
     
-    public SsafyUserDetails(User user) {
+    public SsafyUserDetails(User user,Staff staff, Desks desk) {
     		super();
     		this.user = user;
+			this.staff=staff;
+			this.desk=desk;
     }
-    
-    public User getUser() {
+
+
+	public String getStaffId()
+	{
+		return this.staff.getStaffId();
+	}
+
+	public String getDeskId()
+	{
+		return  this.desk.getDeskId();
+	}
+
+
+	public int getDestPK() {return this.desk.getId() ;}
+
+	public int getDeskAreaId() {
+		return this.desk.getArea().getId();
+	}
+
+	public int getStaffAreaId() {
+		return this.staff.getAreas().getId();
+	}
+
+
+	public User getUser() {
     		return this.user;
     }
 	@Override

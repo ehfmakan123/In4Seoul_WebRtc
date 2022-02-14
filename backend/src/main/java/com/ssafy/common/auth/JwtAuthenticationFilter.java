@@ -2,20 +2,26 @@ package com.ssafy.common.auth;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Base64;
-import java.util.Objects;
+import java.util.*;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.auth0.jwt.interfaces.Claim;
+import com.ssafy.api.service.AdminService;
+import com.ssafy.api.service.StaffService;
+import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -36,9 +42,13 @@ import com.ssafy.db.entity.User;
  */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 	private UserService userService;
-	
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService) {
+	private AdminService adminService;
+    private StaffService staffService;
+
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService,AdminService adminService,StaffService staffService) {
 		super(authenticationManager);
+        this.adminService=adminService;
+        this.staffService=staffService;
 		this.userService = userService;
 	}
 
@@ -77,15 +87,57 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
             JwtTokenUtil.handleError(token);
             DecodedJWT decodedJWT = verifier.verify(token.replace(JwtTokenUtil.TOKEN_PREFIX, ""));
             String userId = decodedJWT.getSubject();
-            
+            Claim roles = decodedJWT.getClaim("role");
+
+            System.out.println("role= "+roles.asString());
+
+
             // Search in the DB if we find the user by token subject (username)
             // If so, then grab user details and create spring auth token using username, pass, authorities/roles
             if (userId != null) {
                     // jwt 토큰에 포함된 계정 정보(userId) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
-            		User user = userService.getUserByUserId(userId);
-                if(user != null) {
+
+                // admin ,staff-> staff테이블에서 조회    desk 는 desk 테이블에서 조회
+                User user=null;
+                Staff staff=null;
+                Desks desk=null;
+
+               String role="STAFF";
+                if(!roles.asString().equals("desk"))  // 로그인 한 사람이 관리자나 상담사인 경우
+                {
+
+
+
+                            staff=staffService.getStaffByStaffId(userId);
+
+                        if(staff.getAdminYN().equals("Y"))
+                        {
+                            role= "ROLE_ADMIN";
+                        }
+
+                        else{
+
+                            role= "ROLE_STAFF";
+                        }
+                }
+
+                else{
+
+                   desk= adminService.findByDeskId(userId);
+
+
+                    role= "ROLE_DESK";
+                }
+
+
+
+
+
+                if(user != null||staff!=null||desk!=null) {
                         // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
-                		SsafyUserDetails userDetails = new SsafyUserDetails(user);
+                		SsafyUserDetails userDetails = new SsafyUserDetails(user,staff,desk);
+                        userDetails.setAuthorities((Arrays.asList(new SimpleGrantedAuthority(role))));
+
                 		UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(userId,
                 				null, userDetails.getAuthorities());
                 		jwtAuthentication.setDetails(userDetails);

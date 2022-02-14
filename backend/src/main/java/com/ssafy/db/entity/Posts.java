@@ -10,19 +10,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Table(name = "posts")
-public class Posts {
+public class Posts extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    Long id;
 
     String title;
     String content;
     String password;
-    @Column(name = "created_at")
-    String createdAt;
-    @Column(name = "updated_at")
-    String updatedAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "desks_id")

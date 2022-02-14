@@ -2,37 +2,27 @@ package com.ssafy.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-
 
 @Entity
 @Getter
 @Setter
 @Table(name ="staff")
-public class Staff {
-
-
+public class Staff  extends BaseTimeEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
     @Column(name = "staff_id")
     String staffId;
-
     String password;
     String name;
     String phone;
     String email;
-
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name="areas_id")
     private Areas areas;
-
-
     @Column(name = "admin_yn")
     String adminYN;
     @Column(name = "delete_yn")
@@ -40,10 +30,14 @@ public class Staff {
     @Column(name = "approve_yn")
     String approveYN;
 
-    @Column(name = "created_at")
-    LocalDateTime createdAt;
 
-    @Column(name = "updated_at")
-    LocalDateTime updatedAt;
+
+    //FCM 토큰 값  로그아웃 시 0으로 바뀜   로그인하면 토큰값을 저장
+    @Column(name = "fcm_token")
+    String fcmToken;
+
+    // 현재 상담중인지 여부
+    @Column(name="match_yn")
+    String matchYN;
 
 }

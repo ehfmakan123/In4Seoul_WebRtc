@@ -124,6 +124,18 @@ processResources {
 ////[끝]
 
 dependencies {
+
+
+
+    //openvidu 추가
+    implementation group: 'io.openvidu', name: 'openvidu-java-client', version: '2.20.0'
+
+
+    //firebase-admin 의존성 추가
+    implementation("com.google.firebase:firebase-admin:7.1.1")
+
+
+
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-websocket")
     implementation("org.springframework.boot:spring-boot-starter-security")
