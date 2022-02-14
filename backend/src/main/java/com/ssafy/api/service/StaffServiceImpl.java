@@ -128,7 +128,77 @@ public class StaffServiceImpl implements StaffService{
             page=1;
         }
 
-        return staffRepositorySupport.getMeetingLog(id,page);
+        ListResult<MeetingLogDto> meetingLog = staffRepositorySupport.getMeetingLog(id, page);
+
+        //페이지네이션 처리
+
+        Long totalCount = meetingLog.getTotalCount();
+
+        int totalPage= totalCount.intValue()  /10; //총 페이지
+
+        if(totalCount%10 >0)
+        {
+            totalPage++;
+        }
+
+
+        int startPage=((page-1)/5)*5+1; //시작 페이지 번호
+        int endPage=  startPage+4;
+
+
+        if(endPage>totalPage) endPage=totalPage;
+
+        boolean pre=false;
+
+        boolean start=false;
+
+
+        if(page>1) {
+            pre = true;
+        }
+
+
+        if(startPage>1)
+        {
+            start=true;
+        }
+
+
+
+
+        boolean next=false;
+
+        boolean end=false;
+
+        if(page<totalPage) {
+            next = true;
+
+        }
+
+        if(endPage<totalPage)
+        {
+            end=true;
+        }
+
+
+
+
+
+
+
+        // 값 세팅
+
+        meetingLog.setStartPage(startPage);
+        meetingLog.setEndPage(endPage);
+        meetingLog.setNowPage(page);
+        meetingLog.setNext(next);
+        meetingLog.setPre(pre);
+        meetingLog.setStart(start);
+        meetingLog.setEnd(end);
+        meetingLog.setTotalPage(totalPage);
+        return meetingLog;
+
+
     }
 
 
