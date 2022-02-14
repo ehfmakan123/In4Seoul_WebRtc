@@ -22,4 +22,8 @@ public interface StaffService {
 
 
 
+    int meetingLogStart(int staffPk, String sessionId); //상담 시작 시  meeting log에 등록
+
+
+    void meetingLogEnd(int meetingLogId, String content,int staffId);
 }

@@ -5,7 +5,7 @@ import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Areas;
 import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.Staff;
-import com.ssafy.db.repository.AdminRepository;
+import com.ssafy.db.repository.DeskRepository;
 import com.ssafy.db.repository.AdminRepositorySupport;
 import com.ssafy.db.repository.PostRepository;
 import com.ssafy.db.repository.StaffRepository;
@@ -20,7 +20,7 @@ public class AdminServiceImpl implements AdminService {
 
 
     @Autowired
-    AdminRepository adminRepository;
+    DeskRepository deskRepository;
 
     @Autowired
     StaffRepository staffRepository;
@@ -104,7 +104,7 @@ public class AdminServiceImpl implements AdminService {
         desks.setDeleteYN("N");  // 생성이니까 N설정
         desks.setArea(new Areas(dto.getAreaId(), null, null));
 
-        adminRepository.save(desks);
+        deskRepository.save(desks);
         return 0;
     }
 
@@ -130,7 +130,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int deskUpdate(DeskDto dto, int id) {
 
-        Optional<Desks> desks = adminRepository.findById(id);
+        Optional<Desks> desks = deskRepository.findById(id);
         Desks desk = desks.get();
 
         desk.setDeskId(dto.getDeskId());
@@ -144,7 +144,7 @@ public class AdminServiceImpl implements AdminService {
         // 해당 데스크의 지역 수정
         desk.setArea(new Areas(dto.getAreaId(), null, null));
 
-        adminRepository.save(desk);
+        deskRepository.save(desk);
         return 1;
     }
 
@@ -154,7 +154,7 @@ public class AdminServiceImpl implements AdminService {
     public Desks findByDeskId(String id) {
 
 
-        Optional<Desks> result = adminRepository.findByDeskId(id);
+        Optional<Desks> result = deskRepository.findByDeskId(id);
 
         if(result.isPresent())  //db에 존재하는 경우
         {

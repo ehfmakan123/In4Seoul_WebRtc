@@ -60,7 +60,6 @@ public class StaffController {
     public ResponseEntity<BaseResponseBody> checkId(@RequestBody StaffRequest request) {
 
 
-
         boolean b = staffService.checkId(request.getUserId());
         System.out.println(b);
         if (b) {
@@ -115,17 +114,17 @@ public class StaffController {
         Staff result = staffService.getStaffByStaffId(userId);
 
         if (result == null) {
-            return ResponseEntity.status(404).body(staffLoginPostRes.of(404, "존재하지 않는 계정입니다", null,null));
+            return ResponseEntity.status(404).body(staffLoginPostRes.of(404, "존재하지 않는 계정입니다", null, null));
         }
 
         if (passwordEncoder.matches(password, result.getPassword())) {
-            staffLoginPostRes data = staffLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"),result.getName());
+            staffLoginPostRes data = staffLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"), result.getName());
 
             return ResponseEntity.status(200).body(data);
 
 
         } else {
-            return ResponseEntity.status(401).body(staffLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null,null));
+            return ResponseEntity.status(401).body(staffLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null, null));
 
         }
 
@@ -237,52 +236,49 @@ public class StaffController {
             @ApiResponse(code = 400, message = "비밀번호가 일치하지 않습니다", response = BaseResponseBody.class),
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
-    public ResponseEntity<BaseResponseBody> fcmToken(@RequestBody Map<String, String> body,@ApiIgnore Authentication authentication) {
+    public ResponseEntity<BaseResponseBody> fcmToken(@RequestBody Map<String, String> body, @ApiIgnore Authentication authentication) {
 
 
         //프론트에서 발급받은 토큰
-        String token=body.get("token");
+        String token = body.get("token");
 
         // 토큰 발급받은 상담사 아이디
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String userId = userDetails.getStaffId();
 
-        firebaseService.saveToken(token,userId);
+        firebaseService.saveToken(token, userId);
 
 
         return ResponseEntity.status(200).body(BaseResponseBody.of(200, "성공"));
     }
 
 
-
-
     // 같은 지역의 대기중인 상담요청 개수를 가지고 온다
     @GetMapping("/meeting")
 
-    public ResponseEntity<SingleResult<Map<String,Long>>> meeting(@ApiIgnore Authentication authentication) {
-
+    public ResponseEntity<SingleResult<Map<String, Long>>> meeting(@ApiIgnore Authentication authentication) {
 
 
         // 토큰 발급받은 상담사 아이디
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
 
-        int areaId= userDetails.getStaffAreaId();
+        int areaId = userDetails.getStaffAreaId();
 
 
-        Map<String,Long> map=new HashMap<>();
+        Map<String, Long> map = new HashMap<>();
 
-        System.out.println("지역코드="+areaId);
+        System.out.println("지역코드=" + areaId);
         long result = firebaseService.getMeeting(areaId);
 
-        map.put("count",result);
-        return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
+        map.put("count", result);
+        return ResponseEntity.status(200).body(new SingleResult<>(200, "성공", map));
     }
 
 
-    // 상담 연결 수락
+    // 상담 연결 요청
     @PostMapping("/meeting")
 
-    public ResponseEntity<SingleResult<Map<String,String>>> meetingConnect(@ApiIgnore Authentication authentication) {
+    public ResponseEntity<SingleResult<Map<String, String>>> meetingConnect(@ApiIgnore Authentication authentication) {
 
 
         Map<String, String> map = new HashMap<>();
@@ -291,33 +287,84 @@ public class StaffController {
 
 
         int areaId = userDetails.getStaffAreaId();  //지역 번호
-        String userId= userDetails.getStaffId();
+        String userId = userDetails.getStaffId();
 
 
         String sessionId = firebaseService.MeetingConnect(areaId, userId);
 
-        if (sessionId!=null)  // 매칭에 성공했으면 해당 deskId에 대한 토큰 발급
+        if (sessionId != null)  // 매칭에 성공했으면 해당 deskId에 대한 토큰 발급
 
         {
             String token = openviduService.connectSession(sessionId);
 
-            map.put("token",token);
-            map.put("sessionId",sessionId);
+            map.put("token", token);
+            map.put("sessionId", sessionId);
             return ResponseEntity.status(200).body(new SingleResult<>(200, "성공", map));
 
 
         }
 
 
-
         //  다른
-        map.put("sessionId",null);
-            map.put("token", null);
-            return ResponseEntity.status(409).body(new SingleResult<>(409, "매칭할 상담이 없습니다", map));
+        map.put("sessionId", null);
+        map.put("token", null);
+        return ResponseEntity.status(409).body(new SingleResult<>(409, "매칭할 상담이 없습니다", map));
 
     }
 
 
+    // 상담 시작
+    @PostMapping("/meeting/start")
 
+    public ResponseEntity<SingleResult<Map<String, Integer>>> meetingStart(@ApiIgnore Authentication authentication, @RequestBody Map<String, String> request) {
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        int id = userDetails.getStaffPk();
+        String sessionId = request.get("sessionId");
+
+
+        int meetingLogId = staffService.meetingLogStart(id, sessionId);
+
+        HashMap<String, Integer> map = new HashMap<>();
+
+        map.put("meetingLogId", meetingLogId);
+
+        return ResponseEntity.status(201).body(new SingleResult<>(201, "성공", map));
+
+    }
+
+    // 상담 종료
+    @PostMapping("/meeting/end")
+
+    public ResponseEntity<BaseResponseBody> meetingEnd(@ApiIgnore Authentication authentication, @RequestBody Map<String, String> request) {
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        int id = userDetails.getStaffPk();
+        String sessionId = request.get("sessionId");
+        String content = request.get("content");
+        String openviduToken = request.get("token");
+        int meetingLogId = Integer.parseInt(request.get("meetingLogId"));
+
+
+        //openvidu 최신화
+        if (openviduService.disconnectSession(sessionId, openviduToken)) //정상적으로 처리 완료
+        {
+
+         // meetingLog 종료 시간과 content 기록
+
+            staffService.meetingLogEnd(meetingLogId,content,id);
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+
+        } else {
+
+            return ResponseEntity.status(409).body(BaseResponseBody.of(409,"이미 처리된 요청"));  //이게 맞나..
+
+
+        }
+
+
+    }
 
 }
