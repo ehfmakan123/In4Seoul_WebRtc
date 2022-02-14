@@ -55,7 +55,7 @@
             </div>
             <div class="modal-body">
               <div class="d-flex justify-content-center mt-4">
-                <button type="button" class="btn  btn-outline-primary bd-blue-4 btn-yes-no " data-bs-dismiss="modal" @click="staffProfileEditConfirm">네</button>
+                <button type="button" class="btn  btn-outline-primary bd-blue-4 btn-yes-no " data-bs-dismiss="modal" @click="AdminStaffEidtUpdate">네</button>
                 <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
               </div>          
             </div>
@@ -139,10 +139,10 @@ export default {
       router.push({ name: 'StaffProfile' })
     }
 
-    const staffProfileEditConfirm = () => {
-      console.log("스태프 프로필수정 완료 버튼 클릭됨!")
-      router.push({ name: 'StaffProfile' })
-    }
+    // const staffProfileEditConfirm = () => {
+    //   console.log("스태프 프로필수정 완료 버튼 클릭됨!")
+    //   //router.push({ name: 'StaffProfile' })
+    // }
 
     return {
       //testObj,
@@ -151,7 +151,7 @@ export default {
       moveToStaffProfile,
       logout,
       staffProfileEditCancle,
-      staffProfileEditConfirm,
+      //staffProfileEditConfirm,
     }
   },
   created () {
@@ -189,7 +189,7 @@ export default {
           url: `${SERVER_HOST}/staff/me/`,
           headers: config,
           data: {
-              password: this.staffedits.password,
+              name: this.staffedits.name,
               phone: this.staffedits.phone,
               email: this.staffedits.email,
 
@@ -198,7 +198,7 @@ export default {
           .then((response) => {
             console.log("put성공!")
             console.log(response)
-            this.$router.push({ name: 'AdminStaff' })
+            this.$router.push({ name: 'StaffProfile' })
             
           })
           .catch((err) => {

@@ -9,11 +9,11 @@
     <div class="bg-white shadow">
       <div class="text-start p-3 fw-bold bd-bt">스태프 관리</div>
    
-        <table hover responsive class="table-class  p-3 mb-5 bg-body rounded">
+        <table hover responsive class="text-center text-center p-3 mb-5 bg-body rounded">
           <thead head-variant="dark" class="th-class">
             <tr>
+              <!-- <th>고유번호</th> -->
               <th>No.</th>
-              <th>고유번호</th>
               <th>안내데스크</th>
               <th>상담시간</th>
               <th>상담종료시간</th>
@@ -21,8 +21,9 @@
             </tr>
           </thead>
           <tbody>
-           <StaffHometableItem v-for="(tableItem, index)
-            in articles" :key="index" 
+           <StaffHometableItem 
+           v-for="(staffItem, index) in articles"
+             :key="index" 
              :staffItem="staffItem"/>
           </tbody>
         </table>    

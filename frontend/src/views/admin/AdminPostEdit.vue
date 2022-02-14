@@ -13,11 +13,11 @@
             </thead>        
             <tr class="tr-info" data-bs-placement="top" >
               <td>지역정보: </td>
-              <td>(api수정후 적용)</td>
+              <td>{{areaName}}</td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>데스크이름: </td>
-              <td>(api수정후 적용)</td>
+              <td>{{deskName}}</td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>제목: </td>
@@ -97,6 +97,8 @@ export default({
           id: this.$route.params.id,
           title: this.$route.params.title,
           content: this.$route.params.content,
+          areaName: this.$route.params.areaName,
+          deskName: this.$route.params.deskName,
           createdAt: this.$route.params.createdAt,
           updatedAt: this.$route.params.updatedAt,
       }
