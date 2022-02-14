@@ -22,7 +22,14 @@
                 </tr>
                 <tr class="tr-info" data-bs-placement="top" >
                   <td>패스워드: </td>
-                  <td><input class="form-control form-25" v-model="password"></td>
+                  <td v-if="!isHidden" class="d-flex flex-row align-items">
+                    <input  class="form-control form-25 item" disabled value="수정하시려면 버튼을 클릭">
+                    <button class="btn btn-outline-primary border-color btn bd-highlight ms-2 rounded-pill bt-pdd item" type="button"  v-on:click="isHidden = !isHidden">새 비밀번호 입력</button></td>
+                  <td v-else class="d-flex flex-row align-items" >
+                    <input class="form-control form-25 item" v-model="password" placeholder="새 비밀번호를 입력해주세요">
+                    <button class="btn btn-outline-primary border-color btn bd-highlight ms-2 rounded-pill bt-pdd item" type="button"  v-on:click="isHidden = !isHidden">비밀번호 안 바꾸기 </button>
+                  </td>
+                    
                 </tr>
                 <tr class="tr-info" data-bs-placement="top">
                   <td>이름: </td>
@@ -146,6 +153,7 @@ export default({
           updatedAt: this.$route.params.updatedAt,
           deleteYN: this.$route.params.deleteYN,
           areavalues: [],
+          isHidden: false,
       }
     },
     components: {

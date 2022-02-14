@@ -4,8 +4,8 @@
               <td>{{admindesk.deskId}}</td>
               <td>{{admindesk.korName}}</td>
               <td>{{admindesk.engName}}</td>
-              <td v-if="admindesk.password.length<=10">{{admindesk.password}}</td>
-              <td v-else>{{admindesk.password.substring(0,9)}}...</td>
+              <!-- <td v-if="admindesk.password.length<=10">{{admindesk.password}}</td>
+              <td v-else>{{admindesk.password.substring(0,9)}}...</td> -->
               <td>{{admindesk.latitude}}</td>
               <td>{{admindesk.altitude}}</td>
               <td>{{admindesk.areaId}}</td>

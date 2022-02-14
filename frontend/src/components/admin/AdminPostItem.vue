@@ -1,8 +1,8 @@
 <template>
     <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="postEdit()">
               <td>{{adminpost.id}}</td>
-              <td>{{adminpost.id}}(api수정)</td>
-              <td>{{adminpost.id}}(api수정)</td>
+              <td>{{adminpost.areaName}}</td>
+              <td>{{adminpost.deskName}}</td>
               <td>{{adminpost.title}}</td>
               <td v-if="adminpost.content.length<=14">{{adminpost.content}}</td>
               <td v-else>{{adminpost.content.substring(0,10)}}...</td>
@@ -39,6 +39,8 @@ export default {
           {
             id: this.adminpost.id,
             title: this.adminpost.title,
+            areaName: this.adminpost.areaName,
+            deskName: this.adminpost.deskName,
             content: this.adminpost.content,
             createdAt: this.adminpost.createdAt,
             updatedAt: this.adminpost.updatedAt,

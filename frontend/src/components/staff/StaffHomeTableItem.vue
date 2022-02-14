@@ -1,41 +1,41 @@
 <template>
   <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip">
-      <td>{{ index }}</td>
-      <td>{{ tableItem.id }}</td>
-      <td>{{ tableItem.deskName }}</td>
-      <td>{{ tableItem.startTime }}</td>
-      <td>{{ tableItem.endTime }}</td>
-      <td>{{ tableItem.content }}</td>
+      <!-- <td>{{ index }}</td> -->
+      <td>{{ staffItem.id }}</td>
+      <td>{{ staffItem.deskName }}</td>
+      <td>{{ staffItem.startedAt }}</td>
+      <td>{{ staffItem.endedAt }}</td>
+      <td>{{ staffItem.content }}</td>
   </tr>  
 </template>
 
 <script>
 export default {
-  name: 'StaffHometableItem',
+  name: 'StaffHomestaffItem',
   props: {
     // index: { type: String },
-    // tableItem: { type: Object },
-    tableItem: Object,
+    // staffItem: { type: Object },
+    staffItem: Object,
   },
   methods:{
-    staffEdit(){
-      this.$router.push({ name: 'AdminStaffEdit',
-        params:
-          {
-            id: this.tableItem.id,
-            deskName: this.tableItem.deskName,
-            startTime: this.tableItem.startTime,
-            endTime: this.tableItem.endTime,
-            content: this.tableItem.content,
-          }
+    // staffEdit(){
+    //   this.$router.push({ name: 'AdminStaffEdit',
+    //     params:
+    //       {
+    //         id: this.staffItem.id,
+    //         deskName: this.staffItem.deskName,
+    //         startTime: this.staffItem.startTime,
+    //         endTime: this.staffItem.endTime,
+    //         content: this.staffItem.content,
+    //       }
           
         
-      })
-      console.log(this.tableItem.userId);
-    },
+    //   })
+    //   console.log(this.staffItem.userId);
+    // },
 	},
   // setup(props) {
-  //   console.log(`${props.index}번째 StaffHomeTableItem `,props.key,props.tableItem) // key가 안나옴
+  //   console.log(`${props.index}번째 StaffHomeTableItem `,props.key,props.staffItem) // key가 안나옴
 
   // }
 }

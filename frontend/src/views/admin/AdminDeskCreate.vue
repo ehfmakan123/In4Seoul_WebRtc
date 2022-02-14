@@ -13,7 +13,18 @@
             </thead>        
             <tr class="tr-info" data-bs-placement="top" >
               <td>아이디 </td>
-              <td><input class="form-control form-25" v-model="deskId"></td>
+              <td class="d-flex flex-row align-items">
+                <input class="form-control form-25 item" v-model="deskId">
+                <button class="btn btn-outline-primary border-color btn bd-highlight ms-2 rounded-pill bt-pdd item" type="button" v-on:click="isHiddened = true" @click="AdminDeskIdCheck">
+                  중복체크
+                </button>
+                <div v-if="isHiddened" class="item">
+                  <span v-if="isIdchecked==2">사용가능한 아이디입니다.</span>
+                  <span v-else-if="isIdchecked==0">일치하는 아이디가 없습니다.</span>
+                  <span v-else>데이터를 가져올 수 없습니다.</span>
+                  
+                </div>
+              </td>
             </tr>
             <tr class="tr-info" data-bs-placement="top">
               <td>비밀번호 </td>
@@ -98,6 +109,8 @@ export default({
           altitude:"",
           areaId:"",
           areavalues: [],
+          isHiddened: false,
+          isIdchecked: 0, //0:이미존재 1:권한없음 2:가능아이디
       }
     },
     methods: {
@@ -134,7 +147,7 @@ export default({
           }
         })
           .then((response) => {
-            console.log("put성공!")
+            console.log("post성공!")
             console.log(response)
             this.$router.push({ name: 'AdminDesk' })
             
@@ -146,6 +159,50 @@ export default({
           )   
 
       },
+
+
+      AdminDeskIdCheck(){
+        
+        const token = localStorage.getItem('token')
+        const config = {
+            Authorization: `Bearer ${token}`
+        }
+      
+        axios({
+          method: 'post',
+          url: `${SERVER_HOST}/admin/desks/idcheck`,
+          headers: config,
+          data: {
+              deskId:"123id"//this.deskId,
+          }
+        })
+          .then((response) => {
+            console.log("idcheck성공:"+this.deskId)
+            console.log(response)
+            const statusCode = response.data.statusCode
+            
+            if(statusCode == 200){
+              this.isIdchecked = 2;
+            }else{
+              this.isIdchecked = 0;
+            }
+            this.isIdchecked = 2;
+          })
+          .catch((err) => {
+            const statusCode = err.response.data.statusCode
+            if(statusCode == 403){
+              console.log("403err!")
+              this.isIdchecked = 1;
+            }else{
+              console.log("idcheck실패!")
+              console.error(err)
+            }
+            
+            }
+          )   
+
+      },
+
 
     },
     created(){
