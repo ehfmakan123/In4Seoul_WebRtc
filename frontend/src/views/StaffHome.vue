@@ -3,7 +3,7 @@
     <staff-sidebar/>
     <div class="w-80 p-5 staff-main">
       <h2 class="text-start mt-3 fw-bold">상담사 이싸피 상담사 페이지</h2>
-    <b-container class="bv-example-row mt-3 ">
+    <div class="bv-example-row mt-3 ">
 
     <br>
     <div class="bg-white shadow">
@@ -29,7 +29,7 @@
         </table>    
     </div>
 
-    <nav aria-label="..." class="d-flex justify-content-center">
+    <!-- <nav aria-label="..." class="d-flex justify-content-center">
       <ul class="pagination d-flex justify-content-between">
         <li class="page-item disabled">
           <a class="page-link" href="#" tabindex="-1" aria-disabled="true">＜</a>
@@ -43,8 +43,50 @@
           <a class="page-link" href="#">＞</a>
         </li>
       </ul>
+    </nav> active class 추가, aria-current="page", -->
+
+    <nav aria-label="..." class="d-flex justify-content-center">
+      <ul class="pagination d-flex justify-content-between">
+        <li v-if="start" class="page-item">
+          <a class="page-link" href="#" @click="gotostartpage">«</a>
+        </li>
+        <li v-else class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+        </li>
+
+        <li v-if="pre" li class="page-item">
+          <a class="page-link" href="#" @click="gotoprepage">‹</a>
+        </li>
+        <li v-else li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">‹</a>
+        </li>
+
+        <li
+         v-for="pageitem in pageNumbers"
+          v-bind:id="'p'+pageitem"
+          v-bind:class="{' active': pageitem == nowPage}"
+          :key="pageitem"
+         class="page-item"><a class="page-link" href="#" @click="thispage(pageitem)">{{pageitem}}</a></li>
+        
+        
+        <li v-if="next" class="page-item">
+          <a class="page-link" href="#" @click="gotonextpage">›</a>
+        </li>
+        <li v-else li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">›</a>
+        </li>
+
+        <li v-if="end" class="page-item">
+          <a class="page-link" href="#" @click="gotoendpage">»</a>
+        </li>
+        <li v-else li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">»</a>
+        </li>
+      </ul>
     </nav>
-    </b-container>
+
+
+</div>
 
 
 
@@ -97,6 +139,17 @@ export default {
     data () {
       return {
         articles: [],
+        pageNumbers: [],
+        totalPage: undefined,
+        totalCount: undefined,
+        nowPage: undefined,
+        startPage: undefined,
+        endPage: undefined,
+        pre: false,
+        next: true,
+        start: false,
+        end: true,
+
       }
     },
     created () {
@@ -109,10 +162,85 @@ export default {
       .then(response => {
         console.log(response.data);
         this.articles = response.data.data;
+        this.totalPage = response.data.totalPage;
+        this.totalCount = response.data.totalCount;
+        this.nowPage = response.data.nowPage;
+        this.startPage = response.data.startPage;
+        this.endPage = response.data.endPage;
+        this.pre = response.data.pre;
+        this.next = response.data.next;
+        this.start = response.data.start;
+        this.end = response.data.end;
+        this.pageNumbers = []
+        for(var i =this.startPage; i<=this.endPage;i++){
+          this.pageNumbers[i-this.startPage] = i
+        }
       })
       .catch(err => {
         console.log(err);
       });
+  },
+  methods: {
+    
+
+    thispage(np){
+      this.nowPage= np
+      console.log("thispage"+this.nowPage)
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      axios.get(`${SERVER_HOST}/staff/meeting-logs?page=`+this.nowPage, {headers: config})
+      .then(response => {
+        console.log(response.data);
+        this.articles = response.data.data;
+        this.totalPage = response.data.totalPage;
+        this.totalCount = response.data.totalCount;
+        this.nowPage = response.data.nowPage;
+        this.startPage = response.data.startPage;
+        this.endPage = response.data.endPage;
+        this.pre = response.data.pre;
+        this.next = response.data.next;
+        this.start = response.data.start;
+        this.end = response.data.end;
+        //console.log("this.pageNumbers: "+this.pageNumbers)
+        //this.pageNumbers.length = 0
+        this.pageNumbers = []
+        //this.pageNumbers.splice(0)
+        //console.log("this.pageNumbers: "+this.pageNumbers)
+        for(var i =this.startPage; i<=this.endPage;i++){
+          this.pageNumbers[i-this.startPage] = i;
+          //i-this.startPage로 해야 0부터 시작.
+          //console.log("")
+        }
+        //console.log("this.pageNumbers: "+this.pageNumbers)
+
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+    gotoprepage(){
+      if(this.nowPage-5 < 1 ){
+        this.thispage(1)
+      }else{
+        this.thispage(this.nowPage-5)
+      }
+      
+    },
+    gotonextpage(){
+      if(this.nowPage+5 > this.totalPage){
+        this.thispage(this.totalPage)
+      }else{
+        this.thispage(this.nowPage+5)
+      }
+    },
+    gotostartpage(){
+      this.thispage(1)
+    },
+    gotoendpage(){
+      this.thispage(this.totalPage)
+    }
   },
 }
 </script>
