@@ -1,6 +1,53 @@
 <template>
-	<div id="main-container" class="container">
-		<!-- <div id="join" v-if="!session">
+	<div id="meeting-container" class="px-4 py-2 bg-gray-2">
+		<div id="meeting-inner-container" class="container mw-100 bg-white py-3 px-4">
+			<div class="row">
+				<div id="session-video" v-if="session" class="col-9">
+					<div id="session-header">
+						<h1 id="session-title" class="fs-2 fw-bold">궁금한 것을 물어보세요</h1>
+					</div>
+					<!-- <div id="main-video" class="col-6">
+						<user-video :stream-manager="mainStreamManager"/>
+					</div> -->
+					<div id="video-container" class="mt-2 d-flex justify-content-center">
+						<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
+						<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
+					</div>
+					<div id="screen-container" class="text-center">
+						
+					</div>
+					<div id="button-container" class="text-center mb-4">
+						<button class="btn btn-lg btn-danger" @click="leaveSession">Exit</button>
+						<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffVideo()">화면on/off</button>
+						<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffSound()">소리on/off</button>
+						<button v-if="isStaff && !isScreenOn" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+						<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
+					</div>
+				</div>
+				<div id="session-chat" class="col-3">
+					<div id="session-chat-container" class="bg-gray-1 py-1 px-2">
+						<div id="chat-header" class="mt-3">
+							<p>채팅창</p>
+							<hr>
+						</div>
+						<div id="chat-body" class="d-flex flex-column">
+							<div id="chat-show">
+								<chat v-for="(chat, index) in totalChats" :key="index" :chat="chat"/>
+							</div>
+							<!-- <div id="chat-input">
+								<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
+							</div> -->
+						</div>
+						<div class="chat-input input-group mt-3">
+							<input type="text" class="form-control" placeholder="Type your message" @keypress.enter="enterChat(myChat)" v-model="myChat">
+							<button class="btn btn-outline-secondary" type="button" @click="enterChat(myChat)"><i class="bi bi-send"></i></button>
+						</div>						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- <div id="join">
 			<div id="img-div"><img src="resources/images/openvidu_grey_bg_transp_cropped.png" /></div>
 			<div id="join-dialog" class="jumbotron vertical-center">
 				<h1>Join a video session</h1>
@@ -19,28 +66,6 @@
 				</div>
 			</div>
 		</div> -->
-
-		<div id="session" v-if="session">
-			<div id="session-header">
-				<h1 id="session-title">{{ mySessionId }}</h1>
-				<input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Leave session">
-			</div>
-			<div id="main-video" class="col-md-6">
-				<user-video :stream-manager="mainStreamManager"/>
-			</div>
-			<div id="video-container" class="col-md-6">
-				<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
-				<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
-			</div>
-			<div id="screen-container">
-
-			</div>
-			<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
-			<button class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
-			<button class="btn btn-lg btn-danger" @click="muteMyVideo()">내화면끄기</button>
-			<button class="btn btn-lg btn-primary" @click="unmuteMyVideo()">내화면켜기</button>
-		</div>
-	</div>
 </template>
 
 
@@ -49,6 +74,7 @@
 import axios from 'axios';
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/meeting/UserVideo';
+import Chat from '@/components/meeting/Chat'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
@@ -60,6 +86,7 @@ export default {
 
 	components: {
 		UserVideo,
+		Chat,
 	},
 
 	data () {
@@ -77,7 +104,7 @@ export default {
 			OVScreen: undefined,
 			sessionScreen: undefined,
 			screensharing: false,
-			// publisherScreen: undefined
+			publisherScreen: undefined,
 
 			// ovToken 추가
 			ovToken: undefined,
@@ -85,6 +112,14 @@ export default {
 			// chating 
 			myChat: '',
 			totalChats: [],
+
+			// Webcam & Sound
+			isWebcamOn: true,
+			isScreenOn: false,
+			isSoundOn: true,
+
+			// Staff / Desk 구분
+			isStaff: undefined
 		}
 	},
 
@@ -96,25 +131,82 @@ export default {
 		this.ovToken = localStorage.getItem('ovToken')
 		console.log('ovToken: ', this.ovToken)
 		
-		if (this.$store.state.isStaff) {
-			this.myUserName = '상담사'
+		const staffData = JSON.parse(localStorage.getItem('staffData'))
+		const deskData = JSON.parse(localStorage.getItem('deskData'))
+		console.log('테스트:', deskData)
+		console.log('테스트:', staffData)
+
+		if (staffData) {
+			this.myUserName = staffData.name
+			this.isStaff = true
 		}
 		
-		if (this.$store.state.isDesk) {
-			this.myUserName = '데스크'
+		if (deskData) {
+			this.myUserName = deskData.deskKorName
+			this.isStaff = false
 		}
 		
 		this.joinSession()
 	},
 
 	methods: {
-		muteMyVideo () {
-			this.publisher.publishVideo(false)
+		onoffSound () {
+			this.isSoundOn = !this.isSoundOn
+			if(this.isSoundOn) {
+				this.publisher.publishAudio(true)
+			}else {
+				this.publisher.publishAudio(false)
+			}
 		},
-		unmuteMyVideo () {
-			this.publisher.publishVideo(true)
+		onoffVideo () {
+			this.isWebcamOn = !this.isWebcamOn
+			if(this.isWebcamOn) {
+				this.publisher.publishVideo(true)
+				this.publisherScreen.publishVideo(true)
+			}else {
+				this.publisher.publishVideo(false)
+				this.publisherScreen.publishVideo(false)
+			}
 		},
+		// muteMyVideo () {
+		// 	this.publisher.publishVideo(false)
+		// },
+		// unmuteMyVideo () {
+		// 	this.publisher.publishVideo(true)
+		// },
 		shareScreen () {
+			let publisher = this.OVScreen.initPublisher("screen-container", {
+				videoSource: "screen", 
+				resolution: "1280x780"
+				// resolution: "800x400"
+				});
+
+			this.publisherScreen = publisher
+
+			publisher.once('accessAllowed', (event) => {
+				console.log(event)
+				this.isScreenOn = true
+					publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
+							console.log('User pressed the "Stop sharing" button');
+					});
+					try {
+							publisher.stream.getMediaStream().getVideoTracks()[0].applyConstraints({
+									// width: 1280,
+									// height: 780
+									width: 900,
+									heigt: 500,
+							});
+					} catch (error) {
+							console.error('Error applying constraints: ', error);
+					}								
+				this.sessionScreen.publish(publisher);
+
+			});
+
+			publisher.once('accessDenied', (event) => {
+					console.log(event)
+					console.warn('ScreenShare: Access Denied');
+			});
 			// --- 나만 화면공유 되는 코드 ---
 			// this.getToken(localStorage.getItem('ovSessionId')).then((token) => {
 			// 		// console.log("테스트", token)
@@ -145,11 +237,11 @@ export default {
 		
 		},
 		enterChat (message) {
-			console.log("채팅테스트: ", message)
+			console.log("채팅테스트:1 ", message !== '')
 			
 			const data = { message: message, nickname: this.myUserName } 
 
-			if (this.$store.state.isDesk) {
+			if (this.$store.state.isDesk && message !== '') {
 				// console.log('[채팅] 데스크가 보내기 시작')
 				this.session.signal({
 									data: JSON.stringify(data),  // Any string (optional)
@@ -164,9 +256,10 @@ export default {
 								});	
 	
 				this.myChat = ''
+			
 			}
 
-			if (this.$store.state.isStaff) {
+			if (this.$store.state.isStaff && message !== '') {
 				// console.log('[채팅] 스태프가 보내기 시작')
 				this.session.signal({
 									data: JSON.stringify(data),  // Any string (optional)
@@ -240,15 +333,21 @@ export default {
 			// Receiver of the message (usually before calling 'session.connect')
 			this.session.on('signal', (event) => {
 							const data = JSON.parse(event.data)
-							console.log('[채팅]', data); // Message
+							console.log('[채팅]', data.message); // Message
+							this.totalChats.push(data)
+							console.log("totalChats: ", this.totalChats)
 							// console.log('[채팅][보낸사람]', event.from); // Connection object of the sender
 							// console.log('[채팅][타입]', event.type); // The type of message ("my-chat")
+
+							// 스크롤 내리기
+							let objDiv = document.getElementById("chat-body")
+							objDiv.scrollTop = objDiv.scrollHeight							
 					});
 
 
 			// --- Connect to the session with a valid user token ---
 
-			// 내가 추가한 코드 -- getToken 제외하고 화상상담 연결
+			// 내가 작성한 webcam session 연결 -- getToken 제외하고 화상상담 연결
 			console.log('JoinSession에서 ovToken값: ', this.ovToken)
 			this.session.connect(this.ovToken, { clientData: this.myUserName })
 				.then(() => {
@@ -302,21 +401,6 @@ export default {
 					// console.log("테스트", this.ovToken)
 					this.sessionScreen.connect(token).then(() => {
 						console.log("테스트1", )
-							let publisher = this.OVScreen.initPublisher("screen-container", { videoSource: "screen" });
-
-							publisher.once('accessAllowed', (event) => {
-								console.log(event)
-									publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
-											console.log('User pressed the "Stop sharing" button');
-									});
-									this.sessionScreen.publish(publisher);
-
-							});
-
-							publisher.once('accessDenied', (event) => {
-									console.log(event)
-									console.warn('ScreenShare: Access Denied');
-							});
 
 					}).catch((error => {
 							console.warn('There was an error connecting to the session:', error.code, error.message);
@@ -342,11 +426,11 @@ export default {
 			console.log("Desk Meeting방 나가기 버튼 클릭됨!!")
 
 			console.log("Store isStaff 확인: ", this.$store.state.isStaff)
-			if (this.$store.state.isStaff) {
+			if (this.isStaff) {
 				this.$router.push({ name: 'StaffHome' })
 			}
 			
-			if (this.$store.state.isDesk) {
+			if (!this.isStaff) {
 				this.$router.push({ name: 'DeskHome' })
 			}
 			
@@ -447,17 +531,30 @@ export default {
 }
 </script>
 <style>
-h1 {
+#session-title {
 	font-size: 3rem;
-	font-weight: 600;
-	margin-top: 2rem;
-	margin-left: 2rem;
+}
+
+#meeting-container {
+	height: 100vh;
+}
+
+#meeting-inner-container {
+	height: 100%;
+	width: 100%;
+	border-radius: 20px;
+	/* max-width: 100% !important; */
+	margin: 0%;
+}
+
+#session-video {
+	height: 920px;
 }
 
 #video-container video {
 	position: relative;
 	float: left;
-	width: 50%;
+	width: 100%;
 	cursor: pointer;
 }
 
@@ -465,7 +562,8 @@ h1 {
 	float: left;
 	width: 50%;
 	position: relative;
-	margin-left: -50%;
+	margin-top: 75%;
+	margin-left: -56%;
 }
 
 #video-container p {
@@ -478,6 +576,39 @@ h1 {
 	border-bottom-right-radius: 4px;
 }
 
+/* #screen-container video {
+	width: 90%;
+} */
+
+#session-chat {
+	padding: 0px;
+}
+
+#session-chat-container {
+	height: 93%;
+	border-radius: 10px;
+}
+
+#chat-header {
+	height: 2%;
+}
+
+#chat-body {
+	height: 725px;
+	overflow-y: scroll;
+}
+
+#chat-show {
+	height: 87%;
+}
+
+#chat-show div:not(:first-of-type) {
+	margin-top: 1rem;
+}
+
+
+
+/*
 video {
 	width: 100%;
 	height: auto;
@@ -493,5 +624,5 @@ video {
 	color: #777777;
 	font-weight: bold;
 	border-bottom-right-radius: 4px;
-}
+} */
 </style>

@@ -65,6 +65,7 @@ export default {
           state.value.showError = false
           // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
+          localStorage.setItem('staffData', JSON.stringify(res.data))
           const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")
           console.log("상담사 로그인후 store 확인: ", store.state.isStaff)
