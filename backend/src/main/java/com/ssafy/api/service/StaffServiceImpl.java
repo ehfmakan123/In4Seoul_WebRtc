@@ -247,4 +247,15 @@ public class StaffServiceImpl implements StaffService{
         staff.setMatchYN("N");
 
     }
+
+    @Override
+    public void logout(String staffId) {
+        Optional<Staff> optional = staffRepository.findByStaffId(staffId);
+
+        Staff staff = optional.get();
+
+        staff.setFcmToken("0");
+
+        staffRepository.save(staff);
+    }
 }
