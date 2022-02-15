@@ -91,6 +91,31 @@ public class DeskController {
 
 
 
+
+    // 데스크 계정 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponseBody> logout(@RequestBody Map<String,String> request,@ApiIgnore Authentication authentication) {
+
+
+        String password = request.get("password");
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String deskPassword = userDetails.getDeskPassword();
+
+
+        if (passwordEncoder.matches(password, deskPassword)) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        } else {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401,"유효하지 않은 비밀번호입니다"));
+
+        }
+
+
+    }
+
+
+
     // 글 작성
     @PostMapping("/posts")
     public ResponseEntity<BaseResponseBody> registerPost(@RequestBody PostReq postReq, @ApiIgnore Authentication authentication) {

@@ -132,6 +132,38 @@ public class StaffController {
     }
 
 
+
+
+
+
+
+
+
+
+    //로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponseBody> logout(@ApiIgnore Authentication authentication) {
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String userId = userDetails.getStaffId();
+
+
+
+        staffService.logout(userId);
+
+
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+
+
+
+    }
+
+
+
+
+
     //내 정보 조회
     @GetMapping("/me")
     @ApiOperation(value = "내 정보 조회", notes = "<strong>이미 존재하는 아이디인지 확인한다.</strong>")

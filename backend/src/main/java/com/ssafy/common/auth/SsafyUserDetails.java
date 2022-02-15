@@ -48,7 +48,7 @@ public class SsafyUserDetails implements UserDetails {
 	{
 		return  this.desk.getDeskId();
 	}
-
+    public String getDeskPassword() {return this.desk.getPassword();}
 
 	public int getDestPK() {return this.desk.getId() ;}
 

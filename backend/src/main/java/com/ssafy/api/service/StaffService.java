@@ -26,4 +26,7 @@ public interface StaffService {
 
 
     void meetingLogEnd(int meetingLogId, String content,int staffId);
+
+
+    void logout(String staffId);  //로그아웃하면서 fcm 값 갱신
 }
