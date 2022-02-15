@@ -94,7 +94,7 @@
 
             </div>
               <div class="pb-4">
-                  <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#exampleModal">
+                  <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#adminLogoutModal">
                       
                       <span class="d-none d-sm-inline mx-1 text-center">Logout</span>
                   </div>
@@ -102,7 +102,7 @@
               </div>            
       </div>
       <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="adminLogoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog  modal-dialog-centered">
           <div class="modal-content modal-rounded bd-blue-4 px-4 pt-3 pb-4">
             <div class="d-flex justify-content-center align-items-center mt-3">
@@ -110,7 +110,7 @@
             </div>
             <div class="modal-body">
               <div class="d-flex justify-content-center mt-4">
-                <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no">네</button>
+                <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" @click="logout">네</button>
                 <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal">아니오</button>
               </div>          
             </div>
@@ -122,6 +122,8 @@
 
 <script>
 import { useRouter } from 'vue-router'
+import { useStore } from 'vuex'
+import { Modal } from 'bootstrap'
 
 export default {
   name: 'AdminSidebar',
@@ -135,7 +137,7 @@ export default {
   },  
   setup() {
     const router = useRouter()
-
+    const store = useStore()
 
     const moveToAdminStaff = () => {
       //this.$currentTab= 0;
@@ -154,7 +156,14 @@ export default {
 
 
     const logout = () => {
+      //localStorage.clear()
+      localStorage.removeItem('token')
       router.push({ name: 'AdminAuth' })
+      store.dispatch("logoutAction")
+      // adminLogoutModal 끄기
+      const adminLogoutModal = document.querySelector('#adminLogoutModal')
+      let modal = Modal.getOrCreateInstance(adminLogoutModal)
+      modal.hide()
     }
 
     return {
