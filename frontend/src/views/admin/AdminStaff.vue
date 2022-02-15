@@ -84,21 +84,29 @@
       </div>
     </nav> -->
 
-    <nav aria-label="..." class="d-flex justify-content-center">
+  <nav aria-label="..." class="d-flex justify-content-center">
   <ul class="pagination d-flex justify-content-between">
     <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">＜</a>
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+    </li>
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">‹</a>
     </li>
     <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active" aria-current="page">
+    <li class="page-item active" aria-current="page" click="thispage(this.value)">
       <a class="page-link" href="#">2</a>
     </li>
     <li class="page-item"><a class="page-link" href="#">3</a></li>
     <li class="page-item">
-      <a class="page-link" href="#">＞</a>
+      <a class="page-link" href="#">›</a>
+    </li>   
+    <li class="page-item">
+      <a class="page-link" href="#">»</a>
     </li>
   </ul>
   </nav>
+
+  
 
 
 <!-- <nav aria-label="..." class="d-flex justify-content-center">
@@ -148,6 +156,7 @@ export default {
     return {
       currentPage: 1,
       articles: [],
+
       
     }
   },
@@ -209,9 +218,27 @@ export default {
     .catch(err => {
       console.log(err);
     });
+
+
   },
   methods: {
-    
+    thispage(){
+      
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      axios.get(`${SERVER_HOST}/admin/staff?page=`+'', {headers: config})
+    .then(response => {
+      console.log(response.data);
+      this.articles = response.data.data;
+      this.pageArray = response.data.data.contacts;
+
+    })
+    .catch(err => {
+      console.log(err);
+    });
+    }
    
   },
   
