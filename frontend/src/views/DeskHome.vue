@@ -4,7 +4,7 @@
 
     <div class="foggy-background">
       <div id="desk-content">
-        <h1 class="heading text-white">서울시 여행 안내 데스크</h1>
+        <h1 class="heading text-white">In 4 Seoul <span style="font-size: 2.5rem">서울시 여행 안내 데스크</span></h1>
         <h2 class="heading text-white mb-5">Seoul Travel Information Service</h2>
 
         <div id="go-meeting" @click="moveToMeeting" class="bg-light shadow">
@@ -86,7 +86,7 @@ export default {
 </script>
 <style scoped>
   h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 600;
   }
   h2 {
