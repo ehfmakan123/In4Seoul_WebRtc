@@ -14,7 +14,10 @@
             <span class="input-group-text bg-white border-white fw-bold" id="desk-login-password">비밀번호</span>
             <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLoginCredentials.password">
           </div>
-          <div class="d-flex justify-content-center mt-5">
+          <div class="pt-3" style="height: 3rem;">
+            <p id="login-error" v-show="state.showError" class="modal-error-message t-red-2">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+          </div>
+          <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" @click="deskLoginConfirm">로그인</button>
             <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal" @click="deskLoginCancel">취소</button>
           </div>
@@ -29,6 +32,7 @@ import { ref } from 'vue'
 import { useRouter} from 'vue-router'
 import { useStore } from 'vuex';
 import axios from 'axios'
+import { Modal } from 'bootstrap'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -38,6 +42,10 @@ export default {
     const deskLoginCredentials = ref({ userId: "", password: "" })
     const router = useRouter()
     const store = useStore()
+
+    const state = ref({
+      showError: false,
+    })
 
     const deskLoginConfirm = () => {
       console.log("desk 로그인 확인버튼 클릭됨!")
@@ -51,6 +59,7 @@ export default {
       })      
         .then(res => {
           console.log(res)
+          state.value.showError = false
           // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
           localStorage.setItem('deskData', JSON.stringify(res.data))
@@ -58,23 +67,23 @@ export default {
 
           // modal 닫는 부분
           const deskLoginModal = document.querySelector('#desk-login-modal')
-          deskLoginModal.classList.remove("in")
-          document.querySelector(".modal-backdrop").remove()
-          deskLoginModal.style.display = "none"
+          let modal = Modal.getOrCreateInstance(deskLoginModal)
+          modal.hide()
           
           router.push({ name: 'DeskHome' })
         })
         .catch(err => {
           console.log('desk 로그인 error발생!')
           console.log(err.response.data)
-          const statusCode = err.response.data.statusCode
-          if (statusCode === 401) {
-            deskLoginCredentials.value.password = ''
-          }
-          else if (statusCode === 404) {
-            deskLoginCredentials.value.userId = ''
-            deskLoginCredentials.value.password = ''
-          }
+          state.value.showError = true
+          // const statusCode = err.response.data.statusCode
+          // if (statusCode === 401) {
+          //   deskLoginCredentials.value.password = ''
+          // }
+          // else if (statusCode === 404) {
+          //   deskLoginCredentials.value.userId = ''
+          //   deskLoginCredentials.value.password = ''
+          // }
         })
     }
     
@@ -82,9 +91,11 @@ export default {
       console.log("desk 로그인 취소버튼 클릭됨!")
       deskLoginCredentials.value.userId = ""
       deskLoginCredentials.value.password = ""
+      state.value.showError = false
     }
 
     return {
+      state,
       deskLoginCredentials,
       deskLoginConfirm,
       deskLoginCancel,
@@ -110,5 +121,9 @@ export default {
 .btn-yes-no {
   width:25%;
   border-radius:2rem;
+}
+
+.modal-error-message {
+  font-size: 0.85em;
 }
 </style>

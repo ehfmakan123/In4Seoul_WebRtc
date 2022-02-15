@@ -21,7 +21,7 @@
               <span class="input-group-text border-0 bg-yellow fw-bold" id="post-password-confirm">비밀번호 확인</span>
               <input type="password" class="form-control post-input" v-model="state.myPost.passwordConfirm" placeholder="비밀번호를 입력해주세요">
             </div>
-            <p id="password-error" class="d-none t-red-2 text-small my-3 ms-3">비밀번호가 일치하지 않습니다.</p>
+            <p id="password-error" class="d-none t-red-2 text-small mt-3 ms-3">비밀번호가 일치하지 않습니다.</p>
           </div>
           <div class="d-flex justify-content-end p-2 px-3">
             <button @click="savePost" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">저장</button>
@@ -120,6 +120,6 @@ export default {
     border-style: solid;
     border-radius: 1rem; */
     /* width:29rem;  */
-    height: 600px;
+    height: 670px;
   }
 </style>
