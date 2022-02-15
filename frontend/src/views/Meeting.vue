@@ -24,18 +24,24 @@
 						<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
 					</div>
 				</div>
-				<div id="session-chat" class="col-3 bg-gray-1">
-					<div id="chat-header" class="mt-3">
-						<p>채팅창</p>
-						<hr>
-					</div>
-					<div id="chat-container" class="d-flex flex-column">
-						<div id="chat-show">
-							<chat v-for="(chat, index) in totalChats" :key="index" :chat="chat"/>
+				<div id="session-chat" class="col-3">
+					<div id="session-chat-container" class="bg-gray-1 py-1 px-2">
+						<div id="chat-header" class="mt-3">
+							<p>채팅창</p>
+							<hr>
 						</div>
-						<div id="chat-input">
-							<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
+						<div id="chat-body" class="d-flex flex-column">
+							<div id="chat-show">
+								<chat v-for="(chat, index) in totalChats" :key="index" :chat="chat"/>
+							</div>
+							<!-- <div id="chat-input">
+								<input type="text" v-model="myChat" @keypress.enter="enterChat(myChat)">
+							</div> -->
 						</div>
+						<div class="chat-input input-group mt-3">
+							<input type="text" class="form-control" placeholder="Type your message" @keypress.enter="enterChat(myChat)" v-model="myChat">
+							<button class="btn btn-outline-secondary" type="button" @click="enterChat(myChat)"><i class="bi bi-send"></i></button>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -231,11 +237,11 @@ export default {
 		
 		},
 		enterChat (message) {
-			console.log("채팅테스트: ", message)
+			console.log("채팅테스트:1 ", message !== '')
 			
 			const data = { message: message, nickname: this.myUserName } 
 
-			if (this.$store.state.isDesk) {
+			if (this.$store.state.isDesk && message !== '') {
 				// console.log('[채팅] 데스크가 보내기 시작')
 				this.session.signal({
 									data: JSON.stringify(data),  // Any string (optional)
@@ -250,9 +256,10 @@ export default {
 								});	
 	
 				this.myChat = ''
+			
 			}
 
-			if (this.$store.state.isStaff) {
+			if (this.$store.state.isStaff && message !== '') {
 				// console.log('[채팅] 스태프가 보내기 시작')
 				this.session.signal({
 									data: JSON.stringify(data),  // Any string (optional)
@@ -331,6 +338,10 @@ export default {
 							console.log("totalChats: ", this.totalChats)
 							// console.log('[채팅][보낸사람]', event.from); // Connection object of the sender
 							// console.log('[채팅][타입]', event.type); // The type of message ("my-chat")
+
+							// 스크롤 내리기
+							let objDiv = document.getElementById("chat-body")
+							objDiv.scrollTop = objDiv.scrollHeight							
 					});
 
 
@@ -565,21 +576,37 @@ export default {
 	border-bottom-right-radius: 4px;
 }
 
+/* #screen-container video {
+	width: 90%;
+} */
+
 #session-chat {
+	padding: 0px;
+}
+
+#session-chat-container {
+	height: 93%;
 	border-radius: 10px;
 }
 
-#chat-container {
-	height: 100%;
+#chat-header {
+	height: 2%;
+}
+
+#chat-body {
+	height: 725px;
+	overflow-y: scroll;
 }
 
 #chat-show {
-	height: 80%;
+	height: 87%;
 }
 
-#chat-input {
-	/* width: 100%; */
+#chat-show div:not(:first-of-type) {
+	margin-top: 1rem;
 }
+
+
 
 /*
 video {

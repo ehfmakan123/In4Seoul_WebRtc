@@ -1,12 +1,14 @@
 <template>
-  <div>
+  <div class="chat-item">
     <div v-if="myUserName != chat.nickname" class="text-start">
-      <div class="bg-white  chat-box text-start d-inline-block mt-2 p-2">
+      <p class="chat-item-header p-1">{{ chat.nickname }}</p>
+      <div class="bg-white chat-box text-start d-inline-block p-2">
         <p class="">{{ chat.message }}</p>
       </div>
     </div>
     <div v-if="myUserName === chat.nickname" class="text-end">
-      <div class="bg-blue-3  chat-box text-end d-inline-block mt-2 p-2">
+      <!-- <p class="chat-item-header">{{ chat.nickname }}</p> -->
+      <div class="bg-blue-3 chat-box text-start d-inline-block p-2">
         <p class="">{{ chat.message }}</p>
       </div>
     </div>
@@ -45,4 +47,9 @@ export default {
   max-width: 50%;
   border-radius: 5px;
 }
+
+.chat-item-header {
+  font-size: 0.8rem;
+}
+
 </style>
