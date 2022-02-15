@@ -70,7 +70,7 @@ public class AdminServiceImpl implements AdminService {
         boolean start = false;
 
 
-        if (page > 1) {
+        if (page - 5 >= 1) {
             pre = true;
         }
 
@@ -84,7 +84,7 @@ public class AdminServiceImpl implements AdminService {
 
         boolean end = false;
 
-        if (page < totalPage) {
+        if (page + 5 <= totalPage || endPage < totalPage) {
             next = true;
 
         }
@@ -195,7 +195,7 @@ public class AdminServiceImpl implements AdminService {
         boolean start = false;
 
 
-        if (page > 1) {
+        if (page - 5 >= 1) {
             pre = true;
         }
 
@@ -209,7 +209,7 @@ public class AdminServiceImpl implements AdminService {
 
         boolean end = false;
 
-        if (page < totalPage) {
+        if (page + 5 <= totalPage || endPage < totalPage) {
             next = true;
 
         }
@@ -314,7 +314,7 @@ public class AdminServiceImpl implements AdminService {
         boolean start = false;
 
 
-        if (page > 1) {
+        if (page - 5 >= 1) {
             pre = true;
         }
 
@@ -328,7 +328,7 @@ public class AdminServiceImpl implements AdminService {
 
         boolean end = false;
 
-        if (page < totalPage) {
+        if (page + 5 <= totalPage || endPage < totalPage) {
             next = true;
 
         }
