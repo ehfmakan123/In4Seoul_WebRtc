@@ -177,8 +177,8 @@ export default {
     font-size: 2rem;
   }
   .box-small {
-    width: 17vw;
-    height: 17vw;
+    width: 13vw;
+    height: 13vw;
     border-radius: 1.5rem!important;
   }
   .box-big {

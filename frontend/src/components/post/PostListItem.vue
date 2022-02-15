@@ -1,5 +1,5 @@
 <template>
-  <div class="col-3 p-4">
+  <div class="col-2 p-4 me-4 " style="margin: 0 auto; ">
     <div class="card shadow box-small bg-yellow" data-bs-toggle="modal" data-bs-target="#detailModal">
       <div class="card-body p-4">
         <p class="card-title mb-3 fw-bold">{{ post.title }}</p>
