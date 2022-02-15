@@ -24,7 +24,7 @@ public class QMeetingLog extends EntityPathBase<MeetingLog> {
 
     public final StringPath content = createString("content");
 
-    public final QDesks desks;
+    public final QDesk desk;
 
     public final StringPath endedAt = createString("endedAt");
 
@@ -52,7 +52,7 @@ public class QMeetingLog extends EntityPathBase<MeetingLog> {
 
     public QMeetingLog(Class<? extends MeetingLog> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.desks = inits.isInitialized("desks") ? new QDesks(forProperty("desks"), inits.get("desks")) : null;
+        this.desk = inits.isInitialized("desk") ? new QDesk(forProperty("desk"), inits.get("desk")) : null;
         this.staff = inits.isInitialized("staff") ? new QStaff(forProperty("staff"), inits.get("staff")) : null;
     }
 

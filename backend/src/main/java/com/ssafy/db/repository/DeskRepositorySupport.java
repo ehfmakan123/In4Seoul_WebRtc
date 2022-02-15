@@ -5,9 +5,9 @@ import com.querydsl.core.QueryResults;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.ssafy.api.dto.*;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.db.entity.QAreas;
-import com.ssafy.db.entity.QDesks;
-import com.ssafy.db.entity.QPosts;
+import com.ssafy.db.entity.QArea;
+import com.ssafy.db.entity.QDesk;
+import com.ssafy.db.entity.QPost;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -20,9 +20,9 @@ public class DeskRepositorySupport {
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 
-    QDesks qdesk=QDesks.desks;
-    QPosts qpost=QPosts.posts;
-    QAreas qareas= QAreas.areas;
+    QDesk qdesk=QDesk.desk;
+    QPost qpost=QPost.post;
+    QArea qareas= QArea.area;
 
     public PostDto getPost(Long id)
     {

@@ -20,11 +20,11 @@ public class StaffRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
 
     QStaff qstaff= QStaff.staff;
-    QAreas qareas= QAreas.areas;
-    QDesks qdesk=QDesks.desks;
-    QPosts qpost=QPosts.posts;
+    QArea qareas= QArea.area;
+    QDesk qdesk=QDesk.desk;
+    QPost qpost=QPost.post;
     QMeetingLog qmeetingLog =QMeetingLog.meetingLog;
-    QMeeting qmeeting= QMeeting.meeting;
+    QWaitingList qmeeting= QWaitingList.waitingList;
 
 
     //내 정보 조회
@@ -35,7 +35,7 @@ public class StaffRepositorySupport {
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt,qstaff.updatedAt))
                 .from(qstaff)
-                .leftJoin(qstaff.areas, qareas)
+                .leftJoin(qstaff.area, qareas)
                 .where(qstaff.staffId.eq(id))
                 .fetchOne();
 
@@ -54,7 +54,7 @@ public class StaffRepositorySupport {
         QueryResults<MeetingLogDto> result = jpaQueryFactory
                 .select(new QMeetingLogDto(qmeetingLog.id, qdesk.korName.as("deskName"), qmeetingLog.startedAt, qmeetingLog.endedAt, qmeetingLog.content))
                 .from(qmeetingLog)
-                .join(qmeetingLog.desks, qdesk)
+                .join(qmeetingLog.desk, qdesk)
                 .where(qmeetingLog.staff.id.eq(id))
                 .orderBy(qmeetingLog.id.desc())
                 .offset((page-1) * 10)
@@ -82,7 +82,7 @@ public class StaffRepositorySupport {
         List<Staff> result = jpaQueryFactory
                 .select(qstaff)
                 .from(qstaff)
-                .where(qstaff.areas.id.eq(areaId).and(qstaff.matchYN.eq("N")).and(qstaff.fcmToken.eq("0"
+                .where(qstaff.area.id.eq(areaId).and(qstaff.matchYN.eq("N")).and(qstaff.fcmToken.eq("0"
                 ).not()))
                 .fetch();
 
@@ -98,20 +98,20 @@ public class StaffRepositorySupport {
         long count = jpaQueryFactory
                 .select(qmeeting)
                 .from(qmeeting)
-                .where(qmeeting.areaId.eq(areaId))
+                .where(qmeeting.area.id.eq(areaId))
                 .fetchCount();
 return count;
     }
 
 
 
-    public Meeting MeetingConnect(int areaId)
+    public WaitingList MeetingConnect(int areaId)
     {
 
-        Meeting result = jpaQueryFactory
+        WaitingList result = jpaQueryFactory
                 .select(qmeeting)
                 .from(qmeeting)
-                .where(qmeeting.areaId.eq(areaId))
+                .where(qmeeting.area.id.eq(areaId))
                 .orderBy(qmeeting.id.asc())
                 .limit(1)
                 .fetchOne();

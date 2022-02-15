@@ -5,7 +5,7 @@ import com.ssafy.api.dto.PostDto;
 import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public interface DeskService {
 
 
     // 로그인할때 사용
-    Desks findByDeskId(String id);
+    Desk findByDeskId(String id);
 
 
 

@@ -321,6 +321,7 @@ public class StaffController {
         int areaId = userDetails.getStaffAreaId();  //지역 번호
         String userId = userDetails.getStaffId();
 
+        System.out.println("지역번호="+areaId);
 
         String sessionId = firebaseService.MeetingConnect(areaId, userId);
 
@@ -392,11 +393,7 @@ public class StaffController {
         } else {
 
             return ResponseEntity.status(409).body(BaseResponseBody.of(409,"이미 처리된 요청"));  //이게 맞나..
-
-
         }
-
-
     }
 
 }

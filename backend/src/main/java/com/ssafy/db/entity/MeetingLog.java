@@ -42,7 +42,7 @@ public class MeetingLog  {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "desks_id")
-    Desks desks;
+    Desk desk;
 
 
 

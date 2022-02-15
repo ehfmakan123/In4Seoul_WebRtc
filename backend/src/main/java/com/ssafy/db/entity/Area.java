@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class Areas {
+public class Area {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +19,14 @@ public class Areas {
     @Column(name = "kor_name")
     String korName;
 
-    public Areas() {
+    public Area() {
     }
 
-    public Areas(int id, String engName, String korName) {
+    public Area(int id) {
+        this.id = id;
+    }
+
+    public Area(int id, String engName, String korName) {
         this.id = id;
         this.engName = engName;
         this.korName = korName;

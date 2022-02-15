@@ -4,12 +4,11 @@ import com.ssafy.api.dto.*;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.AdminService;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,8 +32,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @Autowired
-    UserService userService;
+
 
      @Autowired
      PasswordEncoder passwordEncoder;
@@ -162,7 +160,7 @@ public class AdminController {
 
 
 
-        Desks result = adminService.findByDeskId(request.getUserId());
+        Desk result = adminService.findByDeskId(request.getUserId());
 
         if(result==null)
         {
