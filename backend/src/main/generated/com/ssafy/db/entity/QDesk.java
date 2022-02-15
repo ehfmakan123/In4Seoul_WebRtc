@@ -11,22 +11,22 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QDesks is a Querydsl query type for Desks
+ * QDesk is a Querydsl query type for Desk
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QDesks extends EntityPathBase<Desks> {
+public class QDesk extends EntityPathBase<Desk> {
 
-    private static final long serialVersionUID = 456909432L;
+    private static final long serialVersionUID = 846023003L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QDesks desks = new QDesks("desks");
+    public static final QDesk desk = new QDesk("desk");
 
     public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
 
     public final StringPath altitude = createString("altitude");
 
-    public final QAreas area;
+    public final QArea area;
 
     //inherited
     public final StringPath createdAt = _super.createdAt;
@@ -48,25 +48,25 @@ public class QDesks extends EntityPathBase<Desks> {
     //inherited
     public final StringPath updatedAt = _super.updatedAt;
 
-    public QDesks(String variable) {
-        this(Desks.class, forVariable(variable), INITS);
+    public QDesk(String variable) {
+        this(Desk.class, forVariable(variable), INITS);
     }
 
-    public QDesks(Path<? extends Desks> path) {
+    public QDesk(Path<? extends Desk> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QDesks(PathMetadata metadata) {
+    public QDesk(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QDesks(PathMetadata metadata, PathInits inits) {
-        this(Desks.class, metadata, inits);
+    public QDesk(PathMetadata metadata, PathInits inits) {
+        this(Desk.class, metadata, inits);
     }
 
-    public QDesks(Class<? extends Desks> type, PathMetadata metadata, PathInits inits) {
+    public QDesk(Class<? extends Desk> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.area = inits.isInitialized("area") ? new QAreas(forProperty("area")) : null;
+        this.area = inits.isInitialized("area") ? new QArea(forProperty("area")) : null;
     }
 
 }

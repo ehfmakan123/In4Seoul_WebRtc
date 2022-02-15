@@ -1,7 +1,6 @@
 package com.ssafy.db.repository;
 
 
-import com.ssafy.db.entity.Desks;
 import com.ssafy.db.entity.MeetingLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 

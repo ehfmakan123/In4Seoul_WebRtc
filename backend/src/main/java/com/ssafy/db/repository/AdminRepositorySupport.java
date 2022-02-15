@@ -20,9 +20,9 @@ public class AdminRepositorySupport {
     private JPAQueryFactory jpaQueryFactory;
 
     QStaff qstaff= QStaff.staff;
-    QAreas qareas= QAreas.areas;
-    QDesks desk=QDesks.desks;
-    QPosts qpost=QPosts.posts;
+    QArea qareas= QArea.area;
+    QDesk desk=QDesk.desk;
+    QPost qpost=QPost.post;
 
 
     //admin 로그인 시 정보 조회
@@ -49,7 +49,7 @@ public class AdminRepositorySupport {
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"), qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
-                .leftJoin(qstaff.areas, qareas)
+                .leftJoin(qstaff.area, qareas)
                 .where(qstaff.deleteYN.eq("N"))   // 삭제 상태인 상담원은 목록에 보이지 않는다
                 .orderBy(qstaff.id.desc())
                 .offset((page - 1) * 10)
@@ -78,7 +78,7 @@ public class AdminRepositorySupport {
                 .select(new QStaffDto(qstaff.id, qstaff.staffId.as("userId"), qstaff.name,
                         qstaff.phone, qstaff.email, qstaff.deleteYN, qstaff.approveYN, qareas.id.as("areaId"), qareas.korName.as("areaName"),qstaff.createdAt, qstaff.updatedAt))
                 .from(qstaff)
-                .leftJoin(qstaff.areas, qareas)
+                .leftJoin(qstaff.area, qareas)
                 .where(qstaff.id.eq(id))
                 .fetchOne();
 

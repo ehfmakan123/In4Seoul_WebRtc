@@ -5,7 +5,7 @@ import com.ssafy.api.dto.MeetingLogDto;
 import com.ssafy.api.dto.StaffDto;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.MeetingLog;
 import com.ssafy.db.entity.Staff;
 import com.ssafy.db.repository.DeskRepository;
@@ -13,10 +13,8 @@ import com.ssafy.db.repository.MeetingLogRepository;
 import com.ssafy.db.repository.StaffRepository;
 import com.ssafy.db.repository.StaffRepositorySupport;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -211,12 +209,12 @@ public class StaffServiceImpl implements StaffService{
 
 
         // sessionId를 통해 desk의 pk값을 가져온다
-        Optional<Desks> result = deskRepository.findByDeskId(sessionId);
-        Desks desk = result.get();
+        Optional<Desk> result = deskRepository.findByDeskId(sessionId);
+        Desk desk = result.get();
 
 
         MeetingLog meetingLog = new MeetingLog();
-            meetingLog.setDesks(new Desks(desk.getId()));
+            meetingLog.setDesk(new Desk(desk.getId()));
             meetingLog.setStaff(new Staff(staffPk));
 
 

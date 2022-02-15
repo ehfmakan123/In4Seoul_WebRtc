@@ -2,7 +2,6 @@ package com.ssafy.config;
 
 import com.ssafy.api.service.AdminService;
 import com.ssafy.api.service.StaffService;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.auth.JwtAuthenticationFilter;
 import com.ssafy.common.auth.SsafyUserDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,11 +26,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적인 설정을 위해서 WebSecurityConfigurerAdapter를 상속받는다
     @Autowired
     private SsafyUserDetailService ssafyUserDetailService;
-    
-    @Autowired
-    private UserService userService;
-
-
 
     @Autowired
     private AdminService adminService;
@@ -97,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {  //추가적�
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // 토큰 기반 인증이므로 세션 사용 하지않음
                 .and()
-                .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService,adminService,staffService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
+                .addFilter(new JwtAuthenticationFilter(authenticationManager(),adminService,staffService)) //HTTP 요청에 JWT 토큰 인증 필터를 거치도록 필터를 추가
                 .authorizeRequests() //HttpServletRequest를 사용하는 요청들에 대한 접근제한을 설정하겠다는 의미이다
                 .antMatchers("/api/staff/idcheck").permitAll()
                 .antMatchers("/api/staff/signup").permitAll()

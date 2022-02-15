@@ -10,14 +10,14 @@ import com.querydsl.core.types.Path;
 
 
 /**
- * QAreas is a Querydsl query type for Areas
+ * QArea is a Querydsl query type for Area
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QAreas extends EntityPathBase<Areas> {
+public class QArea extends EntityPathBase<Area> {
 
-    private static final long serialVersionUID = 454512388L;
+    private static final long serialVersionUID = 845945679L;
 
-    public static final QAreas areas = new QAreas("areas");
+    public static final QArea area = new QArea("area");
 
     public final StringPath engName = createString("engName");
 
@@ -25,16 +25,16 @@ public class QAreas extends EntityPathBase<Areas> {
 
     public final StringPath korName = createString("korName");
 
-    public QAreas(String variable) {
-        super(Areas.class, forVariable(variable));
+    public QArea(String variable) {
+        super(Area.class, forVariable(variable));
     }
 
-    public QAreas(Path<? extends Areas> path) {
+    public QArea(Path<? extends Area> path) {
         super(path.getType(), path.getMetadata());
     }
 
-    public QAreas(PathMetadata metadata) {
-        super(Areas.class, metadata);
+    public QArea(PathMetadata metadata) {
+        super(Area.class, metadata);
     }
 
 }

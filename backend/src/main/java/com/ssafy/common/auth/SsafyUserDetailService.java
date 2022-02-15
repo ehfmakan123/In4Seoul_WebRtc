@@ -1,18 +1,13 @@
 package com.ssafy.common.auth;
 
-import java.util.Optional;
-
-import com.ssafy.db.entity.Desks;
+import com.ssafy.api.service.StaffService;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import com.ssafy.api.service.UserService;
-import com.ssafy.db.entity.User;
-import com.ssafy.db.repository.UserRepository;
 
 
 /**
@@ -21,13 +16,13 @@ import com.ssafy.db.repository.UserRepository;
 @Component
 public class SsafyUserDetailService implements UserDetailsService{
 	@Autowired
-	UserService userService;
+	StaffService userService;
 	
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    		User user = userService.getUserByUserId(username);
+    		Staff user = userService.getStaffByStaffId(username);
     		if(user != null) {
-    			SsafyUserDetails userDetails = new SsafyUserDetails(user,new Staff(),new Desks());
+    			SsafyUserDetails userDetails = new SsafyUserDetails(new Staff(),new Desk());
     			return userDetails;
     		}
     		return null;

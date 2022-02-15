@@ -1,7 +1,6 @@
 package com.ssafy.common.auth;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.*;
 
 import javax.servlet.FilterChain;
@@ -12,44 +11,34 @@ import javax.servlet.http.HttpServletResponse;
 import com.auth0.jwt.interfaces.Claim;
 import com.ssafy.api.service.AdminService;
 import com.ssafy.api.service.StaffService;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.util.JwtTokenUtil;
 import com.ssafy.common.util.ResponseBodyWriteUtil;
-import com.ssafy.db.entity.User;
 
 /**
  * 요청 헤더에 jwt 토큰이 있는 경우, 토큰 검증 및 인증 처리 로직 정의.
  */
 public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
-	private UserService userService;
+
 	private AdminService adminService;
     private StaffService staffService;
 
-	public JwtAuthenticationFilter(AuthenticationManager authenticationManager, UserService userService,AdminService adminService,StaffService staffService) {
+	public JwtAuthenticationFilter(AuthenticationManager authenticationManager,AdminService adminService,StaffService staffService) {
 		super(authenticationManager);
         this.adminService=adminService;
         this.staffService=staffService;
-		this.userService = userService;
+
 	}
 
 	@Override
@@ -98,9 +87,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
                     // jwt 토큰에 포함된 계정 정보(userId) 통해 실제 디비에 해당 정보의 계정이 있는지 조회.
 
                 // admin ,staff-> staff테이블에서 조회    desk 는 desk 테이블에서 조회
-                User user=null;
+
                 Staff staff=null;
-                Desks desk=null;
+                Desk desk=null;
 
                String role="STAFF";
                 if(!roles.asString().equals("desk"))  // 로그인 한 사람이 관리자나 상담사인 경우
@@ -133,9 +122,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
 
 
 
-                if(user != null||staff!=null||desk!=null) {
+                if(staff!=null||desk!=null) {
                         // 식별된 정상 유저인 경우, 요청 context 내에서 참조 가능한 인증 정보(jwtAuthentication) 생성.
-                		SsafyUserDetails userDetails = new SsafyUserDetails(user,staff,desk);
+                		SsafyUserDetails userDetails = new SsafyUserDetails(staff,desk);
                         userDetails.setAuthorities((Arrays.asList(new SimpleGrantedAuthority(role))));
 
                 		UsernamePasswordAuthenticationToken jwtAuthentication = new UsernamePasswordAuthenticationToken(userId,

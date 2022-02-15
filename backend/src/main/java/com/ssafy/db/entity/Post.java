@@ -9,8 +9,8 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "posts")
-public class Posts extends BaseTimeEntity {
+@Table(name = "post")
+public class Post extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +22,7 @@ public class Posts extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "desks_id")
-    Desks desk;
+    Desk desk;
 
 
 

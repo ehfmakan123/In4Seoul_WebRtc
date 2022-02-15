@@ -2,8 +2,8 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.dto.*;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.db.entity.Areas;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Area;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
 import com.ssafy.db.repository.DeskRepository;
 import com.ssafy.db.repository.AdminRepositorySupport;
@@ -45,9 +45,63 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ListResult<StaffDto> getConsultantList(Integer page) {
 
-        if(page==null) page=1;
+        if (page == null) page = 1;
 
-        return adminRepositorySupport.getConsultantList(page);
+        ListResult<StaffDto> consultantList = adminRepositorySupport.getConsultantList(page);
+        //페이지네이션 처리
+
+        Long totalCount = consultantList.getTotalCount();
+
+        int totalPage = totalCount.intValue() / 10; //총 페이지
+
+        if (totalCount % 10 > 0) {
+            totalPage++;
+        }
+
+
+        int startPage = ((page - 1) / 5) * 5 + 1; //시작 페이지 번호
+        int endPage = startPage + 4;
+
+
+        if (endPage > totalPage) endPage = totalPage;
+
+        boolean pre = false;
+
+        boolean start = false;
+
+
+        if (page > 1) {
+            pre = true;
+        }
+
+
+        if (startPage > 1) {
+            start = true;
+        }
+
+
+        boolean next = false;
+
+        boolean end = false;
+
+        if (page < totalPage) {
+            next = true;
+
+        }
+
+        if (endPage < totalPage) {
+            end = true;
+        }
+
+        consultantList.setStartPage(startPage);
+        consultantList.setEndPage(endPage);
+        consultantList.setNowPage(page);
+        consultantList.setNext(next);
+        consultantList.setPre(pre);
+        consultantList.setStart(start);
+        consultantList.setEnd(end);
+        consultantList.setTotalPage(totalPage);
+        return consultantList;
     }
 
     @Override
@@ -66,7 +120,7 @@ public class AdminServiceImpl implements AdminService {
 
         staff.setDeleteYN(dto.getDeleteYN());
         staff.setApproveYN(dto.getApproveYN());
-        staff.setAreas(new Areas(dto.getAreaId(), null, null));
+        staff.setArea(new Area(dto.getAreaId(), null, null));
 
         //추가된 부분
         staff.setName(dto.getName());
@@ -94,17 +148,17 @@ public class AdminServiceImpl implements AdminService {
         이런식으로 설정했고 db에는 외래키 번호가 잘 들어가긴함 맞는방법인지는 모르겠다..
 
          */
-        Desks desks = new Desks();
-        desks.setDeskId(dto.getDeskId());
-        desks.setKorName(dto.getKorName());
-        desks.setEngName(dto.getEngName());
-        desks.setPassword(dto.getPassword());
-        desks.setLatitude(dto.getLatitude());
-        desks.setAltitude(dto.getAltitude());
-        desks.setDeleteYN("N");  // 생성이니까 N설정
-        desks.setArea(new Areas(dto.getAreaId(), null, null));
+        Desk desk = new Desk();
+        desk.setDeskId(dto.getDeskId());
+        desk.setKorName(dto.getKorName());
+        desk.setEngName(dto.getEngName());
+        desk.setPassword(dto.getPassword());
+        desk.setLatitude(dto.getLatitude());
+        desk.setAltitude(dto.getAltitude());
+        desk.setDeleteYN("N");  // 생성이니까 N설정
+        desk.setArea(new Area(dto.getAreaId(), null, null));
 
-        deskRepository.save(desks);
+        deskRepository.save(desk);
         return 0;
     }
 
@@ -114,10 +168,70 @@ public class AdminServiceImpl implements AdminService {
     public ListResult<DeskDto> getDeskList(Integer page) {
 
 
+        if (page == null) page = 1;
 
-        if(page==null) page=1;
+        ListResult<DeskDto> deskList = adminRepositorySupport.getDeskList(page);
 
-        return adminRepositorySupport.getDeskList(page);
+
+        //페이지네이션 처리
+
+        Long totalCount = deskList.getTotalCount();
+
+        int totalPage = totalCount.intValue() / 10; //총 페이지
+
+        if (totalCount % 10 > 0) {
+            totalPage++;
+        }
+
+
+        int startPage = ((page - 1) / 5) * 5 + 1; //시작 페이지 번호
+        int endPage = startPage + 4;
+
+
+        if (endPage > totalPage) endPage = totalPage;
+
+        boolean pre = false;
+
+        boolean start = false;
+
+
+        if (page > 1) {
+            pre = true;
+        }
+
+
+        if (startPage > 1) {
+            start = true;
+        }
+
+
+        boolean next = false;
+
+        boolean end = false;
+
+        if (page < totalPage) {
+            next = true;
+
+        }
+
+        if (endPage < totalPage) {
+            end = true;
+        }
+
+
+        // 값 세팅
+
+        deskList.setStartPage(startPage);
+        deskList.setEndPage(endPage);
+        deskList.setNowPage(page);
+        deskList.setNext(next);
+        deskList.setPre(pre);
+        deskList.setStart(start);
+        deskList.setEnd(end);
+        deskList.setTotalPage(totalPage);
+        return deskList;
+
+
     }
 
 
@@ -130,14 +244,14 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public int deskUpdate(DeskDto dto, int id) {
 
-        Optional<Desks> desks = deskRepository.findById(id);
-        Desks desk = desks.get();
+        Optional<Desk> desks = deskRepository.findById(id);
+        Desk desk = desks.get();
 
         desk.setDeskId(dto.getDeskId());
         desk.setKorName(dto.getKorName());
         desk.setEngName(dto.getEngName());
 
-        if(!(dto.getPassword()==null||dto.getPassword().equals(""))) {
+        if (!(dto.getPassword() == null || dto.getPassword().equals(""))) {
             desk.setPassword(dto.getPassword());
         }
         desk.setLatitude(dto.getLatitude());
@@ -145,7 +259,7 @@ public class AdminServiceImpl implements AdminService {
         desk.setDeleteYN(dto.getDeleteYN());
 
         // 해당 데스크의 지역 수정
-        desk.setArea(new Areas(dto.getAreaId(), null, null));
+        desk.setArea(new Area(dto.getAreaId(), null, null));
 
         deskRepository.save(desk);
         return 1;
@@ -154,12 +268,12 @@ public class AdminServiceImpl implements AdminService {
 
     // db에 해당 아이디를 가진 데스크가 있는지 확인
     @Override
-    public Desks findByDeskId(String id) {
+    public Desk findByDeskId(String id) {
 
 
-        Optional<Desks> result = deskRepository.findByDeskId(id);
+        Optional<Desk> result = deskRepository.findByDeskId(id);
 
-        if(result.isPresent())  //db에 존재하는 경우
+        if (result.isPresent())  //db에 존재하는 경우
         {
             return result.get();
 
@@ -173,12 +287,70 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public ListResult<AdminPostDto> getPostList(Integer page) {
 
-        if(page==null) page=1;
+        if (page == null) page = 1;
 
 
         ListResult<AdminPostDto> result = adminRepositorySupport.getPostList(page);
 
+        //페이지네이션 처리
+
+        Long totalCount = result.getTotalCount();
+
+        int totalPage = totalCount.intValue() / 10; //총 페이지
+
+        if (totalCount % 10 > 0) {
+            totalPage++;
+        }
+
+
+        int startPage = ((page - 1) / 5) * 5 + 1; //시작 페이지 번호
+        int endPage = startPage + 4;
+
+
+        if (endPage > totalPage) endPage = totalPage;
+
+        boolean pre = false;
+
+        boolean start = false;
+
+
+        if (page > 1) {
+            pre = true;
+        }
+
+
+        if (startPage > 1) {
+            start = true;
+        }
+
+
+        boolean next = false;
+
+        boolean end = false;
+
+        if (page < totalPage) {
+            next = true;
+
+        }
+
+        if (endPage < totalPage) {
+            end = true;
+        }
+
+
+        // 값 세팅
+
+        result.setStartPage(startPage);
+        result.setEndPage(endPage);
+        result.setNowPage(page);
+        result.setNext(next);
+        result.setPre(pre);
+        result.setStart(start);
+        result.setEnd(end);
+        result.setTotalPage(totalPage);
         return result;
+
+
     }
 
     @Override

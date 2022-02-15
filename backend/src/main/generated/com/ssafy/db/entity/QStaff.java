@@ -28,7 +28,7 @@ public class QStaff extends EntityPathBase<Staff> {
 
     public final StringPath approveYN = createString("approveYN");
 
-    public final QAreas areas;
+    public final QArea area;
 
     //inherited
     public final StringPath createdAt = _super.createdAt;
@@ -72,7 +72,7 @@ public class QStaff extends EntityPathBase<Staff> {
 
     public QStaff(Class<? extends Staff> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.areas = inits.isInitialized("areas") ? new QAreas(forProperty("areas")) : null;
+        this.area = inits.isInitialized("area") ? new QArea(forProperty("area")) : null;
     }
 
 }

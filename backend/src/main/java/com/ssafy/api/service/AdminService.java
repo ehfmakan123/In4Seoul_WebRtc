@@ -3,7 +3,7 @@ package com.ssafy.api.service;
 
 import com.ssafy.api.dto.*;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
 
 import java.util.List;
@@ -26,7 +26,7 @@ public interface AdminService {
 
     /////////////////////////////////
 
-    Desks findByDeskId(String id);
+    Desk findByDeskId(String id);
 
 
     /////////////////////////////////
