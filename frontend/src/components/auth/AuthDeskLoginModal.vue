@@ -12,7 +12,7 @@
           </div>
           <div class="input-group mt-4">
             <span class="input-group-text bg-white border-white fw-bold" id="desk-login-password">비밀번호</span>
-            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLoginCredentials.password">
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLoginCredentials.password" @keypress.enter="deskLoginConfirm">
           </div>
           <div class="pt-3" style="height: 3rem;">
             <p id="login-error" v-show="state.showError" class="modal-error-message t-red-2">아이디 또는 비밀번호가 일치하지 않습니다.</p>
