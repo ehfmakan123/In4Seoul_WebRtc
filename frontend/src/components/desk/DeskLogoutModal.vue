@@ -50,12 +50,6 @@ export default {
       const config = {
               Authorization: `Bearer ${token}`
             }
-
-
- const token = localStorage.getItem('token')
-      const config = {
-        Authorization: `Bearer ${token}`
-      }
       // 로그인 axios 요청
       axios({
      

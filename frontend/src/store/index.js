@@ -50,14 +50,16 @@ export default createStore({
     logoutAction({ commit }) {
       commit('LOGOUT')
     },
-    fetchPostList({ commit }, deskId, nowPage) {
+    fetchPostList({ commit }, obj) {
+      console.log("deskId: "+obj.deskId)
+      console.log("nowPage: "+obj.nowPage)
       const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
       }
       axios({
         method: 'get',
-        url: `${SERVER_HOST}/desk/posts?desk=${deskId}&page=`+nowPage,
+        url: `${SERVER_HOST}/desk/posts?desk=${obj.deskId}&page=${obj.nowPage}`,
         headers: config
       })
         .then(res => {
