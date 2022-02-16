@@ -38,10 +38,8 @@ export default {
 <style scoped>
 
 .my-video {
-	width: 400px;
-	height: 320px;
-	margin-left: 50px;
-	margin-right: 50px
+	width: auto;
+	height: auto;
 }
 
 </style>

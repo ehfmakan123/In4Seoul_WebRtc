@@ -3,25 +3,30 @@
 		<div id="meeting-inner-container" class="container mw-100 bg-white py-3 px-4">
 			<div class="row">
 				<div id="session-video" v-if="session" class="col-9">
-					<div id="session-header">
-						<h1 id="session-title" class="fs-2 fw-bold">궁금한 것을 물어보세요</h1>
+					<div id="session-video-header">
+						<h1 id="session-video-title" class="fs-2 fw-bold">궁금한 것을 물어보세요 <span class="fs-3">Ask Your Questions</span></h1>
 					</div>
 					<!-- <div id="main-video" class="col-6">
 						<user-video :stream-manager="mainStreamManager"/>
 					</div> -->
-					<div id="video-container" class="mt-2 d-flex justify-content-center">
-						<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)"/>
-						<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)"/>
+					<div id="session-video-body" class="container mw-100 p-0">
+						<div class="row">
+						<div id="video-container" class="container col-2 mt-2 d-flex justify-content-center align-items-center min-vh-50" style="height: 70vh;">
+							<div class="col">
+								<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" class="col-6"/>
+								<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)" class="col-6"/>
+							</div>
+						</div>
+						<div id="screen-container" class="col-10 text-center">
+						</div>
+						<div id="button-container" class="text-center mb-4 fixed-bottom">
+							<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
+							<button class="btn btn-lg btn-outline-danger my-button" @click="leaveSession">Exit</button>
+							<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffVideo()">화면on/off</button>
+							<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffSound()">소리on/off</button>
+							<button v-if="isStaff" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+						</div>
 					</div>
-					<div id="screen-container" class="text-center">
-						
-					</div>
-					<div id="button-container" class="text-center mb-4">
-						<button class="btn btn-lg btn-danger" @click="leaveSession">Exit</button>
-						<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffVideo()">화면on/off</button>
-						<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffSound()">소리on/off</button>
-						<button v-if="isStaff && !isScreenOn" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
-						<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
 					</div>
 				</div>
 				<div id="session-chat" class="col-3">
@@ -72,14 +77,15 @@
 
 <script>
 import axios from 'axios';
+import { useRouter } from 'vue-router'
 import { OpenVidu } from 'openvidu-browser';
 import UserVideo from '@/components/meeting/UserVideo';
 import Chat from '@/components/meeting/Chat'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
-const OPENVIDU_SERVER_URL = "https://i6a503.p.ssafy.io:5443";
-const OPENVIDU_SERVER_SECRET = "ssafy503";
+const OPENVIDU_SERVER_URL = process.env.VUE_APP_OPENVIDU_SERVER_URL
+const OPENVIDU_SERVER_SECRET = process.env.VUE_APP_OPENVIDU_SERVER_SECRET
 
 export default {
 	name: 'Meeting',
@@ -122,9 +128,13 @@ export default {
 			isStaff: undefined
 		}
 	},
-
+	beforeCreate () {
+		const router = useRouter()
+		if(!(localStorage.getItem('deskData')||localStorage.getItem('staffData'))){
+			router.push({ name: 'Auth' })
+		}   
+	},
 	created () {
-
 		// --- ovSessionId, ovToken 갱신 ---
 		// console.log(localStorage.getItem('ovSessionId'))
 		this.mySessionId = localStorage.getItem('ovSessionId')
@@ -147,6 +157,7 @@ export default {
 		}
 		
 		this.joinSession()
+
 	},
 
 	methods: {
@@ -241,7 +252,7 @@ export default {
 			
 			const data = { message: message, nickname: this.myUserName } 
 
-			if (this.$store.state.isDesk && message !== '') {
+			if (localStorage.getItem('deskData') && message !== '') {
 				// console.log('[채팅] 데스크가 보내기 시작')
 				this.session.signal({
 									data: JSON.stringify(data),  // Any string (optional)
@@ -341,7 +352,7 @@ export default {
 
 							// 스크롤 내리기
 							let objDiv = document.getElementById("chat-body")
-							objDiv.scrollTop = objDiv.scrollHeight							
+							objDiv.scrollTop = objDiv.scrollHeight + 100
 					});
 
 
@@ -426,11 +437,11 @@ export default {
 			console.log("Desk Meeting방 나가기 버튼 클릭됨!!")
 
 			console.log("Store isStaff 확인: ", this.$store.state.isStaff)
-			if (this.isStaff) {
+			if (localStorage.getItem('staffData')) {
 				this.$router.push({ name: 'StaffHome' })
 			}
-			
-			if (!this.isStaff) {
+
+			if (localStorage.getItem('deskData')) {
 				this.$router.push({ name: 'DeskHome' })
 			}
 			
@@ -531,10 +542,6 @@ export default {
 }
 </script>
 <style>
-#session-title {
-	font-size: 3rem;
-}
-
 #meeting-container {
 	height: 100vh;
 }
@@ -547,26 +554,40 @@ export default {
 	margin: 0%;
 }
 
+#session-video-title {
+	font-size: 3rem;
+}
+
 #session-video {
-	height: 920px;
+	height: 100%;
+}
+
+#session-video-header {
+	height: 5%;
+}
+
+#session-video-body {
+	height: 70%;
+	margin-top: 5%;
 }
 
 #video-container video {
-	position: relative;
-	float: left;
+	/* position: relative; */
+	/* float: left; */
 	width: 100%;
 	cursor: pointer;
 }
 
+/* 
 #video-container video + div {
 	float: left;
 	width: 50%;
 	position: relative;
 	margin-top: 75%;
 	margin-left: -56%;
-}
+} */
 
-#video-container p {
+/* #video-container p {
 	display: inline-block;
 	background: #f8f8f8;
 	padding-left: 5px;
@@ -574,7 +595,7 @@ export default {
 	color: #777777;
 	font-weight: bold;
 	border-bottom-right-radius: 4px;
-}
+} */
 
 /* #screen-container video {
 	width: 90%;
@@ -585,36 +606,33 @@ export default {
 }
 
 #session-chat-container {
-	height: 93%;
+	height: 90vh;
 	border-radius: 10px;
 }
 
 #chat-header {
-	height: 2%;
+	height: 5%;
 }
 
 #chat-body {
-	height: 725px;
+	height: 87%;
 	overflow-y: scroll;
 }
 
 #chat-show {
-	height: 87%;
+	height: 100%;
 }
 
-#chat-show div:not(:first-of-type) {
+/* #chat-show div:not(:first-of-type) {
 	margin-top: 1rem;
-}
+} */
 
-
-
-/*
 video {
 	width: 100%;
 	height: auto;
 }
 
-#main-video p {
+/* #main-video p {
 	position: absolute;
 	display: inline-block;
 	background: #f8f8f8;

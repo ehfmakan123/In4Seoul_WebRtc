@@ -43,6 +43,10 @@ export default {
 </script>
 
 <style>
+.chat-item {
+  margin-top: 1rem;
+}
+
 .chat-box {
   max-width: 50%;
   border-radius: 5px;
