@@ -14,7 +14,7 @@
 
     <!-- 오른쪽 구역 -->
     <div class="min-vh-100 w-100">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between" style="height: 11%">
         <div id="go-deskhome" class="p-3">
           <p @click="moveToDeskHome" class=" t-gray-3 text-small">돌아가기</p>
           <p @click="moveToDeskHome" class="arrow-button t-gray-3 text-center mt-2">
@@ -164,11 +164,18 @@ export default {
     }
     
     // created
-    store.dispatch('fetchPostList', deskData.deskPk)
+    store.dispatch('fetchPostList', deskData.deskPk, 1)
     getAreaList()
     getDeskList(deskData.areaPk)
     
     return {state, moveToDeskHome, createPost, selectArea, selectDesk}
+  },
+  create() {
+      const router = useRouter()
+
+      if(!localStorage.getItem('deskData')){
+        router.push({ name: 'Auth' })
+      }   
   }
 }
 </script>

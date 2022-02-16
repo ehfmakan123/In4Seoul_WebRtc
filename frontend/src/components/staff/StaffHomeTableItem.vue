@@ -5,7 +5,7 @@
       <td>{{ staffItem.deskName }}</td>
       <td>{{ staffItem.startedAt }}</td>
       <td>{{ staffItem.endedAt }}</td>
-      <td>{{ staffItem.content }}</td>
+      <!-- <td>{{ staffItem.content }}</td> -->
   </tr>  
 </template>
 

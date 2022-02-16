@@ -90,6 +90,7 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 //const id1 = this.id
@@ -206,7 +207,12 @@ export default({
 
     },
     created(){
-       const token = localStorage.getItem('token')
+      const router = useRouter()
+
+      if(!localStorage.getItem('adminData')){
+        router.push({ name: 'AdminAuth' })
+      }
+      const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
       }

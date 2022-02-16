@@ -3,7 +3,7 @@
      <admin-sidebar />
     <div class="w-80 p-5">
        <h2 class="text-start mt-3 fw-bold">Admin 관리자 페이지</h2>
-    <b-container class="bv-example-row mt-3 ">
+    <div class="bv-example-row mt-3 ">
 
     <br>
     <div class="bg-white shadow">
@@ -32,59 +32,58 @@
             />
           </tbody>
         </table>
-    <!-- <admin-staff-item
-              v-for="(article, index) in articles"
-              :key="index"
-              v-bind="article"
-            /> -->
-            <!-- <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="staffEdit()">
-              <td>1</td>
-              <td>hongdong</td>
-              <td>홍길동</td>
-              <td>h2@naver.com</td>
-              <td>010-1234-1234</td>
-              <td>01</td>
-              <td>강남구</td>
-              <td class="table-yes">Y</td>
-              <td>2022-01-01 11:20</td>
-              <td>2022-01-01 11:20</td>
-            </tr>
-            <tr class="tr-class" data-bs-placement="top" data-bs-toggle="tooltip" @click="staffEdit()">
-              <td>1</td>
-              <td>hongdong</td>
-              <td>홍길동</td>
-              <td>h2@naver.com</td>
-              <td>010-1234-1234</td>
-              <td>01</td>
-              <td>강남구</td>
-              <td class="t-red-2">N</td>
-              <td>2022-01-01 11:20</td>
-              <td>2022-01-01 11:20</td>
-            </tr> -->
+ 
     
     
     </div>
 
+    <nav aria-label="..." class="d-flex justify-content-center">
+      <ul class="pagination d-flex justify-content-between">
+        <li v-if="start" class="page-item">
+          <a class="page-link" href="#" @click="gotostartpage">«</a>
+        </li>
+        <li v-else class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+        </li>
 
+        <li v-if="pre" li class="page-item">
+          <a class="page-link" href="#" @click="gotoprepage">‹</a>
+        </li>
+        <li v-else li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">‹</a>
+        </li>
 
-
-
-
-
-    <!-- <nav aria-label="..." class="d-flex justify-content-center">
-      <div class="pagination d-flex justify-content-between">
-        <button :disabled="pageNum === 0" @click="prevPage" class="page-item page-btn page-link">
-          ＜
-        </button>
+        <li
+         v-for="pageitem in pageNumbers"
+          v-bind:id="'p'+pageitem"
+          v-bind:class="{' active': pageitem == nowPage}"
+          :key="pageitem"
+         class="page-item"><a class="page-link" href="#" @click="thispage(pageitem)">{{pageitem}}</a></li>
         
-        <span class="page-link page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
-        <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-item page-btn page-link">
-          ＞
-        </button>
-      </div>
-    </nav> -->
+        
+        <li v-if="next" class="page-item">
+          <a class="page-link" href="#" @click="gotonextpage">›</a>
+        </li>
+        <li v-else li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">›</a>
+        </li>
 
-  <nav aria-label="..." class="d-flex justify-content-center">
+        <li v-if="end" class="page-item">
+          <a class="page-link" href="#" @click="gotoendpage">»</a>
+        </li>
+        <li v-else li class="page-item disabled">
+          <a class="page-link" href="#" tabindex="-1" aria-disabled="true">»</a>
+        </li>
+      </ul>
+    </nav>
+
+
+
+
+
+
+
+  <!-- <nav aria-label="..." class="d-flex justify-content-center">
   <ul class="pagination d-flex justify-content-between">
     <li class="page-item disabled">
       <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
@@ -93,10 +92,12 @@
       <a class="page-link" href="#" tabindex="-1" aria-disabled="true">‹</a>
     </li>
     <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item active" aria-current="page" click="thispage(this.value)">
+    <li class="page-item active" aria-current="page" @click="thispage">
       <a class="page-link" href="#">2</a>
     </li>
     <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item"><a class="page-link" href="#">4</a></li>
+    <li class="page-item"><a class="page-link" href="#">5</a></li>
     <li class="page-item">
       <a class="page-link" href="#">›</a>
     </li>   
@@ -104,28 +105,12 @@
       <a class="page-link" href="#">»</a>
     </li>
   </ul>
-  </nav>
+  </nav> -->
 
   
 
 
-<!-- <nav aria-label="..." class="d-flex justify-content-center">
-      <ul class="pagination d-flex justify-content-between">
-    <li class="page-item disabled">
-      <a class="page-link" href="#" tabindex="-1" aria-disabled="true">＜</a>
-    </li>
-    
-      <div class="btn-cover">
-        <button :disabled="pageNum === 0" @click="prevPage" class="page-btn">
-          이전
-        </button>
-        <span class="page-count">{{ pageNum + 1 }} / {{ pageCount }} 페이지</span>
-        <button :disabled="pageNum >= pageCount - 1" @click="nextPage" class="page-btn">
-          다음
-        </button>
-      </div>
-    </nav> -->
-  </b-container>
+  </div>
     </div>
 
 
@@ -137,9 +122,11 @@
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import AdminStaffItem from '@/components/admin/AdminStaffItem.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 // @ is an alias to /src
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 
 export default {
   name: 'AdminStaff',
@@ -154,10 +141,17 @@ export default {
   // },
   data () {
     return {
-      currentPage: 1,
       articles: [],
-
-      
+      pageNumbers: [],
+      totalPage: undefined,
+      totalCount: undefined,
+      nowPage: undefined,
+      startPage: undefined,
+      endPage: undefined,
+      pre: false,
+      next: true,
+      start: false,
+      end: true,     
     }
   },
   props: {
@@ -200,7 +194,11 @@ export default {
   },
 
   created () {
- 
+     const router = useRouter()
+
+    if(!localStorage.getItem('adminData')){
+      router.push({ name: 'AdminAuth' })
+    }
     const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
@@ -209,11 +207,19 @@ export default {
     .then(response => {
       console.log(response.data);
       this.articles = response.data.data;
-      this.pageArray = response.data.data.contacts;
-      // console.log("articles: ")
-      // console.log(this.articles)
-      // console.log("articles.data: ")
-      // console.log(this.articles.data)
+      this.totalPage = response.data.totalPage;
+      this.totalCount = response.data.totalCount;
+      this.nowPage = response.data.nowPage;
+      this.startPage = response.data.startPage;
+      this.endPage = response.data.endPage;
+      this.pre = response.data.pre;
+      this.next = response.data.next;
+      this.start = response.data.start;
+      this.end = response.data.end;
+      this.pageNumbers = []
+      for(var i =this.startPage; i<=this.endPage;i++){
+        this.pageNumbers[i-this.startPage] = i
+      }
     })
     .catch(err => {
       console.log(err);
@@ -222,22 +228,54 @@ export default {
 
   },
   methods: {
-    thispage(){
-      
+    thispage(np){
+      this.nowPage= np
       const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
       }
-      axios.get(`${SERVER_HOST}/admin/staff?page=`+'', {headers: config})
-    .then(response => {
-      console.log(response.data);
-      this.articles = response.data.data;
-      this.pageArray = response.data.data.contacts;
-
-    })
-    .catch(err => {
-      console.log(err);
-    });
+      axios.get(`${SERVER_HOST}/admin/staff?page=`+this.nowPage, {headers: config})
+      .then(response => {
+        console.log(response.data);
+        this.articles = response.data.data;
+          this.totalPage = response.data.totalPage;
+          this.totalCount = response.data.totalCount;
+          this.nowPage = response.data.nowPage;
+          this.startPage = response.data.startPage;
+          this.endPage = response.data.endPage;
+          this.pre = response.data.pre;
+          this.next = response.data.next;
+          this.start = response.data.start;
+          this.end = response.data.end;
+          this.pageNumbers = []
+          for(var i =this.startPage; i<=this.endPage;i++){
+            this.pageNumbers[i-this.startPage] = i
+          }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    },
+    gotoprepage(){
+      if(this.nowPage-5 < 1 ){
+        this.thispage(1)
+      }else{
+        this.thispage(this.nowPage-5)
+      }
+      
+    },
+    gotonextpage(){
+      if(this.nowPage+5 > this.totalPage){
+        this.thispage(this.totalPage)
+      }else{
+        this.thispage(this.nowPage+5)
+      }
+    },
+    gotostartpage(){
+      this.thispage(1)
+    },
+    gotoendpage(){
+      this.thispage(this.totalPage)
     }
    
   },

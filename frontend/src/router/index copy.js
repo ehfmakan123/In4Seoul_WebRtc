@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router' //, Router 
 import Auth from '@/views/Auth.vue'
 import DeskHome from '@/views/DeskHome.vue'
 import Meeting from '@/views/Meeting.vue'
@@ -6,7 +6,6 @@ import Post from '@/views/Post.vue'
 import StaffHome from '@/views/StaffHome.vue'
 import StaffProfile from '@/views/StaffProfile.vue'
 import StaffProfileEdit from '@/views/StaffProfileEdit.vue'
-import AdminHome from '@/views/admin/AdminHome.vue'
 import AdminAuth from '@/views/AdminAuth.vue'
 import AdminStaff from '@/views/admin/AdminStaff.vue'
 import AdminDesk from '@/views/admin/AdminDesk.vue'
@@ -15,10 +14,33 @@ import AdminStaffEdit from '@/views/admin/AdminStaffEdit.vue'
 import AdminDeskCreate from '@/views/admin/AdminDeskCreate.vue'
 import AdminDeskEdit from '@/views/admin/AdminDeskEdit.vue'
 import AdminPostEdit from '@/views/admin/AdminPostEdit.vue'
+//import store from '../store/index'
+//import Vue from 'vue'
 
+//import { VueElement } from 'vue'
+//import { useStore } from 'vuex'
 
+// const store = useStore()
+
+// const adminrequireAuth = () => (from, to, next) => {
+//   //const isAuthenticated = false
+//   if (store.createStore.state.isAdmin == false) return next()
+//   next('/login?returnPath=me')
+// }
+
+//Vue.use(Router);
+
+// const requireAdminAuth = () => (to, from, next) => {
+//   //if (store.state.accessToken !== '') {
+//   console.log("이동!")
+//   if (store.state.isAdmin == true) {
+//     return next();
+//   }
+//   next('/login');
+// };
 
 const routes = [
+  
   {
     path: '/',
     name: 'Auth',
@@ -57,17 +79,19 @@ const routes = [
   {
     path: '/admin/login',
     name: 'AdminAuth',
-    component: AdminAuth
+    component: AdminAuth,
+    //beforeEnter: adminrequireAuth(),
   },
-  {
-    path: '/admin',
-    name: 'AdminHome',
-    component: AdminHome
-  },
+  // {
+  //   path: '/admin/',
+  //   name: 'AdminStaff',
+  //   component: AdminStaff
+  // },
   {
     path: '/admin/staff',
     name: 'AdminStaff',
-    component: AdminStaff
+    component: AdminStaff,
+    //beforEnter: requireAdminAuth(),
   },
   {
     path: '/admin/desk',
@@ -107,6 +131,15 @@ const router = createRouter({
 })
 
 export default router
+
+// const adminrequireAuth = () => (from, to, next) => {
+//   const isAuthenticated = this.$store.state.isAdmin
+//   if (isAuthenticated) return next()
+//   next('admin/login?returnPath=me')
+// }
+
+
+
 
 
 
@@ -161,3 +194,4 @@ export default router
 //   next();
 // }
 // };
+

@@ -37,9 +37,9 @@ export default {
 
 <style scoped>
 
-/* .my-video {
-	width: 200px;
-	height: 200px;
-} */
+.my-video {
+	width: auto;
+	height: auto;
+}
 
 </style>

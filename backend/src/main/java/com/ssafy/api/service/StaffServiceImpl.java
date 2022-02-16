@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class StaffServiceImpl implements StaffService{
+public class StaffServiceImpl implements StaffService {
     @Autowired
     StaffRepository staffRepository;
 
@@ -39,9 +39,7 @@ public class StaffServiceImpl implements StaffService{
         Optional<Staff> result = staffRepository.findByStaffId(id);
 
 
-
-
-        if(result.isPresent()) return false;
+        if (result.isPresent()) return false;
 
         return true;
 
@@ -54,7 +52,7 @@ public class StaffServiceImpl implements StaffService{
     public boolean register(StaffRequest request) {
 
 
-        Staff staff=new Staff();
+        Staff staff = new Staff();
         staff.setStaffId(request.getUserId());
         staff.setPassword(request.getPassword());
         staff.setName(request.getName());
@@ -77,13 +75,10 @@ public class StaffServiceImpl implements StaffService{
 
         Optional<Staff> result = staffRepository.findByStaffId(id);
 
-        if(result.isPresent())
-        {
+        if (result.isPresent()) {
             return result.get();
-        }
-        else return null;
+        } else return null;
     }
-
 
 
     //내 정보 조회
@@ -95,35 +90,32 @@ public class StaffServiceImpl implements StaffService{
     }
 
 
-
-
     //내 정보 수정 (비밀번호 부분을 해윤님하고 같이 이야기해보고
     @Override
     public boolean updateStaff(StaffDto dto) {
 
 
         Optional<Staff> result = staffRepository.findByStaffId(dto.getUserId());
-        Staff staff=result.get();
+        Staff staff = result.get();
 
 
         staff.setPhone(dto.getPhone());
         staff.setEmail(dto.getEmail());
         staff.setName(dto.getName());
 
-         staffRepository.save(staff);
+        staffRepository.save(staff);
 
 
-         return true;
+        return true;
     }
 
     @Override
     public ListResult<MeetingLogDto> getMeetingLogList(int id, Integer page) {   //상담목록 가져오기
 
-        System.out.println("page값이 없으면? ="+page);
+        System.out.println("page값이 없으면? =" + page);
 
-        if(page==null)
-        {
-            page=1;
+        if (page == null) {
+            page = 1;
         }
 
         ListResult<MeetingLogDto> meetingLog = staffRepositorySupport.getMeetingLog(id, page);
@@ -132,56 +124,46 @@ public class StaffServiceImpl implements StaffService{
 
         Long totalCount = meetingLog.getTotalCount();
 
-        int totalPage= totalCount.intValue()  /10; //총 페이지
+        int totalPage = totalCount.intValue() / 10; //총 페이지
 
-        if(totalCount%10 >0)
-        {
+        if (totalCount % 10 > 0) {
             totalPage++;
         }
 
 
-        int startPage=((page-1)/5)*5+1; //시작 페이지 번호
-        int endPage=  startPage+4;
+        int startPage = ((page - 1) / 5) * 5 + 1; //시작 페이지 번호
+        int endPage = startPage + 4;
 
 
-        if(endPage>totalPage) endPage=totalPage;
+        if (endPage > totalPage) endPage = totalPage;
 
-        boolean pre=false;
+        boolean pre = false;
 
-        boolean start=false;
+        boolean start = false;
 
 
-        if(page>1) {
+        if (page - 5 >= 1) {
             pre = true;
         }
 
 
-        if(startPage>1)
-        {
-            start=true;
+        if (startPage > 1) {
+            start = true;
         }
 
 
+        boolean next = false;
 
+        boolean end = false;
 
-        boolean next=false;
-
-        boolean end=false;
-
-        if(page<totalPage) {
+        if (page + 5 <= totalPage || endPage < totalPage) {
             next = true;
 
         }
 
-        if(endPage<totalPage)
-        {
-            end=true;
+        if (endPage < totalPage) {
+            end = true;
         }
-
-
-
-
-
 
 
         // 값 세팅
@@ -200,9 +182,6 @@ public class StaffServiceImpl implements StaffService{
     }
 
 
-
-
-
     //상담 시작 시 미팅 로그에 등록
     @Override
     public int meetingLogStart(int staffPk, String sessionId) {
@@ -214,8 +193,8 @@ public class StaffServiceImpl implements StaffService{
 
 
         MeetingLog meetingLog = new MeetingLog();
-            meetingLog.setDesk(new Desk(desk.getId()));
-            meetingLog.setStaff(new Staff(staffPk));
+        meetingLog.setDesk(new Desk(desk.getId()));
+        meetingLog.setStaff(new Staff(staffPk));
 
 
         MeetingLog meetingLog1 = meetingLogRepository.save(meetingLog);
@@ -233,12 +212,12 @@ public class StaffServiceImpl implements StaffService{
         // 저장된 meetingLog를 meetingLogId(pk)를 통해 찾는다
 
 
-        Optional<MeetingLog> optionalMeetingLog =  meetingLogRepository.findById(meetingLogId);
+        Optional<MeetingLog> optionalMeetingLog = meetingLogRepository.findById(meetingLogId);
         MeetingLog meetingLog = optionalMeetingLog.get();
 
         meetingLog.setContent(content);
         meetingLogRepository.save(meetingLog); //수정해서 저장
-        
+
         //스태프 상태 수정
         Optional<Staff> optionalStaff = staffRepository.findById(staffId);
         Staff staff = optionalStaff.get();

@@ -12,7 +12,7 @@
           </div>
           <div class="input-group mt-4">
             <span class="input-group-text bg-white border-white fw-bold" id="staff-login-password">비밀번호</span>
-            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password">
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password" @keypress.enter="staffLoginConfirm">
           </div>
           <div class="pt-3" style="height: 3rem;">
             <p id="login-error" v-show="state.showError" class="modal-error-message t-red-2" >아이디 또는 비밀번호가 일치하지 않습니다.</p>
@@ -67,6 +67,7 @@ export default {
           state.value.showError = false
           // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
+          localStorage.setItem('staffData', JSON.stringify(res.data))
           const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")
           console.log("상담사 로그인후 store 확인: ", store.state.isStaff)

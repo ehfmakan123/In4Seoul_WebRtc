@@ -118,7 +118,23 @@ export default {
           console.log('상담연결버튼 response: ',res.data)
           localStorage.setItem('ovToken', res.data.data.token)
           localStorage.setItem('ovSessionId', res.data.data.sessionId)
-          router.push({ name: 'Meeting'})
+          axios({
+            method: 'post',
+            url: `${SERVER_HOST}/staff/meeting/start`,
+            headers : {
+              Authorization: `Bearer ${jwtToken}` 
+            },
+            data : {
+              sessionId: res.data.data.sessionId
+            }
+          })
+          .then((res) => {
+            console.log('살려줘')
+            localStorage.setItem('meetingLogId', res.data.data.meetingLogId)
+            console.log('살려줘',res)
+            router.push({ name: 'Meeting'})
+          })
+          .catch((err) => console.log('살려줘',err))
         })
         .catch((err) => console.log(err))
     }

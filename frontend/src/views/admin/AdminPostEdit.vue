@@ -86,6 +86,7 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 //const id1 = this.id
@@ -108,6 +109,11 @@ export default({
     },
     
     created(){
+       const router = useRouter()
+
+       if(!localStorage.getItem('adminData')){
+          router.push({ name: 'AdminAuth' })
+       }
        console.log(this.$route.params.id)
        //const test123 = this.$route.params.id
     },
