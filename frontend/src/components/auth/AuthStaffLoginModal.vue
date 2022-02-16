@@ -15,7 +15,8 @@
             <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password">
           </div>
           <div class="pt-3" style="height: 3rem;">
-            <p id="login-error" v-show="state.showError" class="modal-error-message t-red-2">아이디 또는 비밀번호가 일치하지 않습니다.</p>
+            <p id="login-error" v-show="state.showError" class="modal-error-message t-red-2" >아이디 또는 비밀번호가 일치하지 않습니다.</p>
+            <p id="login-error" v-show="state.showError2" class="modal-error-message t-red-2" >아직 승인되지 않은 계정입니다.</p>
           </div>
           <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" @click="staffLoginConfirm">로그인</button>
@@ -50,6 +51,7 @@ export default {
 
     const state = ref({
       showError: false,
+       showError2: false,
     })
 
     const staffLoginConfirm = () => {
@@ -68,7 +70,7 @@ export default {
           const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")
           console.log("상담사 로그인후 store 확인: ", store.state.isStaff)
-
+        
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')
           let modal = Modal.getOrCreateInstance(staffLoginModal)
@@ -106,15 +108,19 @@ export default {
         .catch(err => {
           console.log('staff 로그인 error발생!')
           console.log(err.response.data)
-          state.value.showError = true
-          // const statusCode = err.response.data.statusCode
-          // if (statusCode === 401) {
-          //   staffLoginCredentials.value.password = ''
-          // }
-          // else if (statusCode === 404) {
-          //   staffLoginCredentials.value.userId = ''
-          //   staffLoginCredentials.value.password = ''
-          // }
+         
+         const statusCode = err.response.data.statusCode
+         if (statusCode === 401 || statusCode===404) {
+             staffLoginCredentials.value.password = ''
+             state.value.showError = true
+             state.value.showError2 = false
+           }
+           else if (statusCode === 403) {
+                 state.value.showError = false
+             state.value.showError2 = true
+             staffLoginCredentials.value.userId = ''
+             staffLoginCredentials.value.password = ''
+           }
         })
     }
     

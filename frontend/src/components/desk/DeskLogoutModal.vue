@@ -46,35 +46,48 @@ export default {
       console.log("desk 로그인 확인버튼 클릭됨!")
       console.log(deskLogoutCredentials.value)
 
+
+ const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
       // 로그인 axios 요청
       axios({
+     
         method: 'post',
         url: `${SERVER_HOST}/desk/logout`,
+         headers: config,
         data: deskLogoutCredentials.value
+        
       })      
         .then(res => {
           console.log(res)
+
+        localStorage.clear()
+
           // jwt토큰 저장 & 스토어 갱신
-          localStorage.setItem('token', res.data.accessToken)
-          localStorage.setItem('deskData', JSON.stringify(res.data))
+          // localStorage.setItem('token', res.data.accessToken)
+          // localStorage.setItem('deskData', JSON.stringify(res.data))
           store.dispatch("desk_login")
 
           // modal 닫는 부분
-          const deskLoginModal = document.querySelector('#desk-login-modal')
+          const deskLoginModal = document.querySelector('#desk-logout-modal')
           deskLoginModal.classList.remove("in")
           document.querySelector(".modal-backdrop").remove()
           deskLoginModal.style.display = "none"
           
-          router.push({ name: 'DeskHome' })
+          router.push({ name: 'Auth' })
         })
         .catch(err => {
           console.log('desk 로그인 error발생!')
           console.log(err.response.data)
           const statusCode = err.response.data.statusCode
-          if (statusCode === 401) {
+          if (statusCode === 403) {
             deskLogoutCredentials.value.password = ''
           }
-          else if (statusCode === 404) {
+          else if (statusCode === 401) {
+            console.log("비밀번호 일치x");
+            state.value.showPasswordError=true;
             deskLogoutCredentials.value.password = ''
           }
         })

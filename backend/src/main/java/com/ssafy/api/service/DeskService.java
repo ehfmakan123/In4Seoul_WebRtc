@@ -54,4 +54,12 @@ List<SelectedDeskDto> getDeskList(int id);
 // 게시글 목록 가져오기
 ListResult<PostDto> getPostList(Integer desk, Integer page);
 
+
+
+
+
+    void deleteWaitingList(long deskPk);
+
+
+
 }

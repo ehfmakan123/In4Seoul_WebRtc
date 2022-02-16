@@ -52,7 +52,8 @@ public class AdminController {
         if (admin == null) {
             return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
         }
-        if (password.equals(admin.getPassword())) {
+
+        if (passwordEncoder.matches(password, admin.getPassword())) {
 
 
             // 로그인도 성공하고 admin 계정이 맞는경우

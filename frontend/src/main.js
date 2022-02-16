@@ -50,4 +50,22 @@ messaging.onMessage(payload => {
 })
 // --Firebase 코드 끝
 
+
+
+
+// 브라우저 종료시 localStorage 초기화
+window.addEventListener('unload',()=>{
+
+
+  const deskData=JSON.parse(localStorage.getItem("deskData"));
+  
+ if(deskData==null)
+ {
+ localStorage.clear();
+ }
+
+
+
+})
+
 createApp(App).use(store).use(router).mount('#app')

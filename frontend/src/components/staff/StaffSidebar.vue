@@ -76,7 +76,7 @@ import axios from 'axios'
 // firebase
 import firebase from 'firebase/app'
 import 'firebase/messaging'
-
+import { Modal } from 'bootstrap'
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default {
@@ -130,7 +130,37 @@ export default {
 
     const logout = () => {
       console.log("로그아웃 버튼 클릭됨!")
-      router.push({ name: 'Auth' })
+     
+       // 로그아웃 axios 
+      const jwtToken = localStorage.getItem('token')
+      axios({
+        method: 'post',
+        url: `${SERVER_HOST}/staff/logout`,
+        headers : {
+          Authorization: `Bearer ${jwtToken}` 
+        }
+      })
+        .then((res) => {
+          // console.log('알람개수 갱신:', res.data.data.count)
+          // console.log(typeof res.data.data.count)
+          console.log(res.data)
+
+          localStorage.clear();
+          router.push({ name: 'Auth' })
+
+          const staffModal = document.querySelector('#staffModal')
+          let modal = Modal.getOrCreateInstance(staffModal)
+          modal.hide()
+
+            })
+            .catch((err) => console.log(err))
+
+
+
+
+
+
+     
     }
 
     const getWaitingMeeting = () => {
