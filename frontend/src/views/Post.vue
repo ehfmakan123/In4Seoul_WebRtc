@@ -14,7 +14,7 @@
 
     <!-- 오른쪽 구역 -->
     <div class="min-vh-100 w-100">
-      <div class="d-flex justify-content-between" style="height: 11%">
+      <div class="d-flex justify-content-between">
         <div id="go-deskhome" class="p-3">
           <p @click="moveToDeskHome" class=" t-gray-3 text-small">돌아가기</p>
           <p @click="moveToDeskHome" class="arrow-button t-gray-3 text-center mt-2">
@@ -160,11 +160,17 @@ export default {
 
     const selectDesk = (deskId, deskName) => {
       state.value.nowDeskName = deskName
-      store.dispatch('fetchPostList', deskId)
+      console.log("fetch1")
+      //store.dispatch('fetchPostList', deskId, 1)
+      store.dispatch('fetchPostList',  1 ,deskId)
     }
     
     // created
-    store.dispatch('fetchPostList', deskData.deskPk, 1)
+    //store.dispatch('fetchPostList', , 1)
+    console.log("fetch2")
+    console.log(deskData.deskPk)
+    const obj = {deskId:deskData.deskPk, nowPage: 1 }
+    store.dispatch('fetchPostList', obj)
     getAreaList()
     getDeskList(deskData.areaPk)
     
