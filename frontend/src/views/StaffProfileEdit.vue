@@ -155,7 +155,11 @@ export default {
     }
   },
   created () {
- 
+    const router = useRouter()
+
+    if(!localStorage.getItem('staffData')){
+        router.push({ name: 'Auth' })
+    }    
     const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`

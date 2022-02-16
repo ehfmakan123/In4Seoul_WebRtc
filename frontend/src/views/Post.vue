@@ -164,11 +164,18 @@ export default {
     }
     
     // created
-    store.dispatch('fetchPostList', deskData.deskPk)
+    store.dispatch('fetchPostList', deskData.deskPk, 1)
     getAreaList()
     getDeskList(deskData.areaPk)
     
     return {state, moveToDeskHome, createPost, selectArea, selectDesk}
+  },
+  create() {
+      const router = useRouter()
+
+      if(!localStorage.getItem('deskData')){
+        router.push({ name: 'Auth' })
+      }   
   }
 }
 </script>

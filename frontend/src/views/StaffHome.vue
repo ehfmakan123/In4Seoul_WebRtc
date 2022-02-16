@@ -102,6 +102,7 @@
 import StaffHometableItem from '@/components/staff/StaffHomeTableItem.vue'
 import StaffSidebar from '@/components/staff/StaffSidebar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 // @ is an alias to /src
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
@@ -153,34 +154,39 @@ export default {
       }
     },
     created () {
- 
-    const token = localStorage.getItem('token')
-      const config = {
-        Authorization: `Bearer ${token}`
-      }
-      axios.get(`${SERVER_HOST}/staff/meeting-logs`, {headers: config})
-      .then(response => {
-        console.log(response.data);
-        this.articles = response.data.data;
-        this.totalPage = response.data.totalPage;
-        this.totalCount = response.data.totalCount;
-        this.nowPage = response.data.nowPage;
-        this.startPage = response.data.startPage;
-        this.endPage = response.data.endPage;
-        this.pre = response.data.pre;
-        this.next = response.data.next;
-        this.start = response.data.start;
-        this.end = response.data.end;
-        this.pageNumbers = []
-        for(var i =this.startPage; i<=this.endPage;i++){
-          this.pageNumbers[i-this.startPage] = i
+      const router = useRouter()
+
+      if(!localStorage.getItem('staffData')){
+        router.push({ name: 'Auth' })
+      }   
+      
+      const token = localStorage.getItem('token')
+        const config = {
+          Authorization: `Bearer ${token}`
         }
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  },
-  methods: {
+        axios.get(`${SERVER_HOST}/staff/meeting-logs`, {headers: config})
+        .then(response => {
+          console.log(response.data);
+          this.articles = response.data.data;
+          this.totalPage = response.data.totalPage;
+          this.totalCount = response.data.totalCount;
+          this.nowPage = response.data.nowPage;
+          this.startPage = response.data.startPage;
+          this.endPage = response.data.endPage;
+          this.pre = response.data.pre;
+          this.next = response.data.next;
+          this.start = response.data.start;
+          this.end = response.data.end;
+          this.pageNumbers = []
+          for(var i =this.startPage; i<=this.endPage;i++){
+            this.pageNumbers[i-this.startPage] = i
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    methods: {
     
 
     thispage(np){
@@ -241,6 +247,6 @@ export default {
     gotoendpage(){
       this.thispage(this.totalPage)
     }
-  },
+    },
 }
 </script>

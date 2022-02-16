@@ -81,6 +81,14 @@ export default {
       moveToMeeting,
       logout,
     }
+  },
+  create(){
+      const router = useRouter()
+
+      if(!localStorage.getItem('deskData')){
+        router.push({ name: 'Auth' })
+      }   
+
   }
 }
 </script>

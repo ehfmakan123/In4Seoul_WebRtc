@@ -156,8 +156,8 @@ export default {
 
 
     const logout = () => {
-      //localStorage.clear()
-      localStorage.removeItem('token')
+      localStorage.clear()
+      //localStorage.removeItem('token')
       router.push({ name: 'AdminAuth' })
       store.dispatch("logoutAction")
       // adminLogoutModal 끄기

@@ -122,9 +122,11 @@
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import AdminStaffItem from '@/components/admin/AdminStaffItem.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 // @ is an alias to /src
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 
 export default {
   name: 'AdminStaff',
@@ -192,7 +194,11 @@ export default {
   },
 
   created () {
- 
+     const router = useRouter()
+
+    if(!localStorage.getItem('adminData')){
+      router.push({ name: 'AdminAuth' })
+    }
     const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
