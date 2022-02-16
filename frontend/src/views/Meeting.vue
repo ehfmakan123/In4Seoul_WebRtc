@@ -84,6 +84,7 @@ import Chat from '@/components/meeting/Chat'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 
+const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 const OPENVIDU_SERVER_URL = process.env.VUE_APP_OPENVIDU_SERVER_URL
 const OPENVIDU_SERVER_SECRET = process.env.VUE_APP_OPENVIDU_SERVER_SECRET
 
@@ -439,6 +440,22 @@ export default {
 			console.log("Store isStaff 확인: ", this.$store.state.isStaff)
 			if (localStorage.getItem('staffData')) {
 				this.$router.push({ name: 'StaffHome' })
+				axios({
+					method: 'post',
+					url: `${SERVER_HOST}/staff/meeting/end`,
+					headers : {
+						Authorization: `Bearer ${localStorage.getItem('token')}` 
+					},
+					data : {
+						sessionId: localStorage.getItem('ovSessionId'),
+						meetingLogId: localStorage.getItem('meetingLogId'),
+						content: '화이팅'
+					}
+				})
+				.then((res) => {
+					console.log('살려줘 meeting end', res)
+				})
+				.catch((err) => console.log(err))
 			}
 
 			if (localStorage.getItem('deskData')) {
