@@ -322,4 +322,30 @@ public ResponseEntity <BaseResponseBody> passwordCheck(@PathVariable(value = "id
     }
 
 
+
+    //상담 종료  (
+
+
+    @DeleteMapping ("/meeting/end")        //url 이 이게 맞을까..
+    public ResponseEntity<BaseResponseBody> MeetingEnd(@ApiIgnore Authentication authentication) {
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String deskId = userDetails.getDeskId();
+        int deskPk=userDetails.getDestPK();
+
+
+
+        openviduService.disconnectSession(deskId,null); // openvidu 삭제
+
+
+        // 요청 데스크와 상담 가능한 상담사가 있는지 체크
+        deskService.deleteWaitingList(deskPk);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+
+
+    }
+
 }

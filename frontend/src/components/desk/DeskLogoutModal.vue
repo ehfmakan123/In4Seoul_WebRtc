@@ -51,8 +51,14 @@ export default {
               Authorization: `Bearer ${token}`
             }
 
+
+ const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
       // 로그인 axios 요청
       axios({
+     
         method: 'post',
         url: `${SERVER_HOST}/desk/logout`,
         data: deskLogoutCredentials.value,
@@ -76,10 +82,12 @@ export default {
           console.log('desk 로그인 error발생!')
           console.log(err.response.data)
           const statusCode = err.response.data.statusCode
-          if (statusCode === 401) {
+          if (statusCode === 403) {
             deskLogoutCredentials.value.password = ''
           }
-          else if (statusCode === 404) {
+          else if (statusCode === 401) {
+            console.log("비밀번호 일치x");
+            state.value.showPasswordError=true;
             deskLogoutCredentials.value.password = ''
           }
         })

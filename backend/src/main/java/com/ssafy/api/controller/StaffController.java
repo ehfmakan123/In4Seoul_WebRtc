@@ -118,9 +118,27 @@ public class StaffController {
         }
 
         if (passwordEncoder.matches(password, result.getPassword())) {
-            staffLoginPostRes data = staffLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"), result.getName());
 
-            return ResponseEntity.status(200).body(data);
+            if(result.getApproveYN().equals("Y"))
+            {
+                staffLoginPostRes data = staffLoginPostRes.of(200, "로그인 성공", JwtTokenUtil.getToken(userId, "staff"), result.getName());
+
+                return ResponseEntity.status(200).body(data);
+            }
+
+            else
+            {
+                staffLoginPostRes data = staffLoginPostRes.of(403, "승인처리가 되지 않았습니다",null, null);
+                return ResponseEntity.status(403).body(data);
+
+
+
+
+            }
+
+
+
+
 
 
         } else {
@@ -380,8 +398,8 @@ public class StaffController {
 
 
         //openvidu 최신화
-        if (openviduService.disconnectSession(sessionId, openviduToken)) //정상적으로 처리 완료
-        {
+       openviduService.disconnectSession(sessionId, openviduToken);//정상적으로 처리 완료
+
 
          // meetingLog 종료 시간과 content 기록
 
@@ -390,10 +408,7 @@ public class StaffController {
             return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
 
 
-        } else {
-
-            return ResponseEntity.status(409).body(BaseResponseBody.of(409,"이미 처리된 요청"));  //이게 맞나..
         }
-    }
+
 
 }

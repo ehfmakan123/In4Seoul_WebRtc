@@ -214,4 +214,21 @@ public class DeskServiceImpl implements DeskService{
         return postList;
         
     }
+
+
+
+
+    @Override
+    public void deleteWaitingList(long deskPk) {
+
+
+        try {
+            deskRepository.deleteById(deskPk);
+        }
+
+        catch (
+                Exception e){
+
+        }
+    }
 }
