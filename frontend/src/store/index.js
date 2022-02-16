@@ -65,6 +65,7 @@ export default createStore({
         .then(res => {
           console.log('fetchPostList 실행됨')
           console.log(res.data.data)
+          console.log("fetch start!")
           commit('SET_POST_LIST', res.data)
         })
         .catch(err => console.error(err))
