@@ -16,7 +16,7 @@ public class StaffDto  {
     String email;
     String deleteYN;
     String approveYN;
-    int areaId;
+    Integer areaId;
     String areaName;
     String createdAt;
     String updatedAt;
@@ -26,8 +26,7 @@ public class StaffDto  {
     }
 
     @QueryProjection
-
-    public StaffDto(int id, String userId, String name, String phone, String email, String deleteYN, String approveYN, int areaId, String areaName, String createdAt, String updatedAt) {
+    public StaffDto(int id, String userId, String name, String phone, String email, String deleteYN, String approveYN, Integer areaId, String areaName, String createdAt, String updatedAt) {
         this.id = id;
         this.userId = userId;
         this.name = name;

@@ -120,6 +120,8 @@ public class AdminServiceImpl implements AdminService {
 
         staff.setDeleteYN(dto.getDeleteYN());
         staff.setApproveYN(dto.getApproveYN());
+
+        if(dto.getAreaId()!=null)
         staff.setArea(new Area(dto.getAreaId(), null, null));
 
         //추가된 부분

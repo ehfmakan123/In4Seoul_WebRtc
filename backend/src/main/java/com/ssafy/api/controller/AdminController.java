@@ -138,8 +138,13 @@ public class AdminController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<BaseResponseBody> staffUpdate(@PathVariable("id") int id, @RequestBody StaffDto staffDto) {
+        System.out.println("=====================시작부분======================");
 
         StaffDto result = adminService.getConsultant(id);
+
+
+
+
 
         boolean b = adminService.updateConsultant(id, staffDto);
 
