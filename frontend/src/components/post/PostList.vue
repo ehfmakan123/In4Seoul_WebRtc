@@ -1,6 +1,6 @@
 <template>
-  <div class="wall-background" style="min-height: 88vh!important;">
-    <div class="foggy-background" style="min-height: 88vh!important;">
+  <div class="wall-background" style="min-height: 89vh!important;">
+    <div class="foggy-background" style="min-height: 89vh!important;">
       <!-- detail Modal -->
       <post-detail :selectedPost="state.selectedPost"></post-detail>
       

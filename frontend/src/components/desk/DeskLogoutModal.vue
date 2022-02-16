@@ -44,28 +44,33 @@ export default {
 
     const deskLoginConfirm = () => {
       console.log("desk 로그인 확인버튼 클릭됨!")
-      console.log(deskLogoutCredentials.value)
+      console.log("deskLogoutCredentials: ",deskLogoutCredentials.value)
+
+      const token = localStorage.getItem('token')
+      const config = {
+              Authorization: `Bearer ${token}`
+            }
 
       // 로그인 axios 요청
       axios({
         method: 'post',
         url: `${SERVER_HOST}/desk/logout`,
-        data: deskLogoutCredentials.value
+        data: deskLogoutCredentials.value,
+        headers: config
       })      
         .then(res => {
           console.log(res)
-          // jwt토큰 저장 & 스토어 갱신
-          localStorage.setItem('token', res.data.accessToken)
-          localStorage.setItem('deskData', JSON.stringify(res.data))
-          store.dispatch("desk_login")
+          // 로컬스토리지 삭제
+          localStorage.clear()
+          store.dispatch("logoutAction")
 
           // modal 닫는 부분
-          const deskLoginModal = document.querySelector('#desk-login-modal')
+          const deskLoginModal = document.querySelector('#desk-logout-modal')
           deskLoginModal.classList.remove("in")
           document.querySelector(".modal-backdrop").remove()
           deskLoginModal.style.display = "none"
           
-          router.push({ name: 'DeskHome' })
+          router.push({ name: 'Auth' })
         })
         .catch(err => {
           console.log('desk 로그인 error발생!')
