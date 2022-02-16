@@ -4,7 +4,8 @@
 			<div class="row">
 				<div id="session-video" v-if="session" class="col-9">
 					<div id="session-video-header">
-						<h1 id="session-video-title" class="fs-2 fw-bold">궁금한 것을 물어보세요 <span class="fs-3">Ask Your Questions</span></h1>
+						<h1 v-if="!isStaff" id="session-video-title" class="fs-2 fw-bold">궁금한 것을 물어보세요 <span class="fs-3 fw-normal">Ask any Question</span></h1>
+						<h1 v-if="isStaff" id="session-video-title" class="fs-2 fw-bold"><span class="fs-3">상담사</span> {{ myUserName }}</h1>
 					</div>
 					<!-- <div id="main-video" class="col-6">
 						<user-video :stream-manager="mainStreamManager"/>
@@ -21,10 +22,10 @@
 						</div>
 						<div id="button-container" class="text-center mb-4 fixed-bottom">
 							<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
-							<button class="btn btn-lg btn-outline-danger my-button" @click="leaveSession">Exit</button>
-							<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffVideo()">화면on/off</button>
-							<button v-if="isStaff" class="btn btn-lg btn-primary" @click="onoffSound()">소리on/off</button>
-							<button v-if="isStaff" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+							<button class="btn btn-lg btn-outline-danger my-button" @click="leaveSession" style="width: 100px">Exit</button>
+							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffVideo()">화면on/off</button>
+							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffSound()">소리on/off</button>
+							<button v-if="isStaff && !isScreenOn" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
 						</div>
 					</div>
 					</div>
@@ -32,8 +33,8 @@
 				<div id="session-chat" class="col-3">
 					<div id="session-chat-container" class="bg-gray-1 py-1 px-2">
 						<div id="chat-header" class="mt-3">
-							<p>채팅창</p>
-							<hr>
+							<p class="ms-2 fw-bold">Chat</p>
+							<hr style="height:2px">
 						</div>
 						<div id="chat-body" class="d-flex flex-column">
 							<div id="chat-show">
@@ -632,7 +633,7 @@ export default {
 }
 
 #chat-body {
-	height: 87%;
+	height: 85%;
 	overflow-y: scroll;
 }
 
@@ -647,6 +648,11 @@ export default {
 video {
 	width: 100%;
 	height: auto;
+}
+
+#button-container button {
+	border-radius: 30px;
+	margin-right: 3%
 }
 
 /* #main-video p {
