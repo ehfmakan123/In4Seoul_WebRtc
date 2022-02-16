@@ -8,7 +8,7 @@
       <div class="padding-postlist">
         <!-- <div class="row" v-for="(list, idx) in listTen" :key="idx" :list="list"></movie-list> -->
 
-        <div class="row">
+        <div class="row" style="padding-left: 6rem;">
           <post-list-item
             v-for="post in postList"
             :key="post.id"
