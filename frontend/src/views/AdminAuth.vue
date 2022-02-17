@@ -82,6 +82,12 @@ export default {
       adminLoginCredentials,
       adminLoginConfirm,
     }
+  },
+  created(){
+    const router = useRouter()
+    if(localStorage.getItem('adminData') != null){
+      router.push({ name: 'AdminStaff' })
+    }
   }
 }
 </script>
