@@ -144,6 +144,10 @@ export default {
     /* opacity: 0.8; */ 
   }
 
+  #go-meeting:hover {
+  cursor: pointer;
+}
+
   #desk-content {
     padding-top: 15vw;
     padding-left: 15vw;
@@ -152,6 +156,10 @@ export default {
   #go-post {
     position: absolute;
     top: 13vw; left: 87vw;
+  }
+
+  #go-post:hover {
+    cursor: pointer;
   }
 
   #desk-logout {
