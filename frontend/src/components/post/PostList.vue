@@ -2,7 +2,7 @@
 
 
       <!-- detail Modal -->
-      <post-detail :selectedPost="state.selectedPost"></post-detail>
+      <post-detail :selectedPost="state.selectedPost" @post-updated="postUpdated"></post-detail>
       
       <!-- Post List -->
       <div class="padding-postlist">
@@ -96,7 +96,7 @@ export default {
   //     end: true,  
   //   }
   // },
-  setup() {
+  setup(props, {emit}) {
     const state = ref({
       selectedPost: {}
     })
@@ -107,7 +107,11 @@ export default {
       console.log(state.value.selectedPost)
     }
 
-    return {state, selectPost}
+    const postUpdated = () => {
+      emit("post-updated")
+    }
+
+    return {state, selectPost, postUpdated}
   },
   //   methods: {
   //   deskCreate(){

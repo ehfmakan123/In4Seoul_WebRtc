@@ -26,7 +26,7 @@
 import axios from 'axios'
 import { computed, ref } from 'vue'
 import { Modal } from 'bootstrap'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -34,12 +34,10 @@ export default {
   name: 'PostUpdateForm',
   components: {
   },
-  props:{
-    post: Object,
-  },
-  setup(props) {
-    const store = useStore()
-    const deskData = JSON.parse(localStorage.getItem('deskData'))
+  props:["post"],
+  setup(props, {emit}) {
+    // const store = useStore()
+    // const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const state = ref({
       myPost: {
@@ -79,7 +77,8 @@ export default {
           console.log('업데이트 성공!')
           console.log(res.data)
           // fetchPostList
-          store.dispatch('fetchPostList', deskData.deskPk)
+          // store.dispatch('fetchPostList', deskData.deskPk)
+          emit("post-updated")
 
           // 모달창 끄기
           const updateModal = document.querySelector('#updateModal')

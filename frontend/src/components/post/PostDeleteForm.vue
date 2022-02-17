@@ -19,7 +19,7 @@
 <script>
 import axios from 'axios'
 import { Modal } from 'bootstrap'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -28,9 +28,9 @@ export default {
   components: {
   },
   props: ['postId'],
-  setup(props) {
-    const store = useStore()
-    const deskData = JSON.parse(localStorage.getItem('deskData'))
+  setup(props, {emit}) {
+    // const store = useStore()
+    // const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const deletePost = () => {
       console.log("글 삭제")
@@ -48,7 +48,8 @@ export default {
         .then(res => {
           console.log(res)
           // fetchPostList
-          store.dispatch('fetchPostList', deskData.deskPk)
+          // store.dispatch('fetchPostList', deskData.deskPk)
+          emit("post-deleted")
         })
         .catch(err => console.error(err))
 

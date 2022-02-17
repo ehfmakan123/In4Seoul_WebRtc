@@ -37,7 +37,8 @@
 <script>
 import axios from 'axios'
 import { ref } from 'vue'
-import { useStore } from 'vuex'
+import { Modal } from 'bootstrap'
+// import { useStore } from 'vuex'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -45,9 +46,9 @@ export default {
   name: 'PostForm',
   components: {
   },
-  setup() {
-    const store = useStore()
-    const deskData = JSON.parse(localStorage.getItem('deskData'))
+  setup(props, {emit}) {
+    // const store = useStore()
+    // const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const state = ref({
       myPost: {
@@ -83,7 +84,8 @@ export default {
           .then(res => {
             console.log(res)
             // fetchPostList
-            store.dispatch('fetchPostList', deskData.deskPk)
+            // store.dispatch('fetchPostList', deskData.deskPk)
+            emit("post-created")
             
             state.value.myPost = {
               title: '',
@@ -93,9 +95,8 @@ export default {
             }
             // 모달창 끄기
             const createModal = document.querySelector('#createModal')
-            createModal.classList.remove("in")
-            document.querySelector(".modal-backdrop").remove()
-            createModal.style.display = "none"
+            let modal = Modal.getOrCreateInstance(createModal)
+            modal.hide()
           })
           .catch(err => console.error(err))      
       
