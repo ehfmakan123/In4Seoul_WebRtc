@@ -2,7 +2,7 @@
   <div class="row flex-nowrap bg-gray-1">
     <staff-sidebar/>
     <div class="w-80 p-5 staff-main">
-      <h2 class="text-start mt-3 fw-bold">상담사 이싸피 상담사 페이지</h2>
+      <h2 class="text-start mt-3 fw-bold">상담사 <span class="t-blue-4 fs-4">{{ staffData.name }}</span> 페이지</h2>
     <div class="bv-example-row mt-3 ">
 
     <br>
@@ -150,11 +150,13 @@ export default {
         next: true,
         start: false,
         end: true,
-
+        staffData: undefined,
       }
     },
     created () {
       const router = useRouter()
+
+      this.staffData = JSON.parse(localStorage.getItem('staffData'))
 
       if(!localStorage.getItem('staffData')){
         router.push({ name: 'Auth' })

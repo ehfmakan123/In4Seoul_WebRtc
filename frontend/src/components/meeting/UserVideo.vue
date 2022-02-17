@@ -1,5 +1,5 @@
 <template>
-<div class="my-video" v-if="streamManager">
+<div class="my-video shadow" v-if="streamManager">
 	<ov-video :stream-manager="streamManager"/>
 	<div class="d-inline-block user-name"><p>{{ clientData }}</p></div>
 </div>
