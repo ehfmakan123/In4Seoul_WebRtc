@@ -8,9 +8,11 @@ import com.ssafy.api.request.PostReq;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Post;
+import com.ssafy.db.entity.WaitingList;
 import com.ssafy.db.repository.DeskRepository;
 import com.ssafy.db.repository.DeskRepositorySupport;
 import com.ssafy.db.repository.PostRepository;
+import com.ssafy.db.repository.WaitingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +31,9 @@ public class DeskServiceImpl implements DeskService{
     @Autowired
     DeskRepositorySupport deskRepositorySupport;
 
+
+    @Autowired
+    WaitingListRepository waitingListRepository;
 
 
 
@@ -222,13 +227,21 @@ public class DeskServiceImpl implements DeskService{
     public void deleteWaitingList(long deskPk) {
 
 
-        try {
-            deskRepository.deleteById(deskPk);
-        }
 
-        catch (
-                Exception e){
+            System.out.println("오긴 오나요?"+deskPk);
 
-        }
+
+            Optional<Desk> byId = deskRepository.findById((int)deskPk);;
+            Desk desk = byId.get();
+            System.out.println("불러온 기본키값="+desk.getDeskId());
+            Optional<WaitingList> waitingList = waitingListRepository.deleteByDesk(desk);
+
+            if(waitingList.isPresent())
+            {
+                System.out.println("삭제된거");
+            }
+
+
+
     }
 }
