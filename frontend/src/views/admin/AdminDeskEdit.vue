@@ -1,5 +1,5 @@
 <template>
-    <div class="row flex-nowrap bg-gray-1">
+    <div class="row flex-nowrap bg-gray-1 mw-100">
      <AdminSidebar />
      <router-view/> 
       <div class="w-80 p-5">

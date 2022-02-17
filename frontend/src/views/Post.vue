@@ -14,7 +14,7 @@
 
     <!-- 오른쪽 구역 -->
     <div class="min-vh-100 w-100">
-      <div class="d-flex justify-content-between">
+      <div class="d-flex justify-content-between" style="height: 11vh!important;">
         <div id="go-deskhome" class="p-3">
           <p @click="moveToDeskHome" class=" t-gray-3 text-small go-home-btn">back</p>
           <p @click="moveToDeskHome" class="arrow-button t-gray-3 text-center mt-2 go-home-btn">
@@ -37,7 +37,7 @@
               <i class="bi bi-plus-circle-fill"></i>
             </a>
           </div>
-          <button v-else @click="backToCurrent" class="btn btn-outline-info me-3 border-0" style="font-size: 0.9rem;">글을 남기려면 현재 데스크로 돌아가세요!
+          <button v-else @click="refreshAll" class="btn btn-outline-info me-3 border-0" style="font-size: 0.9rem;">글을 남기려면 현재 데스크로 돌아가세요!
             <p class="fw-light t-gray-3" style="font-size: 0.8rem;">If you want to write a post, go back to the current desk.</p>
           </button>
           <!-- 지역 선택 필터 -->
@@ -72,8 +72,8 @@
           </div>
         </div>
       </div>
-      <div class="wall-background" style="min-height: 89vh!important;">
-        <div class="foggy-background" style="min-height: 89vh!important;">
+      <div class="wall-background" style="height: 89vh!important;">
+        <div class="foggy-background" style="height: 89vh!important;">
 
           <!-- PostList -->
           <post-list :postList="state.postList" @post-updated="postUpdated">
@@ -244,10 +244,10 @@ export default {
     }
 
     const backToCurrent = () => {
-      state.value.nowAreaName = deskData.areaKorName
-      state.value.nowDeskName = deskData.deskKorName
-      state.value.deskId = deskData.deskPk
-      thisPage(1, state.value.deskId)
+      // state.value.nowAreaName = deskData.areaKorName
+      // state.value.nowDeskName = deskData.deskKorName
+      // state.value.deskId = deskData.deskPk
+      // thisPage(1, state.value.deskId)      
     }
 
     const thisPage = (np, dkId) => {
@@ -353,7 +353,10 @@ export default {
       }   
   },
   methods: {
-
+      refreshAll() {
+            // 새로고침
+            this.$router.go();
+        }
     
   }
 }
