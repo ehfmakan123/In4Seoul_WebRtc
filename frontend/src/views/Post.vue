@@ -1,7 +1,7 @@
 <template>
   <div class="d-flex">
     <!-- 글 생성 Modal -->
-    <post-form></post-form>
+    <post-form @post-created="postCreated"></post-form>
 
     <!-- 왼쪽 사이드바 -->
     <!-- <div class="d-flex flex-column flex-shrink-0 shadow justify-content-center" style="width: 3.5rem;">
@@ -16,47 +16,57 @@
     <div class="min-vh-100 w-100">
       <div class="d-flex justify-content-between">
         <div id="go-deskhome" class="p-3">
-          <p @click="moveToDeskHome" class="t-gray-3 text-small go-home-btn">돌아가기</p>
+          <p @click="moveToDeskHome" class=" t-gray-3 text-small go-home-btn">back</p>
           <p @click="moveToDeskHome" class="arrow-button t-gray-3 text-center mt-2 go-home-btn">
             <i class="bi bi-arrow-left-circle"></i>
           </p>
         </div>
         <div class="me-auto">
-          <h1 class="m-3">서울 여행자들의 담벼락</h1>
-          <h3 class="t-gray-3 m-3">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
+          <h1 class="m-3">서울 여행자들의 담벼락   <span class="fs-6 fw-light t-gray-3">Post wall for Seoul Traveler</span></h1>
+          <h3 class="t-gray-3 m-3 fw-bold">같이 나누고싶은 서울의 매력, 여행 꿀팁을 공유하고, 함께 돌아다닐 여행 친구도 구해보세요!</h3>
         </div>
 
         <!-- 필터들 -->
         <div class="d-flex align-items-center me-4">
-          <span @click="createPost" class="t-blue-4 me-3 fw-bold" data-bs-toggle="modal" data-bs-target="#createModal">글 남기기</span>
-          <a @click="createPost" class="fs-1 t-blue-4 me-5" data-bs-toggle="modal" data-bs-target="#createModal">
-            <i class="bi bi-plus-circle-fill"></i>
-          </a>
+          <div v-if="state.deskId === deskData.deskPk" class="d-flex align-items-center">
+            <div class="me-3">
+              <p @click="createPost" class="t-blue-4 fw-bold text-center" data-bs-toggle="modal" data-bs-target="#createModal">글 남기기</p>
+              <p @click="createPost" class="t-blue-4 fw-light mt-1 fs-6 text-center" data-bs-toggle="modal" data-bs-target="#createModal">Write</p>
+            </div>
+            <a @click="createPost" class="fs-1 t-blue-4 me-5" data-bs-toggle="modal" data-bs-target="#createModal">
+              <i class="bi bi-plus-circle-fill"></i>
+            </a>
+          </div>
+          <button v-else @click="backToCurrent" class="btn btn-outline-info me-3 border-0" style="font-size: 0.9rem;">글을 남기려면 현재 데스크로 돌아가세요!
+            <p class="fw-light t-gray-3" style="font-size: 0.8rem;">If you want to write a post, go back to the current desk.</p>
+          </button>
           <!-- 지역 선택 필터 -->
           <div class="dropdown me-3">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ state.nowAreaName }}
+            <a class="btn btn-outline-dark dropdown-toggle" style="font-size: 0.9em;" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowAreaName.korName }} 
+              <span class="fw-light">{{state.nowAreaName.engName}}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li
                 v-for="area in state.areaList"
                 :key="area.id"
               >
-                <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}</a>
+                <a class="dropdown-item" @click="selectArea(area.id, area.korName, area.engName)">{{ area.korName }}  <span class="fs-6 fw-light t-gray-3">{{ area.engName }}</span></a>
               </li>
             </ul>
           </div>
           <!-- 데스크 선택 필터 -->
           <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ state.nowDeskName }}
+            <a class="btn btn-outline-dark dropdown-toggle" style="font-size: 0.9em;" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowDeskName.korName }}
+              <span class="fw-light">{{state.nowDeskName.engName}}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li
                 v-for="desk in state.deskList"
                 :key="desk.id"
               >
-                <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}</a>
+                <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName, desk.engName)">{{ desk.korName }}  <span class="fs-6 fw-light t-gray-3">{{ desk.engName }}</span></a>
               </li>
             </ul>
           </div>
@@ -66,12 +76,12 @@
         <div class="foggy-background" style="min-height: 89vh!important;">
 
           <!-- PostList -->
-          <post-list :postList="state.postList">
+          <post-list :postList="state.postList" @post-updated="postUpdated">
 
           
           </post-list>
           <!--pagination-->
-          <nav aria-label="..." class="d-flex justify-content-center">
+          <nav aria-label="..." class="d-flex justify-content-center mb-4 fixed-bottom">
           <ul class="pagination d-flex justify-content-between">
             <li v-if="state.start" class="page-item">
               <a class="page-link" href="#" @click="gotostartpage">«</a>
@@ -148,8 +158,8 @@ export default {
 
     const state = ref({
       postList: {}, // computed(() => store.state.postList),
-      nowAreaName: deskData.areaKorName,
-      nowDeskName: deskData.deskKorName,
+      nowAreaName: { korName: deskData.areaKorName, engName: deskData.areaEngName },
+      nowDeskName: { korName: deskData.deskKorName, engName: deskData.deskEngName },
       areaList: [],
       deskList: [],
       deskId: deskData.deskPk,
@@ -217,20 +227,27 @@ export default {
         })
     }
 
-    const selectArea = (areaId, areaName) => {
-      state.value.nowAreaName = areaName
-      state.value.nowDeskName = '선택'
+    const selectArea = (areaId, korName, engName) => {
+      state.value.nowAreaName = { korName: korName, engName: engName }
+      state.value.nowDeskName = { korName: '선택', engName: 'Select' }
       getDeskList(areaId)
     }
 
-    const selectDesk = (deskId, deskName) => {
-      state.value.nowDeskName = deskName
+    const selectDesk = (deskId, korName, engName) => {
+      state.value.nowDeskName = { korName: korName, engName: engName }
       state.value.deskId = deskId
       //console.log("fetch1")
       //const obj = {deskId:deskId, nowPage: 1 }
       //store.dispatch('fetchPostList', obj)
       thisPage(1, state.value.deskId)
       //store.dispatch('fetchPostList',  1 ,deskId)
+    }
+
+    const backToCurrent = () => {
+      state.value.nowAreaName = deskData.areaKorName
+      state.value.nowDeskName = deskData.deskKorName
+      state.value.deskId = deskData.deskPk
+      thisPage(1, state.value.deskId)
     }
 
     const thisPage = (np, dkId) => {
@@ -289,7 +306,15 @@ export default {
     const gotoendpage=()=>{
       thisPage(state.value.totalPage, state.value.deskId)
     }
-    // created
+
+    // emit 시 실행 함수들
+    const postUpdated = () => {
+      thisPage(state.value.nowPage, state.value.deskId)
+    }
+    const postCreated = () => {
+      thisPage(1, state.value.deskId)
+    }
+    
     //store.dispatch('fetchPostList', , 1)
     // console.log("fetch2")
     // const obj = {deskId:deskData.deskPk, nowPage: 1 }
@@ -311,14 +336,16 @@ export default {
     //    state.value.pageNumbers[i-state.value.startPage] = i
     // }
     // console.log("pagenumbers", state.value.pageNumbers)
+
+    // created 될 때 실행
     thisPage(1, deskData.deskPk)
     getAreaList()
     getDeskList(deskData.areaPk)
     
-    return {state, moveToDeskHome, createPost, selectArea, selectDesk,
-    thisPage, gotoprepage, gotonextpage, gotostartpage, gotoendpage}
+    return {state, deskData, moveToDeskHome, createPost, selectArea, selectDesk, backToCurrent,
+    thisPage, gotoprepage, gotonextpage, gotostartpage, gotoendpage, postUpdated, postCreated}
   },
-  create() {
+  created() {
       const router = useRouter()
 
       if(!localStorage.getItem('deskData')){

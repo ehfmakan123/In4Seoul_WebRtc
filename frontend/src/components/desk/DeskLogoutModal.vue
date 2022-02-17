@@ -28,6 +28,7 @@ import { ref } from 'vue'
 import { useRouter} from 'vue-router'
 import { useStore } from 'vuex';
 import axios from 'axios'
+import { Modal } from 'bootstrap'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -66,9 +67,8 @@ export default {
 
           // modal 닫는 부분
           const deskLoginModal = document.querySelector('#desk-logout-modal')
-          deskLoginModal.classList.remove("in")
-          document.querySelector(".modal-backdrop").remove()
-          deskLoginModal.style.display = "none"
+          let modal = Modal.getOrCreateInstance(deskLoginModal)
+          modal.hide()
           
           router.push({ name: 'Auth' })
         })

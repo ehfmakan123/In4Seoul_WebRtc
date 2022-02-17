@@ -1,7 +1,7 @@
 import { createStore } from 'vuex'
-import axios from 'axios'
+// import axios from 'axios'
 
-const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+// const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
 export default createStore({
   state: {
@@ -50,26 +50,26 @@ export default createStore({
     logoutAction({ commit }) {
       commit('LOGOUT')
     },
-    fetchPostList({ commit }, obj) {
-      console.log("deskId: "+obj.deskId)
-      console.log("nowPage: "+obj.nowPage)
-      const token = localStorage.getItem('token')
-      const config = {
-        Authorization: `Bearer ${token}`
-      }
-      axios({
-        method: 'get',
-        url: `${SERVER_HOST}/desk/posts?desk=${obj.deskId}&page=${obj.nowPage}`,
-        headers: config
-      })
-        .then(res => {
-          console.log('fetchPostList 실행됨')
-          console.log(res.data.data)
-          console.log("fetch start!")
-          commit('SET_POST_LIST', res.data)
-        })
-        .catch(err => console.error(err))
-    },
+    // fetchPostList({ commit }, obj) {
+    //   console.log("deskId: "+obj.deskId)
+    //   console.log("nowPage: "+obj.nowPage)
+    //   const token = localStorage.getItem('token')
+    //   const config = {
+    //     Authorization: `Bearer ${token}`
+    //   }
+    //   axios({
+    //     method: 'get',
+    //     url: `${SERVER_HOST}/desk/posts?desk=${obj.deskId}&page=${obj.nowPage}`,
+    //     headers: config
+    //   })
+    //     .then(res => {
+    //       console.log('fetchPostList 실행됨')
+    //       console.log(res.data.data)
+    //       console.log("fetch start!")
+    //       commit('SET_POST_LIST', res.data)
+    //     })
+    //     .catch(err => console.error(err))
+    // },
   },
   modules: {
   }

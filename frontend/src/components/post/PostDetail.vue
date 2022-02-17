@@ -2,8 +2,8 @@
   <div>
     <!-- 모달들 먼저 선언 -->
     <post-password-form :postId="selectedPost.id"></post-password-form>
-    <post-update-form :post="selectedPost"></post-update-form>
-    <post-delete-form :postId="selectedPost.id"></post-delete-form>
+    <post-update-form :post="selectedPost" @post-updated="postUpdated"></post-update-form>
+    <post-delete-form :postId="selectedPost.id" @post-deleted="postUpdated"></post-delete-form>
     <post-close-form></post-close-form>
 
     <!-- 상세조회 Modal -->
@@ -19,8 +19,8 @@
             <p class="my-2">{{ selectedPost.content }}</p>
           </div>
           <div class="d-flex justify-content-end p-2">
-            <button @click="tryEdit" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">편집</button>
-            <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">닫기</button>
+            <button @click="tryEdit" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">Edit</button>
+            <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>
@@ -46,7 +46,7 @@ export default {
       return this.selectedPost.updatedAt ? this.selectedPost.updatedAt.slice(0,10) : ''
     }
   },
-  setup() {
+  setup(props, {emit}) {
     const tryEdit = () => {
       console.log("편집 버튼 클릭됨. 비밀번호 입력 모달 열림!")
       // passwordModal 열기
@@ -54,7 +54,12 @@ export default {
       const modal = Modal.getOrCreateInstance(passwordModal)
       modal.show()
     }
-    return { tryEdit }
+
+    const postUpdated = () => {
+      emit("post-updated")
+    }
+
+    return { tryEdit, postUpdated }
   }
 }
 </script>
