@@ -1,5 +1,5 @@
 <template>
-    <div class="row flex-nowrap bg-gray-1">
+    <div class="row flex-nowrap bg-gray-1 mw-100">
      <AdminSidebar />
      <router-view/> 
       <div class="w-80 p-5">
@@ -122,6 +122,7 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -160,7 +161,12 @@ export default({
         AdminSidebar,
     },
     created(){
-       const token = localStorage.getItem('token')
+      const router = useRouter()
+
+      if(!localStorage.getItem('adminData')){
+        router.push({ name: 'AdminAuth' })
+      }
+      const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
       }

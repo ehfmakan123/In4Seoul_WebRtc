@@ -9,7 +9,7 @@ public interface FirebaseService {
 
 
     //desk에서 상담 요청 후 메세지 보내기
-    boolean sendMessage(String deskId, int areaId);
+    boolean sendMessage(int deskPk, int areaId, String deskId);
 
 
 

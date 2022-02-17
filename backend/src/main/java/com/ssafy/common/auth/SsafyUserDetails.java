@@ -4,24 +4,21 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.ssafy.db.entity.User;
-
 /**
  * 현재 액세스 토큰으로 부터 인증된 유저의 부가 상세정보(활성화 여부, 만료, 롤 등) 정의.
  */
 public class SsafyUserDetails implements UserDetails {
-	@Autowired
-	User user;
+
 
 
 	Staff staff;
-	Desks desk;
+	Desk desk;
 
 	boolean accountNonExpired;
     boolean accountNonLocked;
@@ -29,9 +26,8 @@ public class SsafyUserDetails implements UserDetails {
     boolean enabled = false;
     List<GrantedAuthority> roles = new ArrayList<>();
     
-    public SsafyUserDetails(User user,Staff staff, Desks desk) {
+    public SsafyUserDetails(Staff staff, Desk desk) {
     		super();
-    		this.user = user;
 			this.staff=staff;
 			this.desk=desk;
     }
@@ -42,11 +38,13 @@ public class SsafyUserDetails implements UserDetails {
 		return this.staff.getStaffId();
 	}
 
+	public int getStaffPk() {return this.staff.getId(); }
+
 	public String getDeskId()
 	{
 		return  this.desk.getDeskId();
 	}
-
+    public String getDeskPassword() {return this.desk.getPassword();}
 
 	public int getDestPK() {return this.desk.getId() ;}
 
@@ -55,21 +53,11 @@ public class SsafyUserDetails implements UserDetails {
 	}
 
 	public int getStaffAreaId() {
-		return this.staff.getAreas().getId();
+		return this.staff.getArea().getId();
 	}
 
 
-	public User getUser() {
-    		return this.user;
-    }
-	@Override
-	public String getPassword() {
-		return this.user.getPassword();
-	}
-	@Override
-	public String getUsername() {
-		return this.user.getUserId();
-	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return this.accountNonExpired;
@@ -90,6 +78,17 @@ public class SsafyUserDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return this.roles;
 	}
+
+	@Override
+	public String getPassword() {
+		return null;
+	}
+
+	@Override
+	public String getUsername() {
+		return null;
+	}
+
 	public void setAuthorities(List<GrantedAuthority> roles) {
 		this.roles = roles;
 	}

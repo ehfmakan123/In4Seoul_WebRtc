@@ -22,4 +22,14 @@ public interface StaffService {
 
 
 
+    int meetingLogStart(int staffPk, String sessionId); //상담 시작 시  meeting log에 등록
+
+
+    void meetingLogEnd(int meetingLogId, String content,int staffId);
+
+
+    void logout(String staffId);  //로그아웃하면서 fcm 값 갱신
+
+
+
 }

@@ -8,7 +8,7 @@
         <div class="modal-body">
           <div class="input-group">
             <span class="input-group-text bg-white border-white fw-bold" id="desk-login-password">비밀번호</span>
-            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLogoutCredentials.password">
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLogoutCredentials.password" @keypress.enter="deskLoginConfirm">
           </div>
           <div class="pt-3" style="height: 2rem;">
             <p id="password-error" v-show="state.showPasswordError" class="text-small t-red-2 me-auto ms-3">비밀번호가 일치하지 않습니다</p>
@@ -28,6 +28,7 @@ import { ref } from 'vue'
 import { useRouter} from 'vue-router'
 import { useStore } from 'vuex';
 import axios from 'axios'
+import { Modal } from 'bootstrap'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -44,37 +45,43 @@ export default {
 
     const deskLoginConfirm = () => {
       console.log("desk 로그인 확인버튼 클릭됨!")
-      console.log(deskLogoutCredentials.value)
+      console.log("deskLogoutCredentials: ",deskLogoutCredentials.value)
 
+      const token = localStorage.getItem('token')
+      const config = {
+              Authorization: `Bearer ${token}`
+            }
       // 로그인 axios 요청
       axios({
+     
         method: 'post',
         url: `${SERVER_HOST}/desk/logout`,
-        data: deskLogoutCredentials.value
+        data: deskLogoutCredentials.value,
+        headers: config
       })      
         .then(res => {
           console.log(res)
-          // jwt토큰 저장 & 스토어 갱신
-          localStorage.setItem('token', res.data.accessToken)
-          localStorage.setItem('deskData', JSON.stringify(res.data))
-          store.dispatch("desk_login")
+          // 로컬스토리지 삭제
+          localStorage.clear()
+          store.dispatch("logoutAction")
 
           // modal 닫는 부분
-          const deskLoginModal = document.querySelector('#desk-login-modal')
-          deskLoginModal.classList.remove("in")
-          document.querySelector(".modal-backdrop").remove()
-          deskLoginModal.style.display = "none"
+          const deskLoginModal = document.querySelector('#desk-logout-modal')
+          let modal = Modal.getOrCreateInstance(deskLoginModal)
+          modal.hide()
           
-          router.push({ name: 'DeskHome' })
+          router.push({ name: 'Auth' })
         })
         .catch(err => {
           console.log('desk 로그인 error발생!')
           console.log(err.response.data)
           const statusCode = err.response.data.statusCode
-          if (statusCode === 401) {
+          if (statusCode === 403) {
             deskLogoutCredentials.value.password = ''
           }
-          else if (statusCode === 404) {
+          else if (statusCode === 401) {
+            console.log("비밀번호 일치x");
+            state.value.showPasswordError=true;
             deskLogoutCredentials.value.password = ''
           }
         })

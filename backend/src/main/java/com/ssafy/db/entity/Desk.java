@@ -7,11 +7,11 @@ import lombok.Setter;
 import javax.persistence.*;
 
 
-@Table(name = "desks")
+@Table(name = "desk")
 @Entity
 @Getter
 @Setter
-public class Desks extends BaseTimeEntity {
+public class Desk extends BaseTimeEntity {
 
 
     @Id
@@ -41,5 +41,13 @@ public class Desks extends BaseTimeEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "areas_id")
-    Areas area;
+    Area area;
+
+
+    public Desk() {
+    }
+
+    public Desk(int id) {
+        this.id = id;
+    }
 }

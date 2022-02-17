@@ -6,19 +6,26 @@ import lombok.Setter;
 import javax.persistence.*;
 
 
-@Table(name = "Meeting")
+
 @Entity
 @Getter
 @Setter
-public class Meeting {
+public class WaitingList {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
-    @Column(name = "desk_id")
-    String deskId;
-    @Column(name = "area_id")
-    int areaId;
+
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "desks_id")
+    Desk desk;
+
+
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="areas_id")
+    Area area;
 
 
 

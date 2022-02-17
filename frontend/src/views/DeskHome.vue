@@ -4,7 +4,7 @@
 
     <div class="foggy-background">
       <div id="desk-content">
-        <h1 class="heading text-white">서울시 여행 안내 데스크</h1>
+        <h1 class="heading text-white">In 4 Seoul <span style="font-size: 2.5rem">서울시 여행 안내 데스크</span></h1>
         <h2 class="heading text-white mb-5">Seoul Travel Information Service</h2>
 
         <div id="go-meeting" @click="moveToMeeting" class="bg-light shadow">
@@ -67,7 +67,14 @@ export default {
 
           router.push({ name: 'Meeting' })
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          const statusCode = err.response.data.statusCode
+          if (statusCode === 409) {
+            alert('상담 가능한 상담원이 없습니다.')
+          } else {
+            console.log(err)
+          }
+        })
 
     }
 
@@ -81,12 +88,20 @@ export default {
       moveToMeeting,
       logout,
     }
+  },
+  created(){
+      const router = useRouter()
+
+      if(!localStorage.getItem('deskData')){
+        router.push({ name: 'Auth' })
+      }   
+
   }
 }
 </script>
 <style scoped>
   h1 {
-    font-size: 3rem;
+    font-size: 3.5rem;
     font-weight: 600;
   }
   h2 {
@@ -136,6 +151,10 @@ export default {
     /* opacity: 0.8; */ 
   }
 
+  #go-meeting:hover {
+  cursor: pointer;
+}
+
   #desk-content {
     padding-top: 15vw;
     padding-left: 15vw;
@@ -144,6 +163,10 @@ export default {
   #go-post {
     position: absolute;
     top: 13vw; left: 87vw;
+  }
+
+  #go-post:hover {
+    cursor: pointer;
   }
 
   #desk-logout {

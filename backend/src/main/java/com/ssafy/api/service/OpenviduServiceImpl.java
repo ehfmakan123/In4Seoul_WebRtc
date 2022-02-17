@@ -3,6 +3,8 @@ package com.ssafy.api.service;
 
 import io.openvidu.java.client.*;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -137,5 +139,47 @@ public class OpenviduServiceImpl implements OpenviduService {
 
 
 
+    }
+
+    @Override
+    public boolean disconnectSession(String sessionId, String openviduToken) {
+
+
+        // If the session exists (세션이 존재)
+        if (this.mapSessions.get(sessionId) != null && this.mapSessionNamesTokens.get(sessionId) != null) {
+
+
+            this.mapSessions.remove(sessionId);    // 방 삭제
+            this.mapSessionNamesTokens.remove(sessionId); // 토큰 보관소도 삭제
+
+
+
+//            // If the token exists  (토큰이 존재)
+//            if (this.mapSessionNamesTokens.get(sessionId).remove(openviduToken) != null) {
+//
+//                System.out.println("현재 발급받은 토큰으로 세션을 떠난다");
+//                // User left the session
+//                if (this.mapSessionNamesTokens.get(sessionId).isEmpty()) {  //토큰이 하나도 없으면? 세션 삭제
+//                    // Last user left: session must be removed
+//                    this.mapSessions.remove(sessionId);
+//                }
+//
+//            } else {
+//                // The TOKEN wasn't valid  //이미 토큰이 삭제됨
+//                return false;
+//
+//            }
+
+        } else {
+            // The SESSION does not exist  // 이미 현재 상담에 대한 세션과 토큰이 삭제됨
+
+            System.out.println(this.mapSessions.get(sessionId));
+            System.out.println(this.mapSessionNamesTokens.get(sessionId));
+            System.out.println("이미 세션과 토큰이 삭제됨");
+           return false;
+
+        }
+
+         return true;  //정상적으로 처리됨
     }
 }

@@ -7,7 +7,6 @@ import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.api.request.StaffRequest;
 import com.ssafy.api.response.DeskLoginPostRes;
-import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.DeskService;
 import com.ssafy.api.service.FirebaseService;
 import com.ssafy.api.service.OpenviduService;
@@ -16,10 +15,8 @@ import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.Areas;
-import com.ssafy.db.entity.BaseEntity;
-import com.ssafy.db.entity.Desks;
-import com.ssafy.db.entity.Staff;
+import com.ssafy.db.entity.Area;
+import com.ssafy.db.entity.Desk;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -59,7 +56,7 @@ public class DeskController {
         String password = request.getPassword();
 
 
-        Desks result = deskService.findByDeskId(userId);
+        Desk result = deskService.findByDeskId(userId);
 
         if (result == null) {
             return ResponseEntity.status(404).body(DeskLoginPostRes.of(404, "존재하지 않는 계정입니다", null, null, null, null, null, null, null));
@@ -69,7 +66,7 @@ public class DeskController {
         if (passwordEncoder.matches(password, result.getPassword())) {
 
 
-            Areas area = result.getArea();
+            Area area = result.getArea();
             area.getEngName();
             area.getKorName();
             area.getId();
@@ -83,6 +80,31 @@ public class DeskController {
 
         } else {
             return ResponseEntity.status(401).body(DeskLoginPostRes.of(401, "유효하지 않은 비밀번호입니다", null,null, null, null, null, null, null));
+
+        }
+
+
+    }
+
+
+
+
+    // 데스크 계정 로그아웃
+    @PostMapping("/logout")
+    public ResponseEntity<BaseResponseBody> logout(@RequestBody Map<String,String> request,@ApiIgnore Authentication authentication) {
+
+
+        String password = request.get("password");
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String deskPassword = userDetails.getDeskPassword();
+
+
+        if (passwordEncoder.matches(password, deskPassword)) {
+            return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+        } else {
+            return ResponseEntity.status(401).body(BaseResponseBody.of(401,"유효하지 않은 비밀번호입니다"));
 
         }
 
@@ -260,7 +282,16 @@ public ResponseEntity <BaseResponseBody> passwordCheck(@PathVariable(value = "id
 
         SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
         String deskId = userDetails.getDeskId();
+        int deskPk=userDetails.getDestPK();
         int areaId=userDetails.getDeskAreaId();
+
+
+        // 요청 데스크와 상담 가능한 상담사가 있는지 체크
+
+
+
+
+
 
         String token = openviduService.createSession(deskId);//  데스크 아이디 넘겨주면서 방 만들기
 
@@ -271,9 +302,50 @@ public ResponseEntity <BaseResponseBody> passwordCheck(@PathVariable(value = "id
         map.put("token",token);
         map.put("sessionId",deskId);
 
-        firebaseService.sendMessage(deskId,areaId);
-        return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
+        boolean result = firebaseService.sendMessage(deskPk, areaId,deskId);
+
+        if(result)
+        {
+            return ResponseEntity.status(200).body(new SingleResult<>(200,"성공",map));
+        }
+
+        else{
+
+            openviduService.disconnectSession(deskId,token);
+
+            return ResponseEntity.status(409).body(new SingleResult<>(409,"상담 가능한 상담사가 없습니다",null));
+
+
+
+        }
+
     }
 
+
+
+    //상담 종료  (
+
+
+    @DeleteMapping ("/meeting/end")        //url 이 이게 맞을까..
+    public ResponseEntity<BaseResponseBody> MeetingEnd(@ApiIgnore Authentication authentication) {
+
+
+        SsafyUserDetails userDetails = (SsafyUserDetails) authentication.getDetails();
+        String deskId = userDetails.getDeskId();
+        int deskPk=userDetails.getDestPK();
+
+
+
+        openviduService.disconnectSession(deskId,null); // openvidu 삭제
+
+
+        // 요청 데스크와 상담 가능한 상담사가 있는지 체크
+        deskService.deleteWaitingList(deskPk);
+
+        return ResponseEntity.status(200).body(BaseResponseBody.of(200,"성공"));
+
+
+
+    }
 
 }

@@ -1,5 +1,5 @@
 <template>
-    <div class="row flex-nowrap bg-gray-1">
+    <div class="row flex-nowrap bg-gray-1 mw-100">
      <AdminSidebar />
      <router-view/> 
         <div class="w-80 p-5">
@@ -20,7 +20,7 @@
                 </button>
                 <div v-if="isHiddened" class="item">
                   <span v-if="isIdchecked==2">사용가능한 아이디입니다.</span>
-                  <span v-else-if="isIdchecked==0">일치하는 아이디가 없습니다.</span>
+                  <span v-else-if="isIdchecked==0">이미 있는 아이디입니다.</span>
                   <span v-else>데이터를 가져올 수 없습니다.</span>
                   
                 </div>
@@ -90,6 +90,7 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 //const id1 = this.id
@@ -167,15 +168,15 @@ export default({
         const config = {
             Authorization: `Bearer ${token}`
         }
-      
+        console.log("idcheck axios 전:"+this.deskId)
         axios({
           method: 'post',
           url: `${SERVER_HOST}/admin/desks/idcheck`,
           headers: config,
           data: {
-              deskId:"123id"//this.deskId,
-          }
-        })
+              userId:this.deskId,
+            }
+          })
           .then((response) => {
             console.log("idcheck성공:"+this.deskId)
             console.log(response)
@@ -186,7 +187,7 @@ export default({
             }else{
               this.isIdchecked = 0;
             }
-            this.isIdchecked = 2;
+            //this.isIdchecked = 2;
           })
           .catch((err) => {
             const statusCode = err.response.data.statusCode
@@ -206,7 +207,12 @@ export default({
 
     },
     created(){
-       const token = localStorage.getItem('token')
+      const router = useRouter()
+
+      if(!localStorage.getItem('adminData')){
+        router.push({ name: 'AdminAuth' })
+      }
+      const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
       }

@@ -6,11 +6,13 @@ import com.ssafy.api.dto.PostDto;
 import com.ssafy.api.dto.SelectedDeskDto;
 import com.ssafy.api.request.PostReq;
 import com.ssafy.common.model.response.ListResult;
-import com.ssafy.db.entity.Desks;
-import com.ssafy.db.entity.Posts;
-import com.ssafy.db.repository.AdminRepository;
+import com.ssafy.db.entity.Desk;
+import com.ssafy.db.entity.Post;
+import com.ssafy.db.entity.WaitingList;
+import com.ssafy.db.repository.DeskRepository;
 import com.ssafy.db.repository.DeskRepositorySupport;
 import com.ssafy.db.repository.PostRepository;
+import com.ssafy.db.repository.WaitingListRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,7 @@ import java.util.Optional;
 public class DeskServiceImpl implements DeskService{
 
     @Autowired
-    AdminRepository adminRepository;
+    DeskRepository deskRepository;
 
     @Autowired
     PostRepository postRepository;
@@ -30,13 +32,16 @@ public class DeskServiceImpl implements DeskService{
     DeskRepositorySupport deskRepositorySupport;
 
 
+    @Autowired
+    WaitingListRepository waitingListRepository;
+
 
 
     @Override
-    public Desks findByDeskId(String id) {
+    public Desk findByDeskId(String id) {
 
 
-        Optional<Desks> result = adminRepository.findByDeskId(id);
+        Optional<Desk> result = deskRepository.findByDeskId(id);
 
 
 
@@ -53,17 +58,17 @@ public class DeskServiceImpl implements DeskService{
     public boolean registerPost(String id, PostReq dto) {
 
 
-        Optional<Desks> result = adminRepository.findByDeskId(id);
+        Optional<Desk> result = deskRepository.findByDeskId(id);
 
 
-        Posts posts = new Posts();
+        Post posts = new Post();
         posts.setContent(dto.getContent());
         posts.setTitle(dto.getTitle());
         posts.setPassword(dto.getPassword());
         posts.setDesk(result.get());
 
 
-        Posts post = postRepository.save(posts);
+        Post post = postRepository.save(posts);
 
 
 
@@ -80,12 +85,12 @@ public class DeskServiceImpl implements DeskService{
 
     @Override
     public boolean updatePost(long id, PostReq dto) {
-        Posts post = postRepository.findById(id).get();
+        Post post = postRepository.findById(id).get();
 
         post.setTitle(dto.getTitle());
         post.setContent(dto.getContent());
 
-        Posts save = postRepository.save(post);
+        Post save = postRepository.save(post);
 
 
         return true;
@@ -122,12 +127,12 @@ public class DeskServiceImpl implements DeskService{
 
     @Override
     public String getPostPassword(long id) {
-        Optional<Posts> byId = postRepository.findById(id);
+        Optional<Post> byId = postRepository.findById(id);
 
-        Posts posts = byId.get();
+        Post post = byId.get();
 
 
-        return posts.getPassword();
+        return post.getPassword();
     }
 
     @Override
@@ -153,7 +158,90 @@ public class DeskServiceImpl implements DeskService{
     @Override
     public ListResult<PostDto> getPostList(Integer desk, Integer page) {
 
-            return deskRepositorySupport.getPostList(desk,page);
+        ListResult<PostDto> postList = deskRepositorySupport.getPostList(desk, page);
+
+//페이지네이션 처리
+
+        Long totalCount = postList.getTotalCount();
+
+        int totalPage = totalCount.intValue() / 10; //총 페이지
+
+        if (totalCount % 10 > 0) {
+            totalPage++;
+        }
+
+
+        int startPage = ((page - 1) / 5) * 5 + 1; //시작 페이지 번호
+        int endPage = startPage + 4;
+
+
+        if (endPage > totalPage) endPage = totalPage;
+
+        boolean pre = false;
+
+        boolean start = false;
+
+
+        if (page - 5 >= 1) {
+            pre = true;
+        }
+
+
+        if (startPage > 1) {
+            start = true;
+        }
+
+
+        boolean next = false;
+
+        boolean end = false;
+
+        if (page + 5 <= totalPage || endPage < totalPage) {
+            next = true;
+
+        }
+
+        if (endPage < totalPage) {
+            end = true;
+        }
+
+
+        // 값 세팅
+
+        postList.setStartPage(startPage);
+        postList.setEndPage(endPage);
+        postList.setNowPage(page);
+        postList.setNext(next);
+        postList.setPre(pre);
+        postList.setStart(start);
+        postList.setEnd(end);
+        postList.setTotalPage(totalPage);
+        return postList;
+        
+    }
+
+
+
+
+    @Override
+    public void deleteWaitingList(long deskPk) {
+
+
+
+            System.out.println("오긴 오나요?"+deskPk);
+
+
+            Optional<Desk> byId = deskRepository.findById((int)deskPk);;
+            Desk desk = byId.get();
+            System.out.println("불러온 기본키값="+desk.getDeskId());
+            Optional<WaitingList> waitingList = waitingListRepository.deleteByDesk(desk);
+
+            if(waitingList.isPresent())
+            {
+                System.out.println("삭제된거");
+            }
+
+
 
     }
 }

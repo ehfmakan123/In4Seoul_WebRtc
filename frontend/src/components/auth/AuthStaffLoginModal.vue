@@ -12,9 +12,13 @@
           </div>
           <div class="input-group mt-4">
             <span class="input-group-text bg-white border-white fw-bold" id="staff-login-password">비밀번호</span>
-            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password">
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="staff-login-password" aria-describedby="staff-login-password" v-model="staffLoginCredentials.password" @keypress.enter="staffLoginConfirm">
           </div>
-          <div class="d-flex justify-content-center mt-5">
+          <div class="pt-3" style="height: 3rem;">
+            <p id="login-error" v-show="state.showError" class="modal-error-message t-red-2" >아이디 또는 비밀번호가 일치하지 않습니다.</p>
+            <p id="login-error" v-show="state.showError2" class="modal-error-message t-red-2" >아직 승인되지 않은 계정입니다.</p>
+          </div>
+          <div class="d-flex justify-content-center">
             <button type="button" class="btn btn-outline-primary bd-blue-4 btn-yes-no" @click="staffLoginConfirm">로그인</button>
             <button type="button" class="btn btn-outline-dark ms-5 btn-yes-no" data-bs-dismiss="modal" @click="staffLoginCancel">취소</button>
           </div>
@@ -29,6 +33,7 @@ import { ref } from 'vue'
 import { useRouter} from 'vue-router'
 import { useStore } from 'vuex';
 import axios from 'axios'
+import { Modal } from 'bootstrap'
 
 import firebase from 'firebase/app'
 import 'firebase/messaging'
@@ -44,6 +49,11 @@ export default {
     const router = useRouter()
     const store = useStore()
 
+    const state = ref({
+      showError: false,
+       showError2: false,
+    })
+
     const staffLoginConfirm = () => {
       console.log("staff 로그인 확인버튼 클릭됨!")
 
@@ -54,17 +64,18 @@ export default {
       })      
         .then(res => {
           // console.log(res)
+          state.value.showError = false
           // jwt토큰 저장 & 스토어 갱신
           localStorage.setItem('token', res.data.accessToken)
+          localStorage.setItem('staffData', JSON.stringify(res.data))
           const jwtToken = localStorage.getItem('token')
           store.dispatch("staff_login")
           console.log("상담사 로그인후 store 확인: ", store.state.isStaff)
-
+        
           // modal 닫는 부분
           const staffLoginModal = document.querySelector('#staff-login-modal')
-          staffLoginModal.classList.remove("in")
-          document.querySelector(".modal-backdrop").remove()
-          staffLoginModal.style.display = "none"
+          let modal = Modal.getOrCreateInstance(staffLoginModal)
+          modal.hide()
 
           // fcm 토큰 가져오기 -------------- 시작
           messaging.getToken({vapidKey: "BK_qGmvUaOH-PiEnOcd5Or0eLaUIcLsucSVPOC8mySPxp1MEAroR9K6btphRoGo3Q7OLYd9iFT_O0u-8OdSSxAU"})
@@ -98,24 +109,31 @@ export default {
         .catch(err => {
           console.log('staff 로그인 error발생!')
           console.log(err.response.data)
-          const statusCode = err.response.data.statusCode
-          if (statusCode === 401) {
-            staffLoginCredentials.value.password = ''
-          }
-          else if (statusCode === 404) {
-            staffLoginCredentials.value.userId = ''
-            staffLoginCredentials.value.password = ''
-          }
+         
+         const statusCode = err.response.data.statusCode
+         if (statusCode === 401 || statusCode===404) {
+             staffLoginCredentials.value.password = ''
+             state.value.showError = true
+             state.value.showError2 = false
+           }
+           else if (statusCode === 403) {
+                 state.value.showError = false
+             state.value.showError2 = true
+             staffLoginCredentials.value.userId = ''
+             staffLoginCredentials.value.password = ''
+           }
         })
     }
     
     const staffLoginCancel = () => {
-      console.log("staff 로그인 확인버튼 클릭됨!")
+      console.log("staff 로그인 취소버튼 클릭됨!")
       staffLoginCredentials.value.userId = ""
       staffLoginCredentials.value.password = ""
+      state.value.showError = false
     }
 
     return {
+      state,
       staffLoginCredentials,
       staffLoginConfirm,
       staffLoginCancel,
@@ -142,5 +160,9 @@ export default {
 .btn-yes-no {
   width:25%;
   border-radius:2rem;
+}
+
+.modal-error-message {
+  font-size: 0.85em;
 }
 </style>

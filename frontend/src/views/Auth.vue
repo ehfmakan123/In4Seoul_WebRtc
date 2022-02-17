@@ -4,13 +4,15 @@
     <auth-desk-login-modal/>
     <auth-staff-login-modal/>
     <auth-staff-signup-modal/>
-    <!-- <AuthDeskLoginModal/>
-    <AuthStaffLoginModal/>
-    <AuthStaffSignupModal/> -->
 
+    <div class="d-flex justify-content-center">
+      <img src="../assets/logo.png" style="width: 13rem;"/>
+      <div class="align-self-center ms-3">
+        <h1 class="t-gray-4">In <span class="t-blue-4">4</span> Seoul</h1>
+        <h2 class="mt-4 t-gray-4">서울시 화상 관광 안내 서비스</h2>
+      </div>
+    </div>
 
-    <h1>서울시 여행 안내 데스크</h1>
-    <h1 class="mt-3">Seoul Travel Information Service</h1>
 
     <!--auth-button-container-->
     <div id="auth-button-container" class="container">
@@ -112,6 +114,15 @@ export default {
       moveToAdminLogin,
       moveToAdminStaff
     }
+  },
+  created(){
+    const router = useRouter()
+    console.log("true", (localStorage.getItem('deskData') != null));
+    if(localStorage.getItem('deskData') != null){
+      router.push({ name: 'DeskHome' })
+    }else if(localStorage.getItem('staffData') !=null ){
+      router.push({ name: 'StaffHome' })
+    }
   }
 }
 </script>
@@ -119,17 +130,21 @@ export default {
 <style scoped>
 #auth-container {
   text-align: center;
-  margin-top: 15vh;
+  margin-top: 10vh;
 }
 
 #auth-container h1 {
   font-weight: bold;
-  font-size: 4rem;
+  font-size: 5rem;
 }
 
+#auth-container h2 {
+  font-weight: bold;
+  font-size: 2.5rem;
+}
 
 #auth-button-container {
-  margin-top: 10vh;
+  margin-top: 7vh;
 }
 
 #auth-button-container p {

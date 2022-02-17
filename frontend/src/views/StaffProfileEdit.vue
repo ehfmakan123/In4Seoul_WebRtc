@@ -1,5 +1,5 @@
 <template>
-  <div class="row flex-nowrap bg-gray-1">
+  <div class="row flex-nowrap bg-gray-1 mw-100">
     <staff-sidebar/>
       <div class="w-80 p-5 staff-profile">
               <h2 class="text-start mt-3 fw-bold">프로필조회 상담사페이지</h2>
@@ -155,7 +155,11 @@ export default {
     }
   },
   created () {
- 
+    const router = useRouter()
+
+    if(!localStorage.getItem('staffData')){
+        router.push({ name: 'Auth' })
+    }    
     const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`

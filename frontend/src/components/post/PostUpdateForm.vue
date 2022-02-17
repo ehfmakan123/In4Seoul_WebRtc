@@ -12,9 +12,9 @@
             <p class="mt-3 text-small">※ 개인정보는 남기지 마세요.</p>
           </div>
           <div class="d-flex justify-content-end p-2 px-3">
-            <button @click="tryDelete" type="button" class="btn btn btn-outline-danger t-red-1 bd-red-1 rounded-btn me-auto">삭제</button>
-            <button @click="savePost" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">저장</button>
-            <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn">닫기</button>
+            <button @click="tryDelete" type="button" class="btn btn btn-outline-danger t-red-1 bd-red-1 rounded-btn me-auto">Delete</button>
+            <button @click="savePost" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">Save</button>
+            <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn">Close</button>
           </div>
         </div>
       </div>
@@ -26,7 +26,7 @@
 import axios from 'axios'
 import { computed, ref } from 'vue'
 import { Modal } from 'bootstrap'
-import { useStore } from 'vuex'
+// import { useStore } from 'vuex'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 
@@ -34,12 +34,10 @@ export default {
   name: 'PostUpdateForm',
   components: {
   },
-  props:{
-    post: Object,
-  },
-  setup(props) {
-    const store = useStore()
-    const deskData = JSON.parse(localStorage.getItem('deskData'))
+  props:["post"],
+  setup(props, {emit}) {
+    // const store = useStore()
+    // const deskData = JSON.parse(localStorage.getItem('deskData'))
 
     const state = ref({
       myPost: {
@@ -79,7 +77,8 @@ export default {
           console.log('업데이트 성공!')
           console.log(res.data)
           // fetchPostList
-          store.dispatch('fetchPostList', deskData.deskPk)
+          // store.dispatch('fetchPostList', deskData.deskPk)
+          emit("post-updated")
 
           // 모달창 끄기
           const updateModal = document.querySelector('#updateModal')

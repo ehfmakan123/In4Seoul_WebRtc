@@ -1,5 +1,5 @@
 <template>
-    <div class="row flex-nowrap bg-gray-1">
+    <div class="row flex-nowrap bg-gray-1 mw-100">
      <AdminSidebar />
      <router-view/> 
       <div class="w-80 p-5">
@@ -117,6 +117,8 @@
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 //import AdminAreas from '@/components/admin/AdminAreas.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
+
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 //const id1 = this.id
@@ -154,7 +156,13 @@ export default({
         //AdminAreas
     },
     created(){
-       const token = localStorage.getItem('token')
+      const router = useRouter()
+
+      if(!localStorage.getItem('adminData')){
+        router.push({ name: 'AdminAuth' })
+      }
+
+      const token = localStorage.getItem('token')
       const config = {
         Authorization: `Bearer ${token}`
       }
@@ -255,9 +263,9 @@ export default({
           url: `${SERVER_HOST}/admin/staff/`+ this.id,
           headers: config,
           data: {
-              // name: this.name,
-              // phone: this.phone,
-              // email: this.email,
+              name: this.name,
+              phone: this.phone,
+              email: this.email,
               deleteYN: "N",
               approveYN: this.approveYN,
               areaId: this.areaId,
@@ -289,9 +297,9 @@ export default({
           url: `${SERVER_HOST}/admin/staff/`+ this.id,
           headers: config,
           data: {
-              // name: this.name,
-              // phone: this.phone,
-              // email: this.email,
+              name: this.name,
+              phone: this.phone,
+              email: this.email,
               deleteYN: "Y",
               approveYN: this.approveYN,
               areaId: this.areaId,

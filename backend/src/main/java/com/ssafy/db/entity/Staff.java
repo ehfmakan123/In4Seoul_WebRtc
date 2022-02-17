@@ -3,7 +3,6 @@ package com.ssafy.db.entity;
 import lombok.Getter;
 import lombok.Setter;
 import javax.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -22,7 +21,7 @@ public class Staff  extends BaseTimeEntity{
     String email;
     @ManyToOne(fetch = FetchType.LAZY )
     @JoinColumn(name="areas_id")
-    private Areas areas;
+    private Area area;
     @Column(name = "admin_yn")
     String adminYN;
     @Column(name = "delete_yn")
@@ -40,4 +39,11 @@ public class Staff  extends BaseTimeEntity{
     @Column(name="match_yn")
     String matchYN;
 
+
+    public Staff() {
+    }
+
+    public Staff(int id) {
+        this.id = id;
+    }
 }

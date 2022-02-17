@@ -10,6 +10,9 @@ import '../src/common/css/common.css'
 import firebase from 'firebase/app'
 import 'firebase/messaging'
 
+//import axios from 'axios'
+//const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
+
 // --Firebase 코드 시작
 const firebaseConfig = {
   apiKey: "AIzaSyDxJhsqdI1EY9CUpQH1GwhjgDaH3LaeCrY",
@@ -49,5 +52,71 @@ messaging.onMessage(payload => {
   // alert(payload.notification.title)
 })
 // --Firebase 코드 끝
+
+
+
+
+// 브라우저 종료시 localStorage 초기화
+// window.addEventListener('unload',()=>{
+
+
+//   const deskData=JSON.parse(localStorage.getItem("deskData"));
+  
+//  if(deskData==null)
+//  {
+//  localStorage.clear();
+//  }
+// })
+
+// window.addEventListener('beforeunload',()=>{
+
+
+//   const deskData=JSON.parse(localStorage.getItem("deskData"));
+  
+//  if(deskData==null)
+//  {
+//   const jwtToken = localStorage.getItem('token')
+//   axios({
+//     method: 'post',
+//     url: `${SERVER_HOST}/staff/logout`,
+//     headers : {
+//       Authorization: `Bearer ${jwtToken}` 
+//     }
+//   })
+//     .then((res) => {
+//       console.log(res.data)
+//       localStorage.clear();
+//     }).catch((err) => console.log(err))
+//  }
+
+
+
+// })
+
+// window.onbeforeunload = function() {
+
+//   const deskData=JSON.parse(localStorage.getItem("deskData"));
+//  if(confirm("test")){
+//   if(deskData==null)
+//  {
+//   const jwtToken = localStorage.getItem('token')
+//   axios({
+//     method: 'post',
+//     url: `${SERVER_HOST}/staff/logout`,
+//     headers : {
+//       Authorization: `Bearer ${jwtToken}` 
+//     }
+//   })
+//     .then((res) => {
+//       console.log(res.data)
+//       localStorage.clear();
+//     }).catch((err) => console.log(err))
+//  }
+//  } 
+ 
+//   return '';
+// };
+
+
 
 createApp(App).use(store).use(router).mount('#app')

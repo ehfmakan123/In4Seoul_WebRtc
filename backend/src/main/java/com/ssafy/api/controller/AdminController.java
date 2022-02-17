@@ -4,12 +4,11 @@ import com.ssafy.api.dto.*;
 import com.ssafy.api.request.UserLoginPostReq;
 import com.ssafy.api.response.UserLoginPostRes;
 import com.ssafy.api.service.AdminService;
-import com.ssafy.api.service.UserService;
 import com.ssafy.common.model.response.BaseResponseBody;
 import com.ssafy.common.model.response.ListResult;
 import com.ssafy.common.model.response.SingleResult;
 import com.ssafy.common.util.JwtTokenUtil;
-import com.ssafy.db.entity.Desks;
+import com.ssafy.db.entity.Desk;
 import com.ssafy.db.entity.Staff;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -33,8 +32,7 @@ public class AdminController {
     @Autowired
     AdminService adminService;
 
-    @Autowired
-    UserService userService;
+
 
      @Autowired
      PasswordEncoder passwordEncoder;
@@ -54,7 +52,8 @@ public class AdminController {
         if (admin == null) {
             return ResponseEntity.status(404).body(UserLoginPostRes.of(404, "존재하지 않는 계정입니다", null));
         }
-        if (password.equals(admin.getPassword())) {
+
+        if (passwordEncoder.matches(password, admin.getPassword())) {
 
 
             // 로그인도 성공하고 admin 계정이 맞는경우
@@ -139,8 +138,13 @@ public class AdminController {
             @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
     })
     public ResponseEntity<BaseResponseBody> staffUpdate(@PathVariable("id") int id, @RequestBody StaffDto staffDto) {
+        System.out.println("=====================시작부분======================");
 
         StaffDto result = adminService.getConsultant(id);
+
+
+
+
 
         boolean b = adminService.updateConsultant(id, staffDto);
 
@@ -162,7 +166,7 @@ public class AdminController {
 
 
 
-        Desks result = adminService.findByDeskId(request.getUserId());
+        Desk result = adminService.findByDeskId(request.getUserId());
 
         if(result==null)
         {

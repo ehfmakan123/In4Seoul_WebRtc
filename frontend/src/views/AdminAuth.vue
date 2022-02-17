@@ -57,8 +57,10 @@ export default {
         .then(res => {
           console.log(res)
           localStorage.setItem('token', res.data.accessToken)
+          localStorage.setItem('adminData', JSON.stringify(res.data))
+
           router.push({ name: 'AdminStaff' })
-          store.dispatch("staff_login")
+          store.dispatch("admin_login")
 
           // modal 닫는 부분
         })
@@ -79,6 +81,12 @@ export default {
     return {
       adminLoginCredentials,
       adminLoginConfirm,
+    }
+  },
+  created(){
+    const router = useRouter()
+    if(localStorage.getItem('adminData') != null){
+      router.push({ name: 'AdminStaff' })
     }
   }
 }

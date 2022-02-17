@@ -1,5 +1,5 @@
 <template>
-    <div class="row flex-nowrap bg-gray-1">
+    <div class="row flex-nowrap bg-gray-1 mw-100">
      <AdminSidebar />
      <router-view/> 
         <div class="w-80 p-5">
@@ -54,7 +54,7 @@
         <div class="modal-dialog  modal-dialog-centered">
           <div class="modal-content modal-rounded bd-red-2 px-4 pt-3 pb-4">
             <div id="psot-login-modal-header" class="d-flex justify-content-center align-items-center mt-3">
-              <h5 class="modal-title ms-3 fs-5" >계정을 <strong class="t-red-2">삭제</strong>하시겠습니까?</h5>
+              <h5 class="modal-title ms-3 fs-5" >게시글을 <strong class="t-red-2">삭제</strong>하시겠습니까?</h5>
             </div>
             <div class="modal-body">
               <div class="d-flex justify-content-center mt-4">
@@ -86,6 +86,7 @@
 <script>
 import AdminSidebar from '@/components/admin/AdminSidebar.vue'
 import axios from 'axios'
+import { useRouter } from 'vue-router'
 
 const SERVER_HOST = process.env.VUE_APP_SERVER_HOST
 //const id1 = this.id
@@ -108,6 +109,11 @@ export default({
     },
     
     created(){
+       const router = useRouter()
+
+       if(!localStorage.getItem('adminData')){
+          router.push({ name: 'AdminAuth' })
+       }
        console.log(this.$route.params.id)
        //const test123 = this.$route.params.id
     },

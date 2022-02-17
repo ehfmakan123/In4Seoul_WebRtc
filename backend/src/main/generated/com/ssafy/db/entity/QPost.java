@@ -11,16 +11,16 @@ import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
- * QPosts is a Querydsl query type for Posts
+ * QPost is a Querydsl query type for Post
  */
 @Generated("com.querydsl.codegen.EntitySerializer")
-public class QPosts extends EntityPathBase<Posts> {
+public class QPost extends EntityPathBase<Post> {
 
-    private static final long serialVersionUID = 468289873L;
+    private static final long serialVersionUID = 846390114L;
 
     private static final PathInits INITS = PathInits.DIRECT2;
 
-    public static final QPosts posts = new QPosts("posts");
+    public static final QPost post = new QPost("post");
 
     public final QBaseTimeEntity _super = new QBaseTimeEntity(this);
 
@@ -29,7 +29,7 @@ public class QPosts extends EntityPathBase<Posts> {
     //inherited
     public final StringPath createdAt = _super.createdAt;
 
-    public final QDesks desk;
+    public final QDesk desk;
 
     public final NumberPath<Long> id = createNumber("id", Long.class);
 
@@ -40,25 +40,25 @@ public class QPosts extends EntityPathBase<Posts> {
     //inherited
     public final StringPath updatedAt = _super.updatedAt;
 
-    public QPosts(String variable) {
-        this(Posts.class, forVariable(variable), INITS);
+    public QPost(String variable) {
+        this(Post.class, forVariable(variable), INITS);
     }
 
-    public QPosts(Path<? extends Posts> path) {
+    public QPost(Path<? extends Post> path) {
         this(path.getType(), path.getMetadata(), PathInits.getFor(path.getMetadata(), INITS));
     }
 
-    public QPosts(PathMetadata metadata) {
+    public QPost(PathMetadata metadata) {
         this(metadata, PathInits.getFor(metadata, INITS));
     }
 
-    public QPosts(PathMetadata metadata, PathInits inits) {
-        this(Posts.class, metadata, inits);
+    public QPost(PathMetadata metadata, PathInits inits) {
+        this(Post.class, metadata, inits);
     }
 
-    public QPosts(Class<? extends Posts> type, PathMetadata metadata, PathInits inits) {
+    public QPost(Class<? extends Post> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.desk = inits.isInitialized("desk") ? new QDesks(forProperty("desk"), inits.get("desk")) : null;
+        this.desk = inits.isInitialized("desk") ? new QDesk(forProperty("desk"), inits.get("desk")) : null;
     }
 
 }
