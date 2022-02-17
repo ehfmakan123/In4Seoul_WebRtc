@@ -1,5 +1,5 @@
 <template>
-  <div class="row flex-nowrap bg-gray-1">
+  <div class="row flex-nowrap bg-gray-1 mw-100">
     <staff-sidebar/>
       <div class="w-80 p-5 staff-profile">
               <h2 class="text-start mt-3 fw-bold">프로필조회 상담사페이지</h2>
