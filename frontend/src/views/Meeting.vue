@@ -454,13 +454,24 @@ export default {
 					}
 				})
 				.then((res) => {
-					console.log('살려줘 meeting end', res)
+					console.log('Staff meeting end', res)
 				})
 				.catch((err) => console.log(err))
 			}
 
 			if (localStorage.getItem('deskData')) {
 				this.$router.push({ name: 'DeskHome' })
+				axios({
+					method: 'delete',
+					url: `${SERVER_HOST}/desk/meeting/end`,
+					headers : {
+						Authorization: `Bearer ${localStorage.getItem('token')}` 
+					},
+				})
+				.then((res) => {
+					console.log('Desk meeting end', res)
+				})
+				.catch((err) => console.log(err))
 			}
 			
 		},

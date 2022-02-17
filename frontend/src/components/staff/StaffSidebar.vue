@@ -136,7 +136,13 @@ export default {
           })
           .catch((err) => console.log('살려줘',err))
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          console.log(err)
+          const statusCode = err.response.data.statusCode
+          if (statusCode === 409) {
+            waitingMeetingCount.value = 0
+          }
+        })
     }
 
     const moveToStaffProfile = () => {
@@ -196,7 +202,7 @@ export default {
           waitingMeetingCount.value = res.data.data.count
           console.log(`대기 상담수 갱신!!: ${waitingMeetingCount.value}`)
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {console.log(err)})
     }
 
     getWaitingMeeting()
