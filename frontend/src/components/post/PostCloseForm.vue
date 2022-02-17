@@ -4,10 +4,13 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bd-blue-4 ms-3">
           <div class="modal-body p-4">
-            <p class="fw-bold m-4" style="font-size: 1.1rem;">내용을 저장하지 않고 닫으시겠습니까?</p>
-            <div class="d-flex justify-content-end pt-2 mt-4">
-              <button @click="close" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn" data-bs-dismiss="modal">확인</button>
-              <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">취소</button>
+            <div class="mt-4 ms-3">
+              <p class="fw-bold" style="font-size: 1.1rem;">내용을 저장하지 않고 닫으시겠습니까?</p>
+              <p class="mt-2 fs-6 fw-light t-gray-3">Do you want close without saving the contents?</p>
+            </div>
+            <div class="d-flex justify-content-end pt-3">
+              <button @click="close" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn" data-bs-dismiss="modal">Yes</button>
+              <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">No</button>
             </div>
           </div>
         </div>

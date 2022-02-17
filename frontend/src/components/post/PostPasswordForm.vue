@@ -5,14 +5,14 @@
         <div class="modal-content bd-blue-4 ms-3">
           <div class="modal-body p-4">
             <div class="input-group pt-1">
-              <span class="input-group-text bg-white border-white fw-bold" id="post-password">비밀번호</span>
+              <span class="input-group-text bg-white border-white fw-bold" id="post-password">Password</span>
               <input type="password" class="form-control bd-blue-3" v-model="state.passwordConfirm" placeholder="비밀번호를 입력해주세요">
             </div>
             
             <div class="d-flex justify-content-end pt-4">
               <span id="password-error" v-show="state.showPasswordError" class="t-red-2 text-small my-3 me-auto ms-3">비밀번호가 일치하지 않습니다</span>
-              <button @click="confirm" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">확인</button>
-              <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">닫기</button>
+              <button @click="confirm" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">Confirm</button>
+              <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>

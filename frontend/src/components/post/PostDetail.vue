@@ -19,8 +19,8 @@
             <p class="my-2">{{ selectedPost.content }}</p>
           </div>
           <div class="d-flex justify-content-end p-2">
-            <button @click="tryEdit" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">편집</button>
-            <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">닫기</button>
+            <button @click="tryEdit" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">Edit</button>
+            <button type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">Close</button>
           </div>
         </div>
       </div>

@@ -31,17 +31,20 @@
           <div v-if="state.deskId === deskData.deskPk" class="d-flex align-items-center">
             <div class="me-3">
               <p @click="createPost" class="t-blue-4 fw-bold text-center" data-bs-toggle="modal" data-bs-target="#createModal">글 남기기</p>
-              <p @click="createPost" class="t-blue-4 fw-light mt-1 fs-6 text-center" data-bs-toggle="modal" data-bs-target="#createModal">write</p>
+              <p @click="createPost" class="t-blue-4 fw-light mt-1 fs-6 text-center" data-bs-toggle="modal" data-bs-target="#createModal">Write</p>
             </div>
             <a @click="createPost" class="fs-1 t-blue-4 me-5" data-bs-toggle="modal" data-bs-target="#createModal">
               <i class="bi bi-plus-circle-fill"></i>
             </a>
           </div>
-          <button v-else @click="backToCurrent" class="btn btn-outline-info me-3 border-0">글을 남기려면 현재 데스크로 돌아가세요!</button>
+          <button v-else @click="backToCurrent" class="btn btn-outline-info me-3 border-0">글을 남기려면 현재 데스크로 돌아가세요!
+            <span class="fs-6 fw-light t-gray-3">If you want to write a post, go back to the current desk.</span>
+          </button>
           <!-- 지역 선택 필터 -->
           <div class="dropdown me-3">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ state.nowAreaName }}
+            <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowAreaName.korName }} 
+              <span class="fs-6 fw-light">{{state.nowAreaName.engName}}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li
@@ -54,8 +57,9 @@
           </div>
           <!-- 데스크 선택 필터 -->
           <div class="dropdown">
-            <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
-              {{ state.nowDeskName }}
+            <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+              {{ state.nowDeskName.korName }}
+              <span class="fs-6 fw-light">{{state.nowDeskName.engName}}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li
@@ -154,8 +158,8 @@ export default {
 
     const state = ref({
       postList: {}, // computed(() => store.state.postList),
-      nowAreaName: deskData.areaKorName,
-      nowDeskName: deskData.deskKorName,
+      nowAreaName: {korName: deskData.areaKorName, engName: deskData.areaEngName},
+      nowDeskName: {korName: deskData.deskKorName, engName: deskData.deskEngName},
       areaList: [],
       deskList: [],
       deskId: deskData.deskPk,

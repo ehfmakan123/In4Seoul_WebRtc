@@ -12,9 +12,9 @@
             <p class="mt-3 text-small">※ 개인정보는 남기지 마세요.</p>
           </div>
           <div class="d-flex justify-content-end p-2 px-3">
-            <button @click="tryDelete" type="button" class="btn btn btn-outline-danger t-red-1 bd-red-1 rounded-btn me-auto">삭제</button>
-            <button @click="savePost" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">저장</button>
-            <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn">닫기</button>
+            <button @click="tryDelete" type="button" class="btn btn btn-outline-danger t-red-1 bd-red-1 rounded-btn me-auto">Delete</button>
+            <button @click="savePost" type="button" class="btn btn-outline-primary t-blue-4 bd-blue-4 rounded-btn">Save</button>
+            <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn">Close</button>
           </div>
         </div>
       </div>

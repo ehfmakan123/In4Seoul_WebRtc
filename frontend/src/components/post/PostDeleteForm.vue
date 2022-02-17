@@ -4,8 +4,12 @@
       <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content bd-red-1 ms-3">
           <div class="modal-body p-4">
-            <p class="fw-bold m-4" style="font-size: 1.1rem;">글을 <span class="t-red-1">삭제</span>하시겠습니까?</p>
-            <div class="d-flex justify-content-end pt-2 mt-4">
+            <div class="mt-4 ms-4">
+              <p class="fw-bold" style="font-size: 1.1rem;">글을 <span class="t-red-1">삭제</span>하시겠습니까?</p>
+              <p class="mt-2 fs-6 fw-light t-gray-3">Do you want to delete the Post?</p>
+
+            </div>
+            <div class="d-flex justify-content-end pt-3">
               <button @click="deletePost" type="button" class="btn btn-outline-danger t-red-1 bd-red-1 rounded-btn" data-bs-dismiss="modal">삭제</button>
               <button @click="cancle" type="button" class="btn btn-outline-dark ms-3 rounded-btn" data-bs-dismiss="modal">취소</button>
             </div>
