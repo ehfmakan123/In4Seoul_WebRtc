@@ -12,7 +12,7 @@
 					</div> -->
 					<div id="session-video-body" class="container mw-100 p-0">
 						<div class="row">
-						<div id="video-container" class="container col-2 mt-2 d-flex justify-content-center align-items-center min-vh-50" style="height: 70vh;">
+						<div id="video-container" class="container col-2 d-flex justify-content-center align-items-center min-vh-50" style="height: 70vh;">
 							<div class="col">
 								<user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" class="col-6"/>
 								<user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)" class="col-6"/>
@@ -618,6 +618,14 @@ export default {
 /* #screen-container video {
 	width: 90%;
 } */
+
+#screen-container video {
+	border-style: solid;
+	border-width: 2px;
+	/* border-color: #6B6B6B; */
+	border-color: #007DC3;
+	border-radius: 5px;
+}
 
 #session-chat {
 	padding: 0px;
