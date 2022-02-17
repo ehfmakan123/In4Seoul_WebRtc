@@ -6,7 +6,7 @@
                     <span class="fs-5 d-none d-sm-inline"></span>
                 </a>
                 <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-center" id="menu">
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                       <div type="button" @click="moveToStaffHome" class="nav-link text-white align-middle"> 
                         <span class=" d-none d-sm-inline">
                             <i class="bi bi-headset fs-0"></i>
@@ -15,17 +15,17 @@
                         
                       </div>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                       <div type="button" @click="clickAlarm" class="nav-link text-white align-middle"> 
                         <span class="ms-1 d-none d-sm-inline">
-                          <i class="bi bi-bell-fill fs-0"></i>
+                          <i id="alarm-icon" class="bi bi-bell-fill fs-0"></i>
                           <p>상담 알림</p>
-                          <p>{{ waitingMeetingCount }}</p>
+                          <p class="bg-blue-2">{{ waitingMeetingCount }}</p>
                           <!-- v-bind:value="waitingMeetingCount.value" -->
                         </span>
                       </div>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item text-center">
                       <div type="button" @click="moveToStaffProfile" class="nav-link text-white align-middle"> 
                         <span class="ms-1 d-none d-sm-inline">
                           <i class="bi bi-person-fill fs-0"></i>
@@ -96,7 +96,7 @@ export default {
       getWaitingMeeting()
       // console.log("제목: ", payload.notification.title)
       // console.log("제목: ", payload.data.title)
-      // alert(payload.notification.title)
+      // alert('상담 요청이 들어왔습니다!')
     })
 
     const moveToStaffHome = () => {
@@ -129,18 +129,19 @@ export default {
             }
           })
           .then((res) => {
-            console.log('살려줘')
             localStorage.setItem('meetingLogId', res.data.data.meetingLogId)
-            console.log('살려줘',res)
+            console.log(res)
             router.push({ name: 'Meeting'})
           })
-          .catch((err) => console.log('살려줘',err))
+          .catch((err) => console.log(err))
         })
         .catch((err) => {
           console.log(err)
           const statusCode = err.response.data.statusCode
           if (statusCode === 409) {
             waitingMeetingCount.value = 0
+            getWaitingMeeting()
+            alert('연결할 상담이 없습니다.')
           }
         })
     }
@@ -177,12 +178,6 @@ export default {
             })
             .catch((err) => console.log(err))
 
-
-
-
-
-
-     
     }
 
     const getWaitingMeeting = () => {
@@ -201,6 +196,14 @@ export default {
           // console.log(typeof res.data.data.count)
           waitingMeetingCount.value = res.data.data.count
           console.log(`대기 상담수 갱신!!: ${waitingMeetingCount.value}`)
+
+          const alarmIcon = document.querySelector('#alarm-icon')
+          if (waitingMeetingCount.value) {
+            alarmIcon.classList.add('text-warning')
+          } else {
+            alarmIcon.classList.remove('text-warning')
+          }
+
         })
         .catch((err) => {console.log(err)})
     }
