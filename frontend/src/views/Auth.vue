@@ -114,6 +114,15 @@ export default {
       moveToAdminLogin,
       moveToAdminStaff
     }
+  },
+  created(){
+    const router = useRouter()
+    console.log("true", (localStorage.getItem('deskData') != null));
+    if(localStorage.getItem('deskData') != null){
+      router.push({ name: 'DeskHome' })
+    }else if(localStorage.getItem('staffData') !=null ){
+      router.push({ name: 'StaffHome' })
+    }
   }
 }
 </script>

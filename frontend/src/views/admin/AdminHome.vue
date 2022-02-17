@@ -11,7 +11,9 @@ export default {
     if(!localStorage.getItem('adminData')){
       router.push({ name: 'AdminAuth' })
     }
-    
+    else if(localStorage.getItem('adminData') != null){
+      router.push({ name: 'AdminStaff' })
+    }
     
   },
   methods: {
