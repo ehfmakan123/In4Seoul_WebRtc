@@ -20,7 +20,7 @@
                         <span class="ms-1 d-none d-sm-inline">
                           <i id="alarm-icon" class="bi bi-bell-fill fs-0"></i>
                           <p>상담 알림</p>
-                          <p class="bg-blue-2">{{ waitingMeetingCount }}</p>
+                          <p class="bg-blue-2 mt-1 d-inline-block alarm-number py-1">{{ waitingMeetingCount }}</p>
                           <!-- v-bind:value="waitingMeetingCount.value" -->
                         </span>
                       </div>
@@ -33,7 +33,7 @@
                         </span>
                       </div>
                     </li>
-                    <li class="nav-item text-center">
+                    <li class="nav-item text-center mt-2 ms-1">
                       <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#staffModal"> 
                           <span class="d-none d-sm-inline mx-1 text-center">
                               <i class="bi bi-box-arrow-right fs-0"></i>
@@ -209,9 +209,9 @@ export default {
 
           const alarmIcon = document.querySelector('#alarm-icon')
           if (waitingMeetingCount.value) {
-            alarmIcon.classList.add('text-warning')
+            alarmIcon.classList.add('alarm-yellow')
           } else {
-            alarmIcon.classList.remove('text-warning')
+            alarmIcon.classList.remove('alarm-yellow')
           }
 
         })
@@ -241,5 +241,14 @@ export default {
   .col-xl-1-2 {
       flex: 0 0 auto;
       width: 10.666667% important;
+  }
+
+  .alarm-yellow {
+    color: #fbfb43;
+  }
+
+  .alarm-number {
+    border-radius: 10px;
+    width: 2rem;
   }
 </style>
