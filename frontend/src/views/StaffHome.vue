@@ -45,7 +45,7 @@
       </ul>
     </nav> active class 추가, aria-current="page", -->
 
-    <nav aria-label="..." class="d-flex justify-content-center">
+    <nav aria-label="..." class="d-flex justify-content-center fixed-bottom mb-4">
       <ul class="pagination d-flex justify-content-between">
         <li v-if="start" class="page-item">
           <a class="page-link" href="#" @click="gotostartpage">«</a>
