@@ -4,7 +4,7 @@
 			<div class="row">
 				<div id="session-video" v-if="session" class="col-9">
 					<div id="session-video-header">
-						<h1 v-if="!isStaff" id="session-video-title" class="fs-2 fw-bold">궁금한 것을 물어보세요 <span class="fs-3 fw-normal">Ask any Question</span></h1>
+						<h1 v-if="!isStaff" id="session-video-title" class="fs-2 fw-bold">궁금한 것을 물어보세요 <span class="fs-3 fw-bold t-blue-2" style="font-style:italic">Online Infromation Service</span></h1>
 						<h1 v-if="isStaff" id="session-video-title" class="fs-2 fw-bold"><span class="fs-3">상담사</span> {{ myUserName }}</h1>
 					</div>
 					<!-- <div id="main-video" class="col-6">
@@ -22,10 +22,12 @@
 						</div>
 						<div id="button-container" class="text-center mb-4 fixed-bottom">
 							<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
-							<button class="btn btn-lg btn-outline-danger my-button" @click="leaveSession" style="width: 100px">Exit</button>
-							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffVideo()">화면on/off</button>
+							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffVideo()">웹캠on/off</button>
+							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffScreen()">화면on/off</button>
 							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffSound()">소리on/off</button>
-							<button v-if="isStaff && !isScreenOn" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+							<button v-if="isStaff && !screenShared" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
+							<button v-if="isStaff" class="btn btn-lg btn-outline-danger my-button" @click="leaveSession" style="width: 150px">Exit</button>
+							<button v-if="!isStaff" class="btn btn-lg btn-outline-danger my-button" @click="leaveSession" style="width: 150px; margin-right:100px;">Exit</button>
 						</div>
 					</div>
 					</div>
@@ -111,7 +113,7 @@ export default {
 			// Screen Sharing
 			OVScreen: undefined,
 			sessionScreen: undefined,
-			screensharing: false,
+			screenShared: false,
 			publisherScreen: undefined,
 
 			// ovToken 추가
@@ -171,14 +173,20 @@ export default {
 				this.publisher.publishAudio(false)
 			}
 		},
+		onoffScreen () {
+			this.isScreenOn = !this.isScreenOn
+			if(this.isScreenOn) {
+				this.publisherScreen.publishVideo(true)
+			}else {
+				this.publisherScreen.publishVideo(false)
+			}
+		},
 		onoffVideo () {
 			this.isWebcamOn = !this.isWebcamOn
 			if(this.isWebcamOn) {
 				this.publisher.publishVideo(true)
-				this.publisherScreen.publishVideo(true)
 			}else {
 				this.publisher.publishVideo(false)
-				this.publisherScreen.publishVideo(false)
 			}
 		},
 		// muteMyVideo () {
@@ -199,6 +207,7 @@ export default {
 			publisher.once('accessAllowed', (event) => {
 				console.log(event)
 				this.isScreenOn = true
+				this.screenShared = true
 					publisher.stream.getMediaStream().getVideoTracks()[0].addEventListener('ended', () => {
 							console.log('User pressed the "Stop sharing" button');
 					});
