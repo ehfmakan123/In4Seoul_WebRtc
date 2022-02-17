@@ -59,6 +59,12 @@
                         </span>
                       </div>
                     </li>
+                    <li class="nav-item ms-2 mt-1">
+                    <div class="d-flex justify-content-center align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#adminLogoutModal">
+                      <i class="bi bi-box-arrow-right fs-3"></i>
+                      <span class="fs-5 d-none d-sm-inline mx-1 text-center">Logout</span>
+                  </div>
+                    </li>
                     <!-- <li class="nav-item">
                       <router-link :to="{ name: 'AdminStaff' }" class="nav-link text-white align-middle px-0" v-on:click="currentTab= 0"> 
                         <span class="ms-1 d-none d-sm-inline">
@@ -93,13 +99,13 @@
                 
 
             </div>
-              <div class="pb-4">
+              <!-- <div class="pb-4">
                   <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#adminLogoutModal">
                       
                       <span class="d-none d-sm-inline mx-1 text-center">Logout</span>
                   </div>
                   
-              </div>            
+              </div>             -->
       </div>
       <!-- Modal -->
       <div class="modal fade" id="adminLogoutModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">

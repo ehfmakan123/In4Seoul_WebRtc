@@ -67,7 +67,14 @@ export default {
 
           router.push({ name: 'Meeting' })
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          const statusCode = err.response.data.statusCode
+          if (statusCode === 409) {
+            alert('상담 가능한 상담원이 없습니다.')
+          } else {
+            console.log(err)
+          }
+        })
 
     }
 

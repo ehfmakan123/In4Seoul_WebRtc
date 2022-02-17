@@ -33,13 +33,22 @@
                         </span>
                       </div>
                     </li>
+                    <li class="nav-item text-center">
+                      <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#staffModal"> 
+                          <span class="d-none d-sm-inline mx-1 text-center">
+                              <i class="bi bi-box-arrow-right fs-0"></i>
+                              <p>Logout</p>
+                              </span>
+                      </div>
+                    </li>
+
                 </ul>
                 <hr>
                 
                 
 
             </div>
-              <div class="pb-4">
+              <!-- <div class="pb-4">
                   <div class="d-flex justify-content-center  align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#staffModal"> 
                       <span class="d-none d-sm-inline mx-1 text-center">
                           <i class="bi bi-box-arrow-right fs-0"></i>
@@ -47,7 +56,7 @@
                           </span>
                   </div>
                   
-              </div>            
+              </div>             -->
       </div>
       <!-- Modal -->
       <div class="modal fade" id="staffModal" tabindex="-1" aria-labelledby="staffModalLabel" aria-hidden="true">
@@ -136,12 +145,13 @@ export default {
           .catch((err) => console.log(err))
         })
         .catch((err) => {
-          console.log(err)
           const statusCode = err.response.data.statusCode
           if (statusCode === 409) {
             waitingMeetingCount.value = 0
             getWaitingMeeting()
             alert('연결할 상담이 없습니다.')
+          } else {
+            console.log(err)
           }
         })
     }

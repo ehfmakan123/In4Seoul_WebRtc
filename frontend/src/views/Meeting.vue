@@ -4,7 +4,7 @@
 			<div class="row">
 				<div id="session-video" v-if="session" class="col-9">
 					<div id="session-video-header">
-						<h1 v-if="!isStaff" id="session-video-title" class="fs-2 fw-bold">궁금한 것을 물어보세요 <span class="fs-3 fw-bold t-blue-2" style="font-style:italic">Online Infromation Service</span></h1>
+						<h1 v-if="!isStaff" id="session-video-title" class="fs-2 fw-bold t-blue-4">궁금한 것을 물어보세요 <span class="fs-4 fw-normal t-blue-2">Online Infromation Service</span></h1>
 						<h1 v-if="isStaff" id="session-video-title" class="fs-2 fw-bold"><span class="fs-3">상담사</span> {{ myUserName }}</h1>
 					</div>
 					<!-- <div id="main-video" class="col-6">
@@ -33,7 +33,7 @@
 					</div>
 				</div>
 				<div id="session-chat" class="col-3">
-					<div id="session-chat-container" class="bg-gray-1 py-1 px-2">
+					<div id="session-chat-container" class="bg-gray-1 py-1 px-2 shadow">
 						<div id="chat-header" class="mt-3">
 							<p class="ms-2 fw-bold">Chat</p>
 							<hr style="height:2px">
@@ -645,6 +645,7 @@ export default {
 	/* border-color: #6B6B6B; */
 	border-color: #007DC3;
 	border-radius: 5px;
+	box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
 }
 
 #session-chat {

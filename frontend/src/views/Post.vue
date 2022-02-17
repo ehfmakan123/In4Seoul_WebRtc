@@ -318,7 +318,7 @@ export default {
     return {state, moveToDeskHome, createPost, selectArea, selectDesk,
     thisPage, gotoprepage, gotonextpage, gotostartpage, gotoendpage}
   },
-  create() {
+  created() {
       const router = useRouter()
 
       if(!localStorage.getItem('deskData')){
