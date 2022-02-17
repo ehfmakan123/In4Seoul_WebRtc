@@ -206,8 +206,8 @@ export default {
 							publisher.stream.getMediaStream().getVideoTracks()[0].applyConstraints({
 									// width: 1280,
 									// height: 780
-									width: 900,
-									heigt: 500,
+									width: 1021,
+									heigt: 574,
 							});
 					} catch (error) {
 							console.error('Error applying constraints: ', error);
