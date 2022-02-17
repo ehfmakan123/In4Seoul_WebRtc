@@ -62,19 +62,68 @@
           </div>
         </div>
       </div>
-      
-      <!-- PostList -->
-      <post-list :postList="state.postList"></post-list>
+      <div class="wall-background" style="min-height: 89vh!important;">
+        <div class="foggy-background" style="min-height: 89vh!important;">
+
+          <!-- PostList -->
+          <post-list :postList="state.postList">
+
+          
+          </post-list>
+          <!--pagination-->
+          <nav aria-label="..." class="d-flex justify-content-center">
+          <ul class="pagination d-flex justify-content-between">
+            <li v-if="state.start" class="page-item">
+              <a class="page-link" href="#" @click="gotostartpage">«</a>
+            </li>
+            <li v-else class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">«</a>
+            </li>
+
+            <li v-if="state.pre" li class="page-item">
+              <a class="page-link" href="#" @click="gotoprepage">‹</a>
+            </li>
+            <li v-else li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">‹</a>
+            </li>
+
+            <li
+            v-for="pageitem in state.pageNumbers"
+              v-bind:id="'p'+pageitem"
+              v-bind:class="{' active': pageitem == state.nowPage}"
+              :key="pageitem"
+            class="page-item"><a class="page-link" href="#" @click="thisPage(pageitem, state.deskId)">{{pageitem}}</a></li>
+            
+            
+            <li v-if="state.next" class="page-item">
+              <a class="page-link" href="#" @click="gotonextpage">›</a>
+            </li>
+            <li v-else li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">›</a>
+            </li>
+
+            <li v-if="state.end" class="page-item">
+              <a class="page-link" href="#" @click="gotoendpage">»</a>
+            </li>
+            <li v-else li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1" aria-disabled="true">»</a>
+            </li>
+          </ul>
+          </nav>
+
+        </div>
+      </div> 
     </div>
     
   </div>
 </template>
 
 <script>
-import { computed, ref } from 'vue'
+// import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import PostForm from '@/components/post/PostForm'
 import PostList from '@/components/post/PostList'
-import { useStore } from 'vuex'
+//import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -86,18 +135,34 @@ export default {
     PostForm,
     PostList,
   },
+  // data () {
+  //   return {
+      
+  //   }
+  // },
   setup() {
-    const store = useStore()
+    //const store = useStore()
     const router = useRouter()
     const deskData = JSON.parse(localStorage.getItem('deskData'))
     console.log('LocalStorage deskData: ', deskData)
 
     const state = ref({
-      postList: computed(() => store.state.postList),
+      postList: {}, // computed(() => store.state.postList),
       nowAreaName: deskData.areaKorName,
       nowDeskName: deskData.deskKorName,
       areaList: [],
-      deskList: []
+      deskList: [],
+      deskId: deskData.deskPk,
+      pageNumbers: [],
+      totalPage: undefined,
+      totalCount: undefined,
+      nowPage: 1,
+      startPage: undefined,
+      endPage: undefined,
+      pre: false,
+      next: true,
+      start: false,
+      end: true,  
     })
 
     const moveToDeskHome = () => {
@@ -160,21 +225,98 @@ export default {
 
     const selectDesk = (deskId, deskName) => {
       state.value.nowDeskName = deskName
-      console.log("fetch1")
-      //store.dispatch('fetchPostList', deskId, 1)
-      store.dispatch('fetchPostList',  1 ,deskId)
+      state.value.deskId = deskId
+      //console.log("fetch1")
+      //const obj = {deskId:deskId, nowPage: 1 }
+      //store.dispatch('fetchPostList', obj)
+      thisPage(1, state.value.deskId)
+      //store.dispatch('fetchPostList',  1 ,deskId)
     }
-    
+
+    const thisPage = (np, dkId) => {
+
+      state.value.nowPage= np
+      state.value.deskId = dkId
+       console.log("this deskid: "+state.value.deskId+ "this nowPage" +state.value.nowPage)
+      const token = localStorage.getItem('token')
+      const config = {
+        Authorization: `Bearer ${token}`
+      }
+      axios.get(`${SERVER_HOST}/desk/posts?desk=`+state.value.deskId+`&page=`+state.value.nowPage, {headers: config})
+      .then(response => {
+        console.log(response.data);
+        state.value.postList = response.data.data
+        console.log(response.data.data);
+        state.value.totalPage = response.data.totalPage;
+        console.log(response.data.totalPage);
+        state.value.totalCount = response.data.totalCount;
+        state.value.nowPage =  response.data.nowPage;
+        state.value.startPage =  response.data.startPage;
+        state.value.endPage =  response.data.endPage;
+        state.value.pre =  response.data.pre;
+        state.value.next =  response.data.next;
+        state.value.start =  response.data.start;
+        state.value.end =  response.data.end;
+        state.value.pageNumbers = []
+        for(var i =state.value.startPage; i<=state.value.endPage;i++){
+          state.value.pageNumbers[i-state.value.startPage] = i
+        }
+        console.log("pageNumbers", state.value.pageNumbers)
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    }
+
+    const gotoprepage=()=>{
+      if(state.value.nowPage-5 < 1 ){
+        thisPage(1, state.value.deskId)
+      }else{
+        thisPage(state.value.nowPage-5, state.value.deskId)
+      }
+      
+    }
+    const gotonextpage=()=>{
+      if(state.value.nowPage+5 > state.value.totalPage){
+        thisPage(state.value.totalPage, state.value.deskId)
+      }else{
+        thisPage(state.value.nowPage+5, state.value.deskId)
+      }
+    }
+    const gotostartpage=()=>{
+      thisPage(1, state.value.deskId)
+    }
+    const gotoendpage=()=>{
+      thisPage(state.value.totalPage, state.value.deskId)
+    }
     // created
     //store.dispatch('fetchPostList', , 1)
-    console.log("fetch2")
-    console.log(deskData.deskPk)
-    const obj = {deskId:deskData.deskPk, nowPage: 1 }
-    store.dispatch('fetchPostList', obj)
+    // console.log("fetch2")
+    // const obj = {deskId:deskData.deskPk, nowPage: 1 }
+    // state.value.deskId = deskData.deskPk
+    // store.dispatch('fetchPostList', obj)
+    // console.log("fetch start: ", state.value.postList)
+    
+    // state.value.totalPage = state.value.postList.totalPage;
+    // state.value.totalCount =state.value.postList.totalCount;
+    // state.value.nowPage = state.value.postList.nowPage;
+    // state.value.startPage = state.value.postList.startPage;
+    // state.value.endPage = state.value.postList.endPage;
+    // state.value.pre = state.value.postList.pre;
+    // state.value.next = state.value.postList.next;
+    // state.value.start = state.value.postList.start;
+    // state.value.end = state.value.postList.end;
+    // state.value.pageNumbers = []
+    // for(var i =state.value.startPage; i<=state.value.endPage;i++){
+    //    state.value.pageNumbers[i-state.value.startPage] = i
+    // }
+    // console.log("pagenumbers", state.value.pageNumbers)
+    thisPage(1, deskData.deskPk)
     getAreaList()
     getDeskList(deskData.areaPk)
     
-    return {state, moveToDeskHome, createPost, selectArea, selectDesk}
+    return {state, moveToDeskHome, createPost, selectArea, selectDesk,
+    thisPage, gotoprepage, gotonextpage, gotostartpage, gotoendpage}
   },
   create() {
       const router = useRouter()
@@ -182,6 +324,10 @@ export default {
       if(!localStorage.getItem('deskData')){
         router.push({ name: 'Auth' })
       }   
+  },
+  methods: {
+
+    
   }
 }
 </script>
@@ -231,5 +377,16 @@ export default {
   }
   h3 {
     font-size: 2vh!important;
+  }
+  .wall-background {
+    background-image: url('../assets/wall.jpg');
+    background-repeat : no-repeat;
+    background-size: cover;
+    height: auto;
+  }
+  .foggy-background {
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.1);
   }
 </style>
