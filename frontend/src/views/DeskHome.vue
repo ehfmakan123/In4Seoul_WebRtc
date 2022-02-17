@@ -82,7 +82,7 @@ export default {
       logout,
     }
   },
-  create(){
+  created(){
       const router = useRouter()
 
       if(!localStorage.getItem('deskData')){
