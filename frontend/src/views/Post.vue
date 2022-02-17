@@ -16,8 +16,8 @@
     <div class="min-vh-100 w-100">
       <div class="d-flex justify-content-between">
         <div id="go-deskhome" class="p-3">
-          <p @click="moveToDeskHome" class=" t-gray-3 text-small">back</p>
-          <p @click="moveToDeskHome" class="arrow-button t-gray-3 text-center mt-2">
+          <p @click="moveToDeskHome" class=" t-gray-3 text-small go-home-btn">back</p>
+          <p @click="moveToDeskHome" class="arrow-button t-gray-3 text-center mt-2 go-home-btn">
             <i class="bi bi-arrow-left-circle"></i>
           </p>
         </div>
@@ -359,6 +359,10 @@ export default {
 }
 </script>
 <style>
+  .go-home-btn:hover {
+    cursor: pointer;
+  }
+
   .arrow-button {
     font-size: 2rem;
   }
