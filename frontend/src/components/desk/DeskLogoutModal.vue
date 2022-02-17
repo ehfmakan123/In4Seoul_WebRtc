@@ -8,7 +8,7 @@
         <div class="modal-body">
           <div class="input-group">
             <span class="input-group-text bg-white border-white fw-bold" id="desk-login-password">비밀번호</span>
-            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLogoutCredentials.password">
+            <input type="password" class="form-control bd-blue-3" placeholder="" aria-label="desk-login-password" aria-describedby="desk-login-password" v-model="deskLogoutCredentials.password" @keypress.enter="deskLoginConfirm">
           </div>
           <div class="pt-3" style="height: 2rem;">
             <p id="password-error" v-show="state.showPasswordError" class="text-small t-red-2 me-auto ms-3">비밀번호가 일치하지 않습니다</p>
