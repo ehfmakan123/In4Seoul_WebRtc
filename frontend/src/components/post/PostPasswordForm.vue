@@ -89,6 +89,9 @@ export default {
     }
     const cancle = () => {
       console.log("닫기 버튼 클릭됨")
+      state.value.passwordConfirm = '',
+      state.value.showPasswordError = false
+
       // 모달창 끄기
       const passwordModal = document.querySelector('#passwordModal')
       const modal = Modal.getOrCreateInstance(passwordModal)

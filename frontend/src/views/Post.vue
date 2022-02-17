@@ -37,36 +37,36 @@
               <i class="bi bi-plus-circle-fill"></i>
             </a>
           </div>
-          <button v-else @click="backToCurrent" class="btn btn-outline-info me-3 border-0">글을 남기려면 현재 데스크로 돌아가세요!
-            <span class="fs-6 fw-light t-gray-3">If you want to write a post, go back to the current desk.</span>
+          <button v-else @click="backToCurrent" class="btn btn-outline-info me-3 border-0" style="font-size: 0.9rem;">글을 남기려면 현재 데스크로 돌아가세요!
+            <p class="fw-light t-gray-3" style="font-size: 0.8rem;">If you want to write a post, go back to the current desk.</p>
           </button>
           <!-- 지역 선택 필터 -->
           <div class="dropdown me-3">
-            <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-outline-dark dropdown-toggle" style="font-size: 0.9em;" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
               {{ state.nowAreaName.korName }} 
-              <span class="fs-6 fw-light">{{state.nowAreaName.engName}}</span>
+              <span class="fw-light">{{state.nowAreaName.engName}}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li
                 v-for="area in state.areaList"
                 :key="area.id"
               >
-                <a class="dropdown-item" @click="selectArea(area.id, area.korName)">{{ area.korName }}  <span class="fs-6 fw-light t-gray-3">{{ area.engName }}</span></a>
+                <a class="dropdown-item" @click="selectArea(area.id, area.korName, area.engName)">{{ area.korName }}  <span class="fs-6 fw-light t-gray-3">{{ area.engName }}</span></a>
               </li>
             </ul>
           </div>
           <!-- 데스크 선택 필터 -->
           <div class="dropdown">
-            <a class="btn btn-outline-dark dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="btn btn-outline-dark dropdown-toggle" style="font-size: 0.9em;" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false">
               {{ state.nowDeskName.korName }}
-              <span class="fs-6 fw-light">{{state.nowDeskName.engName}}</span>
+              <span class="fw-light">{{state.nowDeskName.engName}}</span>
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
               <li
                 v-for="desk in state.deskList"
                 :key="desk.id"
               >
-                <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName)">{{ desk.korName }}  <span class="fs-6 fw-light t-gray-3">{{ desk.engName }}</span></a>
+                <a class="dropdown-item" @click="selectDesk(desk.id, desk.korName, desk.engName)">{{ desk.korName }}  <span class="fs-6 fw-light t-gray-3">{{ desk.engName }}</span></a>
               </li>
             </ul>
           </div>
@@ -81,7 +81,7 @@
           
           </post-list>
           <!--pagination-->
-          <nav aria-label="..." class="d-flex justify-content-center">
+          <nav aria-label="..." class="d-flex justify-content-center mb-4 fixed-bottom">
           <ul class="pagination d-flex justify-content-between">
             <li v-if="state.start" class="page-item">
               <a class="page-link" href="#" @click="gotostartpage">«</a>
@@ -158,8 +158,8 @@ export default {
 
     const state = ref({
       postList: {}, // computed(() => store.state.postList),
-      nowAreaName: {korName: deskData.areaKorName, engName: deskData.areaEngName},
-      nowDeskName: {korName: deskData.deskKorName, engName: deskData.deskEngName},
+      nowAreaName: { korName: deskData.areaKorName, engName: deskData.areaEngName },
+      nowDeskName: { korName: deskData.deskKorName, engName: deskData.deskEngName },
       areaList: [],
       deskList: [],
       deskId: deskData.deskPk,
@@ -227,14 +227,14 @@ export default {
         })
     }
 
-    const selectArea = (areaId, areaName) => {
-      state.value.nowAreaName = areaName
-      state.value.nowDeskName = '선택'
+    const selectArea = (areaId, korName, engName) => {
+      state.value.nowAreaName = { korName: korName, engName: engName }
+      state.value.nowDeskName = { korName: '선택', engName: 'Select' }
       getDeskList(areaId)
     }
 
-    const selectDesk = (deskId, deskName) => {
-      state.value.nowDeskName = deskName
+    const selectDesk = (deskId, korName, engName) => {
+      state.value.nowDeskName = { korName: korName, engName: engName }
       state.value.deskId = deskId
       //console.log("fetch1")
       //const obj = {deskId:deskId, nowPage: 1 }
@@ -314,7 +314,7 @@ export default {
     const postCreated = () => {
       thisPage(1, state.value.deskId)
     }
-    // created
+    
     //store.dispatch('fetchPostList', , 1)
     // console.log("fetch2")
     // const obj = {deskId:deskData.deskPk, nowPage: 1 }
@@ -336,6 +336,8 @@ export default {
     //    state.value.pageNumbers[i-state.value.startPage] = i
     // }
     // console.log("pagenumbers", state.value.pageNumbers)
+
+    // created 될 때 실행
     thisPage(1, deskData.deskPk)
     getAreaList()
     getDeskList(deskData.areaPk)
@@ -343,7 +345,7 @@ export default {
     return {state, deskData, moveToDeskHome, createPost, selectArea, selectDesk, backToCurrent,
     thisPage, gotoprepage, gotonextpage, gotostartpage, gotoendpage, postUpdated, postCreated}
   },
-  create() {
+  created() {
       const router = useRouter()
 
       if(!localStorage.getItem('deskData')){
