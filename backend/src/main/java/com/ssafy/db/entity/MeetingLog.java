@@ -52,7 +52,7 @@ public class MeetingLog  {
     @PrePersist // 엔티티 insert이전에 실행
     public void onPrePersist()
     {
-        this.startedAt= LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.startedAt= LocalDateTime.now().plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
         this.endedAt=this.startedAt;
 
     }
@@ -60,7 +60,7 @@ public class MeetingLog  {
     @PreUpdate //엔티티 update이전 실행
     public void onPreUpdate()
     {
-        this.endedAt=LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        this.endedAt=LocalDateTime.now().plusHours(9).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
 
     }
 
