@@ -1,6 +1,6 @@
 <template>
         <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-blue-5">
-            <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+            <div class="d-flex flex-column align-items-center align-items-center px-3 pt-2 text-white min-vh-100">
               
               <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
                     <span class="fs-5 d-none d-sm-inline"></span>
@@ -61,7 +61,7 @@
                     </li>
                     <li class="nav-item ms-2 mt-1">
                     <div class="d-flex justify-content-center align-items-center text-white text-decoration-none" type="button"  data-bs-toggle="modal"  data-bs-target="#adminLogoutModal">
-                      <i class="bi bi-box-arrow-right fs-3"></i>
+                      <i class="bi bi-box-arrow-right fs-2"></i>
                       <span class="fs-5 d-none d-sm-inline mx-1 text-center">Logout</span>
                   </div>
                     </li>

@@ -41,7 +41,7 @@
     
     </div>
 
-    <nav aria-label="..." class="d-flex justify-content-center">
+    <nav aria-label="..." class="d-flex justify-content-center mb-4 fixed-bottom">
       <ul class="pagination d-flex justify-content-between">
         <li v-if="start" class="page-item">
           <a class="page-link" href="#" @click="gotostartpage">«</a>

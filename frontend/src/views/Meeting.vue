@@ -24,7 +24,6 @@
 							<!-- <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" @click="leaveSession" value="Exit"> -->
 							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffVideo()">웹캠on/off</button>
 							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffScreen()">화면on/off</button>
-							<button v-if="isStaff" class="btn btn-lg btn-outline-primary" @click="onoffSound()">소리on/off</button>
 							<button v-if="isStaff && !screenShared" class="btn btn-lg btn-success" @click="shareScreen()">화면공유!</button>
 							<button v-if="isStaff" class="btn btn-lg btn-outline-danger my-button" @click="leaveSession" style="width: 150px">Exit</button>
 							<button v-if="!isStaff" class="btn btn-lg btn-outline-danger my-button" @click="leaveSession" style="width: 150px; margin-right:100px;">Exit</button>
@@ -434,6 +433,7 @@ export default {
 		},
 
 		leaveSession () {
+			console.log('테스트: leaveSession',)
 			// --- Leave the session by calling 'disconnect' method over the Session object ---
 			if (this.session) this.session.disconnect();
 			if (this.sessionScreen) this.sessionScreen.disconnect();
@@ -443,6 +443,10 @@ export default {
 			this.publisher = undefined;
 			this.subscribers = [];
 			this.OV = undefined;
+
+			this.OVScreen = undefined,
+			this.publisherScreen = undefined,
+			this.sessionScreen = undefined	
 
 			window.removeEventListener('beforeunload', this.leaveSession);
 			console.log("Desk Meeting방 나가기 버튼 클릭됨!!")
